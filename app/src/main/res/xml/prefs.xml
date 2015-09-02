@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/title_preference_category_courses">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/key_preference_classes_general"
+            android:summaryOff="@string/label_preference_courses_off"
+            android:summaryOn="@string/label_preference_courses_on"
+            android:title="@string/title_preference_courses" />
+
+        <Preference
+            android:dependency="@string/key_preference_classes_general"
+            android:key="@string/key_preference_classes_list_click"
+            android:title="@string/title_preference_courses_list" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/title_preference_notifications">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_preference_notifications"
+            android:title="@string/title_preference_notifications" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_preference_category_account">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_preference_automatic_sync"
+            android:summaryOff="@string/label_preference_sync_off"
+            android:summaryOn="@string/label_preference_sync_on"
+            android:title="@string/title_preference_sync" />
+
+        <Preference
+            android:dependency="@string/key_preference_automatic_sync"
+            android:key="@string/key_preference_logout"
+            android:title="@string/title_preference_logout" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_preference_category_about">
+
+        <Preference
+            android:key="@string/key_preference_more_apps"
+            android:summary="@string/label_preference_more_apps"
+            android:title="@string/title_preference_more_apps">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="market://search?q=pub:Heinrich+Reimer" />
+        </Preference>
+
+        <Preference
+            android:key="@string/key_preference_info"
+            android:summary="@string/label_preference_info"
+            android:title="@string/title_preference_info" />
+
+        <Preference
+            android:key="@string/key_preference_feedback"
+            android:summary="@string/label_preference_contact"
+            android:title="@string/title_preference_contact">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_email_feedback">
+                <extra
+                    android:name="android.intent.extra.SUBJECT"
+                    android:value="@string/title_mail_feedback" />
+            </intent>
+        </Preference>
+
+        <Preference
+            android:key="@string/key_preference_licenses"
+            android:summary="@string/label_preference_licenses"
+            android:title="@string/title_preference_licenses" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

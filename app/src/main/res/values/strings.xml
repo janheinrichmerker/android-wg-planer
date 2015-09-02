@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_app">Wilhelm-Gymnasium</string>
+
+    <!-- General -->
+    <string name="action_close">Schließen</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_add">Hinzufügen</string>
+    <string name="action_clear">Zurücksetzen</string>
+    <string name="action_continue">Fortsetzen</string>
+
+    <string name="label_unknown">unbekannt</string>
+
+    <string name="label_monday">Montag</string>
+    <string name="label_tuesday">Dienstag</string>
+    <string name="label_wednesday">Mittwoch</string>
+    <string name="label_thursday">Donnerstag</string>
+    <string name="label_friday">Freitag</string>
+
+    <string name="label_subject">Schulfach</string>
+    <string name="label_subjects">Schulfächer</string>
+    <string name="label_teacher">Lehrer</string>
+    <string name="label_room">Raum</string>
+    <string name="label_day">Tag</string>
+    <string name="label_hour">Stunde</string>
+    <string name="label_time">Zeit</string>
+
+    <!-- Activities/fragments -->
+    <string name="title_activity_main">Wilhelm-Gymnasium</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_fragment_user_info">Benutzerinformationen</string>
+    <string name="title_fragment_representation">Vertretungsplan</string>
+    <string name="title_fragment_representation_monday">Vertretungsplan Montag</string>
+    <string name="title_fragment_timetable">Stundenplan</string>
+    <string name="title_fragment_teacher">Lehrerkürzel</string>
+    <string name="title_activity_courses">Kurse auswählen</string>
+
+    <!-- Representations activity -->
+    <string name="title_section_representation_today">Heute</string>
+    <string name="title_section_representation_tomorrow">Morgen</string>
+    <string name="title_section_representation_monday">Montag</string>
+    <plurals name="label_representations_count">
+        <item quantity="one">Eine aktuelle Vertretung</item>
+        <item quantity="other">%1$d aktuelle Vertretungen</item>
+    </plurals>
+
+    <!-- Empty views -->
+    <string name="label_empty_view_representations">Keine Vertretungen</string>
+    <string name="label_empty_view_timetable">Keine Stunden</string>
+    <string name="label_empty_view_teachers">Keine Lehrer</string>
+    <string name="label_empty_view_courses">Keine Kurse</string>
+
+    <!-- Settings -->
+    <string name="key_preference_classes_general">key_preference_classes_general</string>
+    <string name="key_preference_classes_list_click">key_preference_classes_list_click</string>
+    <string name="key_preference_classes_list">key_preference_classes_list</string>
+
+    <string name="key_preference_notifications">key_preference_notifications</string>
+
+    <string name="key_preference_automatic_sync">key_preference_automatic_sync</string>
+    <string name="key_preference_logout">key_preference_logout</string>
+
+    <string name="key_preference_feedback">key_preference_feedback</string>
+    <string name="key_preference_more_apps">key_preference_more_apps</string>
+    <string name="key_preference_info">key_preference_info</string>
+    <string name="key_preference_licenses">key_preference_licenses</string>
+
+    <string name="title_preference_category_courses">Kurse</string>
+    <string name="title_preference_courses">Kurse</string>
+    <string name="label_preference_courses_on">Nur ausgewählte Kurse anzeigen</string>
+    <string name="label_preference_courses_off">Alle Kurse anzeigen</string>
+    <string name="title_preference_courses_list">Kurse auswählen</string>
+
+    <string name="title_preference_notifications">Benachrichtigungen</string>
+
+    <string name="title_preference_category_account">Account</string>
+    <string name="title_preference_sync">Synchronisation</string>
+    <string name="label_preference_sync_on">Automatische Synchronisation an</string>
+    <string name="label_preference_sync_off">Automatische Synchronisation aus</string>
+    <string name="title_preference_logout">Ausloggen</string>
+
+    <string name="title_preference_category_about">Informationen</string>
+    <string name="title_preference_contact">Entwickler kontaktieren</string>
+    <string name="label_preference_contact">Fehler oder Problem melden</string>
+    <string name="title_preference_more_apps">Mehr Apps</string>
+    <string name="label_preference_more_apps">Weitere Apps dieses Entwicklers</string>
+    <string name="title_preference_info">Info</string>
+    <string name="label_preference_info">Informationen zu dieser App</string>
+    <string name="title_preference_licenses">Open-Source-Lizenzen</string>
+    <string name="label_preference_licenses">Rechtliche Hinweise zu Lizenzen</string>
+
+    <!-- Login -->
+    <string name="title_login">@string/title_activity_login</string>
+    <string name="hint_login_username">vorname.nachname</string>
+    <string name="hint_login_password">passwort</string>
+    <string name="label_login_error">Login fehlgeschlagen</string>
+    <string name="label_login_error_unknown">Unbekannter Fehler</string>
+    <string name="label_login_error_no_return">Keine Rückgabe</string>
+    <string name="label_login_error_base64">Codierungsfehler</string>
+    <string name="label_login_error_network">Netzwerkfehler</string>
+    <string name="label_login_error_unknown_username">Account existiert nicht</string>
+    <string name="label_login_error_wrong_credentials">Falsche Anmeldedaten</string>
+    <string name="label_login_error_wrong_password">Falsches Password</string>
+
+    <!-- Dialogs -->
+    <string name="title_dialog_logout">Ausloggen</string>
+    <string name="text_dialog_logout">Möchtest Du Dich wirklich ausloggen?</string>
+
+    <string name="title_dialog_add_class">Kurs hinzufügen</string>
+    <string name="hint_dialog_add_class">Kürzel (z.B. PH1, re2, If1)</string>
+
+    <string name="title_dialog_clear_classes">Alle Kurse löschen</string>
+    <string name="label_dialog_clear_classes">Möchtest Du Deine Kurse wirklich zurücksetzen?</string>
+
+    <string name="title_dialog_cancel_classes_edit">Änderungen verwerfen</string>
+    <string name="label_dialog_cancel_classes_edit">Möchtest Du alle Änderungen verwerfen?</string>
+
+    <string name="title_dialog_confirm_privacy">Datenschutzhinweis</string>
+    <string name="label_dialog_confirm_privacy">Um Dir ein bestmögliches Nutzererlebnis zu ermöglichen, greift diese App auf Deine iServ-Daten zu.</string>
+
+    <string name="title_dialog_confirm_logout">Ausloggen</string>
+    <string name="label_dialog_confirm_logout">Möchtest Du Dich wirklich abmelden?</string>
+
+    <string name="label_dialog_info_copyright">Copyright \u00A9 %1$d Heinrich Reimer</string>
+    <string name="label_dialog_info_version">Version: %1$s</string>
+    <string name="label_dialog_info_description">Mit der Vertretungsplan-App vom Wilhelm-Gymnasium kannst Du jederzeit auf Deinen Stundenplan und auf Deinen Vertretungsplan zugreifen.</string>
+    <string name="label_dialog_info_user"><i>Benutzername:</i> %1$s\n<i>Klasse:</i> %2$s</string>
+
+    <!-- Formats -->
+    <string name="format_lesson_1">Stunde: %1$d (%2$s)"</string>
+    <string name="format_lesson_2">Stunde: %1$d-%2$d (%3$s)"</string>
+
+    <!-- Authenticator/content provider -->
+    <string name="title_authenticator">Wilhelm-Gymnasium</string>
+    <string name="title_provider_representations">Vertretungsplan</string>
+    <string name="title_provider_timetable">Stundenplan</string>
+    <string name="title_provider_teachers">Lehrer</string>
+    <string name="title_provider_user">Benutzerinformationen</string>
+
+    <!-- Mail -->
+    <string name="url_email_feedback">mailto:info@heinrichreimersoftware.com</string>
+    <string name="title_mail_feedback">Feedback zu "Wilhelm-Gymnasium"</string>
+
+    <!-- Notifications -->
+    <string name="title_notification_new_timetable">Stundenplanänderung</string>
+    <string name="label_notification_new_timetable">Dein Stundenplan hat sich geändert.</string>
+
+    <!-- DashClock -->
+    <string name="title_dashclock">@string/title_app</string>
+    <string name="label_dashclock">Zeigt Deine aktueller Vertretungen an.</string>
+</resources>

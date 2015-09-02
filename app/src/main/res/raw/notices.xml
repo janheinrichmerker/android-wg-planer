@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+
+    <notice>
+        <name>Android Support</name>
+        <url>http://developer.android.com/tools/support-library/index.html#revisions</url>
+        <copyright>Copyright 2015 The Android Open Source Project</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Butter Knife</name>
+        <url>http://jakewharton.github.io/butterknife/</url>
+        <copyright>Copyright 2013 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>DashClock API</name>
+        <url>https://github.com/romannurik/dashclock</url>
+        <copyright>Copyright 2013 Google Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>jsoup</name>
+        <url>http://jsoup.org/</url>
+        <copyright>Copyright 2009-2013 Jonathan Hedley</copyright>
+        <license>MIT License</license>
+    </notice>
+
+    <notice>
+        <name>google-gson</name>
+        <url>https://github.com/google/gson</url>
+        <copyright>Copyright 2008-2009 Google Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Java CSV Library</name>
+        <url>http://sourceforge.net/projects/javacsv/</url>
+        <copyright>Copyright 2011 Bruce Dunwiddie</copyright>
+        <license>GNU Lesser General Public License 2.1</license>
+    </notice>
+
+    <notice>
+        <name>OkHttp</name>
+        <url>http://square.github.io/okhttp/</url>
+        <copyright>Copyright 2012 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Mimecraft</name>
+        <url>http://square.github.io/mimecraft/</url>
+        <copyright>Copyright 2013 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Picasso</name>
+        <url>http://square.github.io/picasso/</url>
+        <copyright>Copyright 2013 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>material-drawer</name>
+        <url>https://github.com/HeinrichReimer/material-drawer</url>
+        <copyright>Copyright 2015 Heinrich Reimer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>PagerSlidingTabStrip</name>
+        <url>https://github.com/jpardogo/PagerSlidingTabStrip</url>
+        <copyright>Copyright 2013 Andreas Stuetz</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>material-dialogs</name>
+        <url>https://github.com/afollestad/material-dialogs</url>
+        <copyright>Copyright 2015 Aidan Michael Follestad</copyright>
+        <license>MIT License</license>
+    </notice>
+
+    <notice>
+        <name>LicensesDialog</name>
+        <url>https://github.com/PSDev/LicensesDialog</url>
+        <copyright>Copyright 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>Support PreferenceFragment</name>
+        <url>https://github.com/Machinarius/PreferenceFragment-Compat</url>
+        <copyright>Copyright 2013 Germán Valencia</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>RecyclerView Animators</name>
+        <url>https://github.com/wasabeef/recyclerview-animators</url>
+        <copyright>Copyright 2015 Wasabeef</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+    <notice>
+        <name>FloatingActionButton</name>
+        <url>https://github.com/Clans/FloatingActionButton</url>
+        <copyright>Copyright 2015 Dmytro Tarianyk</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+
+</notices>

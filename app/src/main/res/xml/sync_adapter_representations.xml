@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="com.heinrichreimersoftware.wg_planer_auth"
+    android:allowParallelSyncs="false"
+    android:contentAuthority="com.heinrichreimersoftware.representations.provider"
+    android:isAlwaysSyncable="false"
+    android:supportsUploading="false"
+    android:userVisible="true" />

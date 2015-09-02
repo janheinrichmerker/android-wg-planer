@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.heinrichreimersoftware.wg_planer">
+
+    <!-- Hardware permissions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Network permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Account permissions -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+
+    <!-- Authenticator permissions -->
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+
+    <!-- SyncAdapter permissions -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
+    <!-- Geofence -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/title_app">
+
+        <!-- GUI activities -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/SettingsTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.heinrichreimersoftware.wg_planer.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ClassesActivity"
+            android:label="@string/title_activity_courses"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppBaseTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.heinrichreimersoftware.wg_planer.MainActivity" />
+        </activity>
+
+        <!-- Authenticator related activity and service -->
+        <activity
+            android:name=".authentication.AuthenticatorActivity"
+            android:label="@string/title_activity_login"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/AppBaseTheme"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.heinrichreimersoftware.wg_planer.SettingsActivity" />
+        </activity>
+
+        <service
+            android:name=".authentication.WgPlanerAuthenticatorService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- Dashclock service -->
+
+        <service
+            android:name=".dashclock.DashClockExtensionRepresentations"
+            android:icon="@drawable/ic_notification_representations"
+            android:label="@string/title_dashclock"
+            android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+            <intent-filter>
+                <action android:name="com.google.android.apps.dashclock.Extension" />
+            </intent-filter>
+
+            <meta-data
+                android:name="protocolVersion"
+                android:value="2" />
+            <meta-data
+                android:name="worldReadable"
+                android:value="true" />
+            <meta-data
+                android:name="description"
+                android:value="@string/label_dashclock" />
+        </service>
+
+        <!-- Sync adapter related service and receiver -->
+        <service
+            android:name=".sync.RepresentationsSyncService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter_representations" />
+        </service>
+        <service
+            android:name=".sync.TimetableSyncService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter_timetable" />
+        </service>
+        <service
+            android:name=".sync.TeachersSyncService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter_teachers" />
+        </service>
+        <service
+            android:name=".sync.UserSyncService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_adapter_user" />
+        </service>
+
+        <!-- Content providers -->
+        <provider
+            android:name=".data.RepresentationsContentProvider"
+            android:authorities="com.heinrichreimersoftware.representations.provider"
+            android:exported="false"
+            android:label="@string/title_provider_representations" />
+        <provider
+            android:name=".data.TimetableContentProvider"
+            android:authorities="com.heinrichreimersoftware.lessons.provider"
+            android:exported="false"
+            android:label="@string/title_provider_timetable" />
+        <provider
+            android:name=".data.TeachersContentProvider"
+            android:authorities="com.heinrichreimersoftware.teachers.provider"
+            android:exported="false"
+            android:label="@string/title_provider_teachers" />
+        <provider
+            android:name=".data.UserContentProvider"
+            android:authorities="com.heinrichreimersoftware.users.provider"
+            android:exported="false"
+            android:label="@string/title_provider_user" />
+
+        <!-- Crashlytics -->
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="0738638e4ec6d89897cbb52c470f30217f90530e" />
+    </application>
+
+</manifest>
