@@ -51,9 +51,12 @@ public class UserSyncAdapter extends AbstractThreadedSyncAdapter {
                 } else {
                     syncResult.stats.numParseExceptions++;
                 }
+            } else {
+                syncResult.stats.numParseExceptions++;
             }
         } catch (OperationCanceledException | RemoteException | IOException | AuthenticatorException e) {
             e.printStackTrace();
+            syncResult.stats.numParseExceptions++;
         }
     }
 }

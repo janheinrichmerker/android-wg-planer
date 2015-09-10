@@ -24,7 +24,7 @@ public class ClassesUtils {
             return true;
 
         Set<String> classes = sharedPreferences.getStringSet(context.getString(R.string.key_preference_classes_list), new HashSet<String>());
-        return classes == null || classes.isEmpty() || classes.contains(subject.getShorthand());
+        return classes.isEmpty() || classes.contains(subject.getShorthand());
     }
 
     public static List<TeacherSubject> filterSubjects(Context context, List<TeacherSubject> subjects) {
@@ -36,7 +36,7 @@ public class ClassesUtils {
         Set<String> classes = sharedPreferences.getStringSet(context.getString(R.string.key_preference_classes_list), new HashSet<String>());
 
         for (int i = subjects.size() - 1; i >= 0; i--) {
-            if (classes != null && !classes.isEmpty() && !classes.contains(subjects.get(i).getShorthand())) {
+            if (!classes.isEmpty() && !classes.contains(subjects.get(i).getShorthand())) {
                 subjects.remove(i);
             }
         }
@@ -60,7 +60,7 @@ public class ClassesUtils {
         List<Representation> filteredRepresentations = new ArrayList<>();
 
         for (Representation representation : representations) {
-            if (shouldShow(context, representation.getRepresentedSubject())) {
+            if (shouldShow(context, representation.getSubject())) {
                 filteredRepresentations.add(representation);
             }
         }

@@ -47,17 +47,22 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
                 allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context);
             }
 
-            Calendar currentTime = new GregorianCalendar();
 
+            Calendar currentTime = new GregorianCalendar();
             List<Representation> representations = new ArrayList<>();
             for (Representation representation : allRepresentations) {
                 Calendar representationEndTime = representation.getDate();
-                Calendar time = LessonTimeFactory.fromRepresentation(representation).endTime;
+                Calendar time = LessonTimeFactory.fromRepresentation(representation).getEndTime();
+
                 representationEndTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
                 representationEndTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
                 representationEndTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
                 representationEndTime.add(Calendar.MINUTE, 5);
                 representationEndTime.add(Calendar.HOUR, -1);
+                if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                    representationEndTime.add(Calendar.WEEK_OF_YEAR, 1);
+                }
+
                 if (representationEndTime.after(currentTime)) {
                     representations.add(representation);
                 }
@@ -71,7 +76,6 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
                 String expandedTitle;
                 String expandedBody;
 
-
                 if (representationsCount > 1) {
                     icon = R.drawable.ic_notification_representations;
                     status = String.valueOf(representationsCount);
@@ -83,16 +87,17 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
                         if (!first) {
                             expandedBody += ", ";
                         }
-                        expandedBody += representation.getRepresentedSubjectText();
+                        expandedBody += representation.getFormatter(context).subject();
                         first = false;
                     }
                 } else {
                     Representation representation = representations.get(0);
 
-                    status = representation.getRepresentedSubject().getShorthand();
+                    status = representation.getSubject().getShorthand();
                     icon = R.drawable.ic_notification_representation;
-                    expandedTitle = representation.getSummary();
-                    expandedBody = representation.getDescription(context);
+                    Representation.Formatter formatter = representation.getFormatter(context);
+                    expandedTitle = formatter.summary();
+                    expandedBody = formatter.description();
                 }
 
                 Intent clickIntent = new Intent(context, MainActivity.class);

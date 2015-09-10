@@ -76,7 +76,7 @@ public class ClassesActivity extends AppCompatActivity {
         RecyclerView.ItemAnimator animator = new FadeInUpAnimator();
         list.setItemAnimator(animator);
 
-        adapter = new ClassesAdapter(this);
+        adapter = new ClassesAdapter();
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -111,7 +111,7 @@ public class ClassesActivity extends AppCompatActivity {
                         });
         list.setOnTouchListener(touchListener);
 
-        list.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 touchListener.setEnabled(newState != AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);

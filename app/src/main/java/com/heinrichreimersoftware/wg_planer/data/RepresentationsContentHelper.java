@@ -21,7 +21,7 @@ public class RepresentationsContentHelper {
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);
-                if (ClassesUtils.shouldShow(context, representation.getRepresentedSubject())) {
+                if (ClassesUtils.shouldShow(context, representation.getSubject())) {
                     representations.add(representation);
                 }
             } while (cursor.moveToNext());
@@ -38,7 +38,7 @@ public class RepresentationsContentHelper {
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);
-                if (ClassesUtils.shouldShow(context, representation.getRepresentedSubject())) {
+                if (ClassesUtils.shouldShow(context, representation.getSubject())) {
                     representations.add(representation);
                 }
             } while (cursor.moveToNext());
@@ -79,7 +79,7 @@ public class RepresentationsContentHelper {
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);
-                if (ClassesUtils.shouldShow(context, representation.getRepresentedSubject())) {
+                if (ClassesUtils.shouldShow(context, representation.getSubject())) {
                     representations.add(representation);
                 }
             } while (cursor.moveToNext());
@@ -108,7 +108,7 @@ public class RepresentationsContentHelper {
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);
-                if (ClassesUtils.shouldShow(context, representation.getRepresentedSubject())) {
+                if (ClassesUtils.shouldShow(context, representation.getSubject())) {
                     representations.add(representation);
                 }
             } while (cursor.moveToNext());

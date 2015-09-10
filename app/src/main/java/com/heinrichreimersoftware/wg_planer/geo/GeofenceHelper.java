@@ -1,12 +1,18 @@
 package com.heinrichreimersoftware.wg_planer.geo;
 
+import android.app.Activity;
+import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
@@ -16,24 +22,30 @@ import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.play.PlayServicesHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class GeofenceHelper extends PlayServicesHelper implements ResultCallback<Status> {
+public class GeofenceHelper extends PlayServicesHelper {
 
-    private PendingIntent mGeofencePendingIntent;
-    private List<Geofence> mGeofences;
-
+    public static final int INITIAL_TRIGGER_DWELL = GeofencingRequest.INITIAL_TRIGGER_DWELL;
+    public static final int INITIAL_TRIGGER_ENTER = GeofencingRequest.INITIAL_TRIGGER_ENTER;
+    public static final int INITIAL_TRIGGER_EXIT = GeofencingRequest.INITIAL_TRIGGER_EXIT;
+    public static final int INITIAL_TRIGGER_NONE = 0;
+    private final List<Geofence> mGeofences;
+    private Class<? extends IntentService> mIntentService = null;
+    private PendingIntent mGeofencePendingIntent = null;
+    @InitialTrigger
+    private int mInitialTrigger = INITIAL_TRIGGER_NONE;
     private boolean shouldMonitor = false;
 
-    public GeofenceHelper(Context context, List<Geofence> geofences) {
+    public GeofenceHelper(Context context, List<Geofence> geofences, Class<? extends IntentService> intentService, @InitialTrigger int initialTrigger) {
         super(context);
-        mGeofences = geofences;
-
+        mGeofences = new ArrayList<>(geofences);
+        mIntentService = intentService;
+        mInitialTrigger = initialTrigger;
     }
 
-    public GeofenceHelper(Context context, Geofence... geofences) {
-        this(context, new ArrayList<>(Arrays.asList(geofences)));
+    public GeofenceHelper(Context context, List<Geofence> geofences, Class<? extends IntentService> intentService) {
+        this(context, geofences, intentService, INITIAL_TRIGGER_NONE);
     }
 
     private void updateMonitoring() {
@@ -43,16 +55,23 @@ public class GeofenceHelper extends PlayServicesHelper implements ResultCallback
             if (shouldMonitor) {
                 LocationServices.GeofencingApi.addGeofences(
                         getGoogleApiClient(),
-                        getGeofencingRequest(),
+                        getGeoFencingRequest(),
                         getGeofencePendingIntent()
-                ).setResultCallback(this);
-                Log.d(MainActivity.TAG, "GeofenceHelper starting monitoring");
+                ).setResultCallback(new AddGeofenceResultCallback());
+
+                Location location = LocationServices.FusedLocationApi.getLastLocation(getGoogleApiClient());
+                Log.d(MainActivity.TAG, "GeofenceHelper starting monitoring at {lat=" + location.getLatitude() +
+                        "; long=" + location.getLongitude() + "; alt=" + location.getAltitude() +
+                        "; accuracy=" + location.getAccuracy() + "}");
+                for (Geofence geofence : getGeoFencingRequest().getGeofences()) {
+                    Log.d(MainActivity.TAG, "GeofenceHelper monitoring geofence: " + geofence.getRequestId());
+                }
                 Toast.makeText(getContext(), "Starting monitoring", Toast.LENGTH_SHORT).show();
             } else {
                 LocationServices.GeofencingApi.removeGeofences(
                         getGoogleApiClient(),
                         getGeofencePendingIntent()
-                ).setResultCallback(this);
+                ).setResultCallback(new RemoveGeofenceResultCallback());
                 Log.d(MainActivity.TAG, "GeofenceHelper stopping monitoring");
                 Toast.makeText(getContext(), "Stopping monitoring", Toast.LENGTH_SHORT).show();
             }
@@ -61,7 +80,6 @@ public class GeofenceHelper extends PlayServicesHelper implements ResultCallback
 
     public void startMonitoring() {
         Log.d(MainActivity.TAG, "GeofenceHelper trying to start monitoring");
-        Toast.makeText(getContext(), "Trying to start monitoring", Toast.LENGTH_SHORT).show();
 
         shouldMonitor = true;
         updateMonitoring();
@@ -69,28 +87,42 @@ public class GeofenceHelper extends PlayServicesHelper implements ResultCallback
 
     public void stopMonitoring() {
         Log.d(MainActivity.TAG, "GeofenceHelper trying to stop monitoring");
-        Toast.makeText(getContext(), "Trying to stop monitoring", Toast.LENGTH_SHORT).show();
 
         shouldMonitor = false;
         updateMonitoring();
     }
 
-    private PendingIntent getGeofencePendingIntent() {
-        if (mGeofencePendingIntent != null) {
-            return mGeofencePendingIntent;
-        }
-        Intent intent = new Intent(getContext(), GeofenceTransitionsIntentService.class);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
-        // calling addGeofences() and removeGeofences().
-        return PendingIntent.getService(getContext(), 0, intent, PendingIntent.
-                FLAG_UPDATE_CURRENT);
+    private GeofencingRequest getGeoFencingRequest() {
+        return new GeofencingRequest.Builder()
+                .addGeofences(mGeofences)
+                .setInitialTrigger(mInitialTrigger)
+                .build();
     }
 
-    private GeofencingRequest getGeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(mGeofences);
-        return builder.build();
+    private PendingIntent getGeofencePendingIntent() {
+        Log.d(MainActivity.TAG, "GeofenceHelper get geofence pending intent");
+        if (mGeofencePendingIntent == null) {
+            Log.d(MainActivity.TAG, "GeofenceHelper create geofence pending intent");
+            Intent intent = new Intent(getContext(), mIntentService);
+            mGeofencePendingIntent = PendingIntent.getService(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        Log.d(MainActivity.TAG, "GeofenceHelper geofence pending intent: " + mGeofencePendingIntent.toString());
+        return mGeofencePendingIntent;
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult((Activity) getContext(),
+                        getConnectionFailureResolutionRequestCode());
+            } catch (IntentSender.SendIntentException e) {
+                Log.e(MainActivity.TAG, "Exception while resolving connection error.", e);
+            }
+        } else {
+            int errorCode = connectionResult.getErrorCode();
+            Log.e(MainActivity.TAG, "Connection to Google Play services failed with error code " + errorCode);
+        }
     }
 
     @Override
@@ -101,7 +133,37 @@ public class GeofenceHelper extends PlayServicesHelper implements ResultCallback
     }
 
     @Override
-    public void onResult(Status status) {
-        Log.d(MainActivity.TAG, "GeofenceHelper status: " + status);
+    public void onConnectionSuspended(int i) {
+        if (null != mGeofencePendingIntent) {
+            updateMonitoring();
+        }
+    }
+
+    @IntDef(
+            flag = true,
+            value = {INITIAL_TRIGGER_DWELL, INITIAL_TRIGGER_ENTER, INITIAL_TRIGGER_EXIT, INITIAL_TRIGGER_NONE})
+    public @interface InitialTrigger {
+    }
+
+    private class AddGeofenceResultCallback implements ResultCallback<Status> {
+        @Override
+        public void onResult(Status status) {
+            if (status.isSuccess()) {
+                Log.d(MainActivity.TAG, "GeofenceHelper Adding geofence succeeded");
+            } else {
+                Log.d(MainActivity.TAG, "GeofenceHelper Adding geofence failed: " + status);
+            }
+        }
+    }
+
+    private class RemoveGeofenceResultCallback implements ResultCallback<Status> {
+        @Override
+        public void onResult(Status status) {
+            if (status.isSuccess()) {
+                Log.d(MainActivity.TAG, "GeofenceHelper Removing geofence succeeded");
+            } else {
+                Log.d(MainActivity.TAG, "GeofenceHelper Removing geofence failed: " + status);
+            }
+        }
     }
 }

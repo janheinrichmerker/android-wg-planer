@@ -7,10 +7,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-public class PlayServicesHelper implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+import java.util.Random;
+
+public abstract class PlayServicesHelper implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private Context mContext;
     private GoogleApiClient mGoogleApiClient;
+    private int connectionFailureResolutionRequestCode = -1;
 
     public PlayServicesHelper(Context context) {
         mContext = context;
@@ -20,6 +23,18 @@ public class PlayServicesHelper implements GoogleApiClient.OnConnectionFailedLis
                 .addApi(LocationServices.API)
                 .build();
 
+    }
+
+    protected int getConnectionFailureResolutionRequestCode() {
+        if (connectionFailureResolutionRequestCode < 0) {
+            Random generator = new Random();
+            connectionFailureResolutionRequestCode = generator.nextInt(Integer.MAX_VALUE);
+        }
+        return connectionFailureResolutionRequestCode;
+    }
+
+    protected int getConnectionTimeOut() {
+        return 1000;
     }
 
     protected Context getContext() {

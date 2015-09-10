@@ -2,19 +2,23 @@ package com.heinrichreimersoftware.wg_planer;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.location.Geofence;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
@@ -22,10 +26,14 @@ import com.heinrichreimersoftware.wg_planer.data.RepresentationsContentHelper;
 import com.heinrichreimersoftware.wg_planer.data.RepresentationsContract;
 import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
 import com.heinrichreimersoftware.wg_planer.geo.GeofenceHelper;
+import com.heinrichreimersoftware.wg_planer.geo.GeofenceTransitionsIntentService;
 import com.heinrichreimersoftware.wg_planer.geo.WgCoordinates;
 import com.heinrichreimersoftware.wg_planer.structure.User;
 import com.heinrichreimersoftware.wg_planer.sync.SyncStatusManager;
 import com.heinrichreimersoftware.wg_planer.utils.SyncUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,26 +41,23 @@ import butterknife.ButterKnife;
 public class MainActivity extends DrawerActivity {
 
     public static final String TAG = "WG-Planer";
-
     public static final String PREFERENCES_LOGIN = "LoginPreferences";
     public static final String PREFERENCES_COOKIE = "CookiePrefsFile";
     public static final String PREFERENCES_SETTINGS_HAS_SET_DEFAULT = "_has_set_default_values";
-
     public static final String INTENT_EXTRA_SELECTED_ITEM = "SELECTED_ITEM";
-
     public static final int NOTIFICATION_LIGHTS_COLOR = Color.GREEN;
     public static final int NOTIFICATION_LIGHTS_ON_MS = 1500;
     public static final int NOTIFICATION_LIGHTS_OFF_MS = 2500;
-
     public static final int DRAWER_ID_REPRESENTATIONS = 1;
     public static final int DRAWER_ID_TIMETABLE = 2;
     public static final int DRAWER_ID_TEACHERS = 3;
     public static final int DRAWER_ID_SETTINGS = 4;
-
+    private static final String ACCESS_FINE_LOCATION = "android.permission.ACCESS_FINE_LOCATION";
+    private static final int REQUEST_CODE_GEOFENCES = 3456;
     private static final String STATE_SLECTED_ITEM_ID = "state_selected_item_id";
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    private long selectedItemId = DRAWER_ID_TIMETABLE;
+    private long selectedItemId = -1;
     private SyncStatusManager syncStatusManager;
     private RepresentationNavigationFragment fragmentRepresentations = new RepresentationNavigationFragment();
     private TimetableNavigationFragment fragmentTimetable = new TimetableNavigationFragment();
@@ -68,13 +73,31 @@ public class MainActivity extends DrawerActivity {
 
         SyncUtils.initialize(this);
 
+        //* TODO Enable this later after more testing
+        List<Geofence> geofences = new ArrayList<>();
+        geofences.add(WgCoordinates.getMainBuildingGeofence());
+        geofences.add(WgCoordinates.getBranchOfficeGeofence());
+
         geofenceHelper = new GeofenceHelper(
                 this,
-                WgCoordinates.getMainBuildingGeofence(),
-                WgCoordinates.getBranchOfficeGeofence()
-        );
+                geofences,
+                GeofenceTransitionsIntentService.class,
+                GeofenceHelper.INITIAL_TRIGGER_DWELL | GeofenceHelper.INITIAL_TRIGGER_ENTER |
+                        GeofenceHelper.INITIAL_TRIGGER_EXIT);
         geofenceHelper.connect();
-        geofenceHelper.startMonitoring();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                geofenceHelper.startMonitoring();
+            } else if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this, "\"Wilhelm-Gymnasium\" braucht diese Berechtigung, um Dir standortbasierte Benachrichtigungen zu bieten.", Toast.LENGTH_LONG).show();
+            } else {
+                requestPermissions(new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_GEOFENCES);
+            }
+        } else {
+            geofenceHelper.startMonitoring();
+        }
+        //*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTaskDescription(new ActivityManager.TaskDescription(
@@ -86,11 +109,12 @@ public class MainActivity extends DrawerActivity {
 
         updateDrawerList();
 
+        long id = DRAWER_ID_TIMETABLE;
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_SLECTED_ITEM_ID)) {
-            selectedItemId = savedInstanceState.getLong(STATE_SLECTED_ITEM_ID, DRAWER_ID_TIMETABLE);
+            id = savedInstanceState.getLong(STATE_SLECTED_ITEM_ID, DRAWER_ID_TIMETABLE);
         }
+        select(id);
 
-        select(selectedItemId);
 
         syncStatusManager = new SyncStatusManager(this, RepresentationsContract.AUTHORITY);
         syncStatusManager.addOnSyncStatusChangedListener(new SyncStatusManager.OnSyncStatusChangedListener() {
@@ -104,6 +128,18 @@ public class MainActivity extends DrawerActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_GEOFENCES) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equals(ACCESS_FINE_LOCATION) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    geofenceHelper.startMonitoring();
+                }
+            }
+        }
     }
 
     private void updateDrawerList() {
@@ -176,6 +212,9 @@ public class MainActivity extends DrawerActivity {
     }
 
     private void select(long id) {
+        if (id == selectedItemId) {
+            switchFragment(getSupportFragmentManager().findFragmentById(R.id.content));
+        }
         if (id == DRAWER_ID_SETTINGS) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
@@ -212,7 +251,10 @@ public class MainActivity extends DrawerActivity {
     private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if (fragmentManager.findFragmentById(R.id.content) == fragment) return;
+        Fragment oldFragment = fragmentManager.findFragmentById(R.id.content);
+
+        if (oldFragment != null && fragment != null && oldFragment.getClass().getName().equals(fragment.getClass().getName()))
+            return;
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE);
@@ -237,15 +279,8 @@ public class MainActivity extends DrawerActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        geofenceHelper.disconnect();
-        super.onDestroy();
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(STATE_SLECTED_ITEM_ID, selectedItemId);
-        Log.d(MainActivity.TAG, "monSaveInstanceState(" + outState + ")");
         super.onSaveInstanceState(outState);
     }
 }

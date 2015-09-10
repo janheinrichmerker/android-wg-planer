@@ -125,7 +125,7 @@ public class LessonDialogBuilder extends MaterialDialog.Builder {
         RecyclerView.ItemAnimator animator = new FadeInUpAnimator();
         list.setItemAnimator(animator);
 
-        SubjectAdapter adapter = new SubjectAdapter(context);
+        SubjectAdapter adapter = new SubjectAdapter();
         adapter.addAll(lesson.getSubjects());
         list.setAdapter(adapter);
 

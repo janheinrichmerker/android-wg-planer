@@ -8,6 +8,7 @@ buildscript {
     }
 }
 apply plugin: 'com.android.application'
+apply plugin: 'com.android.databinding'
 apply plugin: 'io.fabric'
 
 def versionMajor = 4
@@ -24,6 +25,28 @@ repositories {
     }
 }
 
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            versionNameSuffix ".${versionBuild} DEBUG"
+        }
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
@@ -37,7 +60,6 @@ dependencies {
     //Other libraries
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-    compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'net.sourceforge.javacsv:javacsv:2.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
@@ -53,22 +75,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
         transitive = true;
     }
-}
-
-android {
-    compileSdkVersion 23
-    buildToolsVersion "21.1.2"
-
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 22
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-    }
-
-    buildTypes {
-        debug {
-            versionNameSuffix ".${versionBuild} DEBUG"
-        }
-    }
+    compile 'org.jsoup:jsoup:1.8.3' // Version 1.7.1-1.8.3 does not work
 }

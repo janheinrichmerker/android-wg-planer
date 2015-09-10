@@ -49,16 +49,23 @@ public class RepresentationsSyncAdapter extends AbstractThreadedSyncAdapter {
                     representationsValues[i] = representation.getContentValues();
                     i++;
                 }
-                provider.bulkInsert(RepresentationsContract.CONTENT_URI, representationsValues);
+                int insertedRows = provider.bulkInsert(RepresentationsContract.CONTENT_URI, representationsValues);
+                syncResult.stats.numInserts += insertedRows;
 
                 List<Representation> oldRepresentations = RepresentationsContentHelper.getRepresentations(getContext());
                 List<Representation> filteredRepresentations = ClassesUtils.filterRepresentations(getContext(), representations);
                 if (filteredRepresentations.size() != oldRepresentations.size()/* || !representations.containsAll(oldRepresentations)*/) {
                     NotificationRepresentations.makeNotification(getContext());
                 }
+            } else {
+                syncResult.stats.numParseExceptions++;
             }
-        } catch (OperationCanceledException | RemoteException | AuthenticatorException | IOException e) {
+        } catch (AuthenticatorException e) {
             e.printStackTrace();
+            syncResult.stats.numAuthExceptions++;
+        } catch (OperationCanceledException | RemoteException | IOException e) {
+            e.printStackTrace();
+            syncResult.stats.numIoExceptions++;
         }
     }
 }

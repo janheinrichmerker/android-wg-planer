@@ -54,7 +54,7 @@ public class TeacherFragment extends Fragment {
 
         list.setItemAnimator(new FadeInAnimator());
 
-        TeacherAdapter adapter = new TeacherAdapter(getActivity());
+        TeacherAdapter adapter = new TeacherAdapter();
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {

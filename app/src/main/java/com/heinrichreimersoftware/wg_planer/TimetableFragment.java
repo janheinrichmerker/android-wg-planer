@@ -55,7 +55,7 @@ public class TimetableFragment extends Fragment {
 
         list.setItemAnimator(new FadeInAnimator());
 
-        TimetableAdapter adapter = new TimetableAdapter(getActivity());
+        TimetableAdapter adapter = new TimetableAdapter();
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {

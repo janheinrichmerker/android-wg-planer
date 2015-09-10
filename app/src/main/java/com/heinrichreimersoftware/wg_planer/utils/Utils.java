@@ -6,16 +6,11 @@ import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Calendar;
 
 public class Utils {
-
-    public static final int NETWORK_TIMEOUT = 10 * 1000;
 
     public static boolean hasActiveInternetConnection(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -33,45 +28,21 @@ public class Utils {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (wifi != null && wifi.isConnected()) {
-            return true;
-        }
-        return false;
-    }
-
-    public static String inputStreamToString(InputStream is) {
-        String line;
-        StringBuilder total = new StringBuilder();
-        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-        try {
-            while ((line = rd.readLine()) != null) {
-                total.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return total.toString();
+        return wifi != null && wifi.isConnected();
     }
 
     public static InputStream stringToInputStream(String string) {
-        InputStream is = new ByteArrayInputStream(string.getBytes());
-        return is;
+        return new ByteArrayInputStream(string.getBytes());
     }
 
     public static int dpToPx(int dp, Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static int pxToDp(int px, Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return dp;
-    }
-
-    public static boolean isEven(int number) {
-        return number % 2 == 0;
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static String dayToString(int day) {
@@ -134,9 +105,9 @@ public class Utils {
         return 0;
     }
 
-    public static String leadingNull(int number) {
+    public static String leadingNull(int number, int places) {
         String numberString = "" + number;
-        while (numberString.length() < 5) {
+        while (numberString.length() < places) {
             numberString = "0" + numberString;
         }
         return (numberString);

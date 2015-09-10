@@ -12,14 +12,14 @@ public class RepresentationsDbHelper extends SQLiteOpenHelper {
     public static final String REPRESENTATIONS_COL_DATE = "date";
     public static final String REPRESENTATIONS_COL_FIRST_LESSON_NUMBER = "firstLessonNumber";
     public static final String REPRESENTATIONS_COL_LAST_LESSON_NUMBER = "lastLessonNumber";
-    public static final String REPRESENTATIONS_COL_REPRESENTED_TEACHER = "representedTeacher";
-    public static final String REPRESENTATIONS_COL_REPRESENTED_SUBJECT = "representedSubject";
-    public static final String REPRESENTATIONS_COL_REPRESENTING_TEACHER = "representingTeacher";
-    public static final String REPRESENTATIONS_COL_REPRESENTED_ROOM = "representedRoom";
-    public static final String REPRESENTATIONS_COL_REPRESENTING_ROOM = "representingRoom";
-    public static final String REPRESENTATIONS_COL_REPRESENTED_FROM = "representedFrom";
-    public static final String REPRESENTATIONS_COL_REPRESENTED_TO = "representedTo";
-    public static final String REPRESENTATIONS_COL_REPRESENTATION_TEXT = "representationText";
+    public static final String REPRESENTATIONS_COL_SUBJECT = "subject";
+    public static final String REPRESENTATIONS_COL_FROM_TEACHER = "fromTeacher";
+    public static final String REPRESENTATIONS_COL_FROM_ROOM = "fromRoom";
+    public static final String REPRESENTATIONS_COL_FROM = "fromLesson";
+    public static final String REPRESENTATIONS_COL_TO_TEACHER = "toTeacher";
+    public static final String REPRESENTATIONS_COL_TO_ROOM = "toRoom";
+    public static final String REPRESENTATIONS_COL_TO = "toLesson";
+    public static final String REPRESENTATIONS_COL_DESCRIPTION = "description";
 
     public static final String DATABASE_CREATE = "create table " +
             REPRESENTATIONS_TABLE_NAME + "(" +
@@ -28,14 +28,14 @@ public class RepresentationsDbHelper extends SQLiteOpenHelper {
             REPRESENTATIONS_COL_DATE + " integer, " +
             REPRESENTATIONS_COL_FIRST_LESSON_NUMBER + " integer, " +
             REPRESENTATIONS_COL_LAST_LESSON_NUMBER + " integer, " +
-            REPRESENTATIONS_COL_REPRESENTED_TEACHER + " text not null, " +
-            REPRESENTATIONS_COL_REPRESENTED_SUBJECT + " text not null, " +
-            REPRESENTATIONS_COL_REPRESENTING_TEACHER + " text not null, " +
-            REPRESENTATIONS_COL_REPRESENTED_ROOM + " text not null, " +
-            REPRESENTATIONS_COL_REPRESENTING_ROOM + " text not null, " +
-            REPRESENTATIONS_COL_REPRESENTED_FROM + " text not null, " +
-            REPRESENTATIONS_COL_REPRESENTED_TO + " text not null, " +
-            REPRESENTATIONS_COL_REPRESENTATION_TEXT + " text not null" +
+            REPRESENTATIONS_COL_SUBJECT + " text not null, " +
+            REPRESENTATIONS_COL_FROM_TEACHER + " text not null, " +
+            REPRESENTATIONS_COL_FROM_ROOM + " text not null, " +
+            REPRESENTATIONS_COL_FROM + " text not null, " +
+            REPRESENTATIONS_COL_TO_TEACHER + " text not null, " +
+            REPRESENTATIONS_COL_TO_ROOM + " text not null, " +
+            REPRESENTATIONS_COL_TO + " text not null, " +
+            REPRESENTATIONS_COL_DESCRIPTION + " text not null" +
             ");";
 
     public RepresentationsDbHelper(Context context) {

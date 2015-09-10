@@ -1,6 +1,8 @@
 package com.heinrichreimersoftware.wg_planer.sync;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.csvreader.CsvReader;
@@ -54,13 +56,14 @@ public class ParseComServerAccessor {
     public static final String REPRESENTATIONS_URL_TODAY = INFO_PANEL_URL + "panelId=28/Vtr/Internet2/Klassen/f1/subst_001.htm";
     public static final String REPRESENTATIONS_URL_TOMORROW = INFO_PANEL_URL + "panelId=32/Vtr/Internet2/Klassen/f2/subst_001.htm";
 
-    public static final String TIMETABLE_BASE_URL = INFO_PANEL_URL + "panelId=40/Stdplan/Klassen/";
+    public static final String TIMETABLE_BASE_URL = INFO_PANEL_URL + "panelId=40/Stundenplan/Klassen/";
     public static final String TIMETABLE_NAV_URL = TIMETABLE_BASE_URL + "frames/navbar.htm";
 
     public static final String TEACHER_CSV_URL = "http://heinrichreimersoftware.com/api/wg_planer/teachers/";
+    public static final int TODAY = 0;
+    public static final int TOMORROW = 1;
     private Context context;
     private OkHttpClient client = new OkHttpClient();
-
     public ParseComServerAccessor(Context context) {
         this.context = context;
 
@@ -121,13 +124,7 @@ public class ParseComServerAccessor {
                 return new User();
             }
 
-            Document doc;
-            try {
-                doc = Jsoup.parse(Utils.stringToInputStream(html), "UTF-8", USER_INFO_URL);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new User();
-            }
+            Document doc = Jsoup.parse(html, USER_INFO_URL);
 
             try {
                 user.setImageUrl("");
@@ -197,21 +194,21 @@ public class ParseComServerAccessor {
 
         if (login(auth)) {
             List<Representation> representations = new ArrayList<>();
-            representations.addAll(parseRepresentations(Day.TODAY));
-            representations.addAll(parseRepresentations(Day.TOMORROW));
+            representations.addAll(parseRepresentations(TODAY));
+            representations.addAll(parseRepresentations(TOMORROW));
             return representations;
         }
         return new ArrayList<>();
     }
 
-    public List<Representation> parseRepresentations(Day day) {
+    public List<Representation> parseRepresentations(@Day int day) {
         List<Representation> representations = new ArrayList<>();
 
         String url;
-        if (day == Day.TODAY) {
+        if (day == TODAY) {
             Log.d(MainActivity.TAG, "Parsing today's representations...");
             url = REPRESENTATIONS_URL_TODAY;
-        } else if (day == Day.TOMORROW) {
+        } else if (day == TOMORROW) {
             Log.d(MainActivity.TAG, "Parsing tomorrow's representations...");
             url = REPRESENTATIONS_URL_TOMORROW;
         } else {
@@ -230,27 +227,17 @@ public class ParseComServerAccessor {
             return new ArrayList<>();
         }
 
-        Document docToday;
-        try {
-            docToday = Jsoup.parse(Utils.stringToInputStream(html), "UTF-8", url);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-
-        Calendar date;
+        Document docToday = Jsoup.parse(html, url);
 
         Element dateElement = docToday.getElementsByClass("mon_title").first();
         if (dateElement == null) {
-            return representations;
+            return new ArrayList<>();
         }
 
         String dateString = dateElement.text().split(" ")[0];
-
         String[] dateStrings = dateString.split("\\.");
 
-
-        date = new GregorianCalendar();
+        Calendar date = new GregorianCalendar();
         try {
             date.set(Calendar.YEAR, Integer.parseInt(dateStrings[2]));
             date.set(Calendar.MONTH, Utils.monthNumberToMonth(Integer.parseInt(dateStrings[1])));
@@ -273,15 +260,15 @@ public class ParseComServerAccessor {
 			}
 			*/
 
-        int lessonNumberUnparsedChildIndex = 0;
-        int representedTeacherChildIndex = 1;
-        int representingTeacherChildIndex = 2;
-        int representedSubjectChildIndex = 3;
-        int representedRoomChildIndex = 4;
-        int representingRoomChildIndex = 5;
-        int representedFromChildIndex = 6;
-        int representedToChildIndex = 7;
-        int representationTextChildIndex = 8;
+        int colIndexLessonNumberUnparsed = 0;
+        int colIndexFromTeacher = 1;
+        int colIndexToTeacher = 2;
+        int colIndexSubject = 3;
+        int colIndexFromRoom = 4;
+        int colIndexToRoom = 5;
+        int colIndexFrom = 6;
+        int colIndexTo = 7;
+        int colIndexDescription = 8;
 
         /* Detect column order based on table headers */
         Elements firstRowElements = docToday.select("table.mon_list tr.list").get(1).getElementsByTag("th");
@@ -289,31 +276,31 @@ public class ParseComServerAccessor {
             String itemText = firstRowElements.get(i).text();
             switch (itemText) {
                 case "Stunde":
-                    lessonNumberUnparsedChildIndex = i;
+                    colIndexLessonNumberUnparsed = i;
                     break;
                 case "(Lehrer)":
-                    representedTeacherChildIndex = i;
+                    colIndexFromTeacher = i;
                     break;
                 case "Vertretung":
-                    representingTeacherChildIndex = i;
+                    colIndexToTeacher = i;
                     break;
                 case "(Fach)":
-                    representedSubjectChildIndex = i;
+                    colIndexSubject = i;
                     break;
                 case "(Raum)":
-                    representedRoomChildIndex = i;
+                    colIndexFromRoom = i;
                     break;
                 case "Raum":
-                    representingRoomChildIndex = i;
+                    colIndexToRoom = i;
                     break;
                 case "Vertr. von":
-                    representedFromChildIndex = i;
+                    colIndexFrom = i;
                     break;
                 case "(Le.) nach":
-                    representedToChildIndex = i;
+                    colIndexTo = i;
                     break;
                 case "Vertretungs-Text":
-                    representationTextChildIndex = i;
+                    colIndexDescription = i;
                     break;
             }
         }
@@ -326,7 +313,7 @@ public class ParseComServerAccessor {
                 if (firstChild.hasClass("inline_header") && firstChild.hasAttr("colspan")) {
                     schoolClass = firstChild.text();
                 } else if (!schoolClass.equals("")) {
-                    String lessonNumberUnparsed = element.child(lessonNumberUnparsedChildIndex).text();
+                    String lessonNumberUnparsed = element.child(colIndexLessonNumberUnparsed).text();
                     int lessonNumber = 0;
                     int firstLessonNumber = 0;
                     int lastLessonNumber = 0;
@@ -346,30 +333,31 @@ public class ParseComServerAccessor {
                             e.printStackTrace();
                         }
                     }
-						/*Restliche Infos*/
-                    String representedTeacher = element.child(representedTeacherChildIndex).text();
-                    String representingTeacher = element.child(representingTeacherChildIndex).text();
                     SubjectFactory subjectFactory = new SubjectFactory();
-                    Subject representedSubject = subjectFactory.fromShorthand(element.child(representedSubjectChildIndex).text());
-                    String representedRoom = element.child(representedRoomChildIndex).text();
-                    String representingRoom = element.child(representingRoomChildIndex).text();
-                    String representedFrom = element.child(representedFromChildIndex).text();
-                    String representedTo = element.child(representedToChildIndex).text();
-                    String representationText = element.child(representationTextChildIndex).text();
+                    Subject subject = subjectFactory.fromShorthand(element.child(colIndexSubject).text());
+                    String fromTeacher = element.child(colIndexFromTeacher).text();
+                    String from = element.child(colIndexFrom).text();
+                    String fromRoom = element.child(colIndexFromRoom).text();
+                    String toTeacher = element.child(colIndexToTeacher).text();
+                    String toRoom = element.child(colIndexToRoom).text();
+                    String to = element.child(colIndexTo).text();
+                    String description = element.child(colIndexDescription).text();
 
-                    Representation representation = new Representation(schoolClass,
-                            date,
-                            firstLessonNumber,
-                            lastLessonNumber,
-                            representedTeacher,
-                            representedSubject,
-                            representingTeacher,
-                            representedRoom,
-                            representingRoom,
-                            representedFrom,
-                            representedTo,
-                            representationText);
-                    representations.add(representation);
+                    Representation.Builder representationBuilder = new Representation.Builder()
+                            .schoolClass(schoolClass)
+                            .date(date)
+                            .firstLessonNumber(firstLessonNumber)
+                            .lastLessonNumber(lastLessonNumber)
+                            .subject(subject)
+                            .fromTeacher(fromTeacher)
+                            .fromRoom(fromRoom)
+                            .from(from)
+                            .toTeacher(toTeacher)
+                            .toRoom(toRoom)
+                            .to(to)
+                            .description(description);
+
+                    representations.add(representationBuilder.build());
                 }
             }
             return representations;
@@ -389,8 +377,8 @@ public class ParseComServerAccessor {
     }
 
     public List<Lesson> getTimetable(String auth, String classNames) {
-        Log.d(MainActivity.TAG, "getTimetable(" + auth + ", " + classNames + ")");
-        if (classNames != null && !classNames.equals("")) {
+        Log.d(MainActivity.TAG + "-Parse", "getTimetable(" + auth + ", " + classNames + ")");
+        if (!TextUtils.isEmpty(classNames)) {
             List<Lesson> lessons = new ArrayList<>();
 
             if (login(auth)) {
@@ -399,22 +387,26 @@ public class ParseComServerAccessor {
                     html = run(TIMETABLE_NAV_URL);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Log.d(MainActivity.TAG + "-Parse", "getTimetable short circuit 1");
                     return new ArrayList<>(); // Short circuiting as much errors we can find...
                 }
 
                 if (html == null) {
+                    Log.d(MainActivity.TAG + "-Parse", "getTimetable short circuit 2");
                     return new ArrayList<>();
                 }
 
                 Document docToday = Jsoup.parse(html, TIMETABLE_NAV_URL);
 
                 if (docToday.text().contains("Die angegebene Datei konnte nicht gefunden werden!")) {
+                    Log.d(MainActivity.TAG + "-Parse", "getTimetable short circuit 3");
                     return new ArrayList<>();
                 }
 
 				/* Week */
                 Elements weekOptions = docToday.select("form[name=NavBar] select[name=week] option");
                 if (weekOptions == null || weekOptions.isEmpty()) {
+                    Log.d(MainActivity.TAG + "-Parse", "getTimetable short circuit 4");
                     return new ArrayList<>();
                 }
                 String week = weekOptions.last().val();
@@ -435,6 +427,9 @@ public class ParseComServerAccessor {
                             Calendar calendarStart = new GregorianCalendar();
                             Calendar calendarEnd = new GregorianCalendar();
                             Calendar calendarNow = new GregorianCalendar();
+                            while (calendarNow.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+                                calendarNow.add(Calendar.DATE, 1);
+                            }
 
                             if (startMonth > 0 && startMonth <= 12 && endMonth > 0 && endMonth <= 12) {
                                 calendarStart.set(Calendar.MONTH, startMonth - 1);
@@ -487,6 +482,8 @@ public class ParseComServerAccessor {
                     }
                 }
 
+                Log.d(MainActivity.TAG + "-Parse", "classNumbers: " + classNumbers);
+
                 for (Integer classNumber : classNumbers) {
                     Log.d(MainActivity.TAG, "classNumber: " + classNumber);
                     if (week != null && typeString != null) {
@@ -500,6 +497,7 @@ public class ParseComServerAccessor {
                 return lessons;
             }
         }
+        Log.d(MainActivity.TAG + "-Parse", "getTimetable short circuit 5");
         return new ArrayList<>();
     }
 
@@ -507,25 +505,28 @@ public class ParseComServerAccessor {
         return TIMETABLE_BASE_URL +
                 week + "/" +
                 typeString + "/" +
-                typeString + Utils.leadingNull(classNumber) + ".htm";
+                typeString + Utils.leadingNull(classNumber, 5) + ".htm";
     }
 
     private List<Lesson> parseTimetable(String timetableUrl) {
+        Log.d(MainActivity.TAG + "-Parse", "parseTimetable: " + timetableUrl);
         List<Lesson> lessons = new ArrayList<>();
 
-        String htmlTimetable;
+        String html;
         try {
-            htmlTimetable = run(timetableUrl);
+            html = run(timetableUrl);
         } catch (IOException e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
 
-        if (htmlTimetable == null) {
+        if (html == null) {
             return new ArrayList<>();
         }
 
-        Document docTimetable = Jsoup.parse(htmlTimetable, timetableUrl);
+        Log.d(MainActivity.TAG + "-Parse", "html=\"" + html + "\"");
+
+        Document docTimetable = Jsoup.parse(html, timetableUrl);
 
         Elements timetableTableRows = docTimetable.select("body > center > table").get(0).select(" > tbody > tr");
 
@@ -541,7 +542,7 @@ public class ParseComServerAccessor {
             lessonLengthCount[Calendar.FRIDAY] = 0;
 
             for (int i = 1; i < timetableTableRows.size(); i++) {
-                if (!Utils.isEven(i)) {
+                if (i % 2 != 0) {
                     int lessonNumber = (i - 1) / 2 + 1;
                     Element row = timetableTableRows.get(i);
 
@@ -550,7 +551,8 @@ public class ParseComServerAccessor {
                         Log.w(MainActivity.TAG, "Parse error");
                     } else {
                         for (int j = 1; j < timetableTableCells.size(); j++) {
-                            int lessonLength = Integer.parseInt(timetableTableCells.get(j).attr("rowspan")) / 2;
+                            Element timetableTableCell = timetableTableCells.get(j);
+                            int lessonLength = Integer.parseInt(timetableTableCell.attr("rowspan")) / 2;
 
                             int day = -1;
                             int dayOffset = 0;
@@ -591,11 +593,11 @@ public class ParseComServerAccessor {
 
                             lessonLengthCount[day] += lessonLength;
 
-                            List<TeacherSubject> subjects = new ArrayList<>();
-
                             /* Parse contained Subjects */
-                            if (!timetableTableCells.get(j).text().equals("")) {
-                                Elements subjectRows = timetableTableCells.get(j).select(" > table > tbody > tr");
+                            if (!TextUtils.isEmpty(timetableTableCell.text()) || timetableTableCell.text().contains("Vor Schulbeginn")) {
+                                List<TeacherSubject> subjects = new ArrayList<>();
+
+                                Elements subjectRows = timetableTableCell.select(" > table > tbody > tr");
                                 for (Element subjectRow : subjectRows) {
                                     Elements subjectCells = subjectRow.select(" > td");
 
@@ -629,15 +631,16 @@ public class ParseComServerAccessor {
                                         subjects.add(subject);
                                     }
                                 }
-                            }
-
-                            Lesson lesson = new Lesson(
-                                    day, lessonNumber,
-                                    lessonNumber + lessonLength - 1,
-                                    subjects
-                            );
-                            if (lesson.getSubjects().size() > 0) {
-                                lessons.add(lesson);
+                                if (subjects.size() > 0) {
+                                    Lesson.Builder lessonBuilder = new Lesson.Builder()
+                                            .day(day)
+                                            .firstLessonNumber(lessonNumber)
+                                            .lastLessonNumber(lessonNumber + lessonLength - 1)
+                                            .subjects(subjects);
+                                    lessons.add(lessonBuilder.build());
+                                }
+                            } else {
+                                Log.d(MainActivity.TAG + "-Parse", "No lesson in this cell");
                             }
                         }
                     }
@@ -686,8 +689,8 @@ public class ParseComServerAccessor {
         return new ArrayList<>();
     }
 
-    private enum Day {
-        TODAY, TOMORROW
+    @IntDef({TODAY, TOMORROW})
+    public @interface Day {
     }
 
 }

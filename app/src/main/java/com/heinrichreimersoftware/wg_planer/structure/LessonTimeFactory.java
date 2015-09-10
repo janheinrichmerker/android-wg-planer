@@ -53,8 +53,11 @@ public class LessonTimeFactory {
         CalendarInterval firstLessonTime = fromLessonNumber(lesson.getFirstLessonNumber());
         CalendarInterval lastLessonTime = fromLessonNumber(lesson.getLastLessonNumber());
 
-        Calendar startTime = firstLessonTime.startTime;
-        Calendar endTime = lastLessonTime.endTime;
+        Calendar startTime = firstLessonTime.getStartTime();
+        Calendar endTime = lastLessonTime.getEndTime();
+
+        startTime.set(Calendar.DAY_OF_WEEK, lesson.getDay());
+        endTime.set(Calendar.DAY_OF_WEEK, lesson.getDay());
 
         return new CalendarInterval(startTime, endTime);
     }
@@ -63,8 +66,8 @@ public class LessonTimeFactory {
         CalendarInterval firstLessonTime = fromLessonNumber(representation.getFirstLessonNumber());
         CalendarInterval lastLessonTime = fromLessonNumber(representation.getLastLessonNumber());
 
-        Calendar startTime = firstLessonTime.startTime;
-        Calendar endTime = lastLessonTime.endTime;
+        Calendar startTime = firstLessonTime.getStartTime();
+        Calendar endTime = lastLessonTime.getEndTime();
 
         return new CalendarInterval(startTime, endTime);
     }

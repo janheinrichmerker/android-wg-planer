@@ -40,36 +40,38 @@ public class NotificationRepresentations {
         }
 
         Calendar currentTime = new GregorianCalendar();
-
         List<Representation> representations = new ArrayList<>();
         for (Representation representation : allRepresentations) {
             Calendar representationEndTime = representation.getDate();
-            Calendar time = LessonTimeFactory.fromRepresentation(representation).endTime;
+            Calendar time = LessonTimeFactory.fromRepresentation(representation).getEndTime();
+
             representationEndTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
             representationEndTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
             representationEndTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
             representationEndTime.add(Calendar.MINUTE, 5);
             representationEndTime.add(Calendar.HOUR, -1);
+            if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                representationEndTime.add(Calendar.WEEK_OF_YEAR, 1);
+            }
+
             if (representationEndTime.after(currentTime)) {
                 representations.add(representation);
             }
         }
 
-        int representationsCount = representations.size();
-
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (representationsCount > 0) {
+        if (representations.size() > 0) {
             NotificationCompat.Builder representationNotificationBuilder = new NotificationCompat.Builder(context);
             representationNotificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
             representationNotificationBuilder.setColor(context.getResources().getColor(R.color.material_green_500));
 
-            if (representationsCount > 1) {
+            if (representations.size() > 1) {
                 representationNotificationBuilder.setSmallIcon(
                         R.drawable.ic_notification_representations
                 );
                 String contentTitle = context.getResources().getQuantityString(
-                        R.plurals.label_representations_count, representationsCount, representationsCount
+                        R.plurals.label_representations_count, representations.size(), representations.size()
                 );
                 representationNotificationBuilder.setContentTitle(contentTitle);
 
@@ -79,7 +81,7 @@ public class NotificationRepresentations {
                     if (!first) {
                         contentText += ", ";
                     }
-                    contentText += representation.getRepresentedSubjectText();
+                    contentText += representation.getFormatter(context).subject();
                     first = false;
                 }
                 representationNotificationBuilder.setContentText(contentText);
@@ -88,26 +90,23 @@ public class NotificationRepresentations {
                 NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
                 inboxStyle.setBigContentTitle(contentTitle);
                 for (Representation representation : representations) {
-                    inboxStyle.addLine(representation.getSummary());
+                    inboxStyle.addLine(representation.getFormatter(context).summary());
                 }
                 representationNotificationBuilder.setStyle(inboxStyle);
-                representationNotificationBuilder.setNumber(representationsCount);
+                representationNotificationBuilder.setNumber(representations.size());
             } else {
                 Representation representation = representations.get(0);
+                Representation.Formatter formatter = representation.getFormatter(context);
 
-                representationNotificationBuilder.setColor(representation.getRepresentedSubject().getColor());
+                representationNotificationBuilder.setColor(representation.getSubject().getColor());
                 representationNotificationBuilder.setSmallIcon(R.drawable.ic_notification_representation);
-                representationNotificationBuilder.setContentTitle(
-                        representation.getSummary()
-                );
-                String contentText = representation.getDescription(context);
+                representationNotificationBuilder.setContentTitle(formatter.summary());
+                String contentText = formatter.description();
                 representationNotificationBuilder.setContentText(contentText);
                 representationNotificationBuilder.setTicker(contentText);
 
                 NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
-                bigTextStyle.setBigContentTitle(
-                        representation.getSummary()
-                );
+                bigTextStyle.setBigContentTitle(formatter.summary());
                 bigTextStyle.bigText(contentText);
 
                 representationNotificationBuilder.setStyle(bigTextStyle);
@@ -130,7 +129,7 @@ public class NotificationRepresentations {
             representationNotificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
 
             notificationManager.notify(REPRESENTATIONS_NOTIFICATION_ID, representationNotificationBuilder.build());
-            Log.d(MainActivity.TAG, representationsCount + " representations. Notifying");
+            Log.d(MainActivity.TAG, representations.size() + " representations. Notifying");
         } else {
             notificationManager.cancel(REPRESENTATIONS_NOTIFICATION_ID);
             Log.d(MainActivity.TAG, "No representations. Cancelling notification");

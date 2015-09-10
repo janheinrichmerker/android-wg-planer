@@ -37,7 +37,10 @@
             android:title="@string/title_preference_sync" />
 
         <Preference
-            android:dependency="@string/key_preference_automatic_sync"
+            android:key="@string/key_preference_update_user_info"
+            android:title="@string/title_preference_update_user_info" />
+
+        <Preference
             android:key="@string/key_preference_logout"
             android:title="@string/title_preference_logout" />
 

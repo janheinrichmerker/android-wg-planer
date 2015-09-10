@@ -17,3 +17,10 @@
 #}
 
 -keep class org.lucasr.twowayview.** { *; }
+-keep public class org.jsoup.** {
+    public *;
+}
+-keep public enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

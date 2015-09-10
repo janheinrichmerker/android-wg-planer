@@ -62,8 +62,12 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
             } else {
                 syncResult.stats.numParseExceptions++;
             }
-        } catch (OperationCanceledException | RemoteException | AuthenticatorException | IOException e) {
+        } catch (AuthenticatorException e) {
             e.printStackTrace();
+            syncResult.stats.numAuthExceptions++;
+        } catch (OperationCanceledException | RemoteException | IOException e) {
+            e.printStackTrace();
+            syncResult.stats.numIoExceptions++;
         }
     }
 }

@@ -93,8 +93,10 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <!-- Dashclock service -->
+        <!-- Geofence service -->
+        <service android:name=".geo.GeofenceTransitionsIntentService"></service>
 
+        <!-- Dashclock service -->
         <service
             android:name=".dashclock.DashClockExtensionRepresentations"
             android:icon="@drawable/ic_notification_representations"

@@ -10,22 +10,6 @@ import com.heinrichreimersoftware.wg_planer.data.UserDbHelper;
 import com.heinrichreimersoftware.wg_planer.utils.BitmapUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import info.ineighborhood.cardme.vcard.VCard;
-import info.ineighborhood.cardme.vcard.VCardImpl;
-import info.ineighborhood.cardme.vcard.types.AddressType;
-import info.ineighborhood.cardme.vcard.types.BeginType;
-import info.ineighborhood.cardme.vcard.types.BirthdayType;
-import info.ineighborhood.cardme.vcard.types.EmailType;
-import info.ineighborhood.cardme.vcard.types.EndType;
-import info.ineighborhood.cardme.vcard.types.FormattedNameType;
-import info.ineighborhood.cardme.vcard.types.NameType;
-import info.ineighborhood.cardme.vcard.types.NicknameType;
-import info.ineighborhood.cardme.vcard.types.OrganizationType;
-import info.ineighborhood.cardme.vcard.types.TelephoneType;
-import info.ineighborhood.cardme.vcard.types.TitleType;
 
 public class User {
 
@@ -441,93 +425,6 @@ public class User {
         if (!json.equals("")) {
             this.fromJson(json);
         }
-    }
-
-    public VCard toVCard() {
-        VCard vCard = new VCardImpl();
-
-        vCard.setBegin(new BeginType());
-
-        String formattedName = username;
-        if (lastName != null && !lastName.equals("")) {
-            formattedName = lastName;
-            if (firstName != null && !firstName.equals("")) {
-                formattedName = firstName + " " + formattedName;
-            }
-            if (title != null && !title.equals("")) {
-                formattedName = title + " " + formattedName;
-            }
-        }
-        if (formattedName == null) return null;
-        vCard.setFormattedName(new FormattedNameType(formattedName));
-
-        if (title != null && !title.equals("")) {
-            vCard.setTitle(new TitleType(title));
-        }
-
-        if (lastName != null && !lastName.equals("")) {
-            if (firstName != null && !firstName.equals("")) {
-                vCard.setName(new NameType(lastName, firstName));
-            } else {
-                vCard.setName(new NameType(lastName));
-            }
-        } else {
-            return null;
-        }
-
-        if (company != null && !company.equals("")) {
-            OrganizationType organizations = new OrganizationType();
-            organizations.addOrganization(company);
-            vCard.setOrganizations(organizations);
-        }
-
-
-        if (birthday != null && !birthday.equals("")) {
-            try {
-                vCard.setBirthday(new BirthdayType(SimpleDateFormat.getInstance().parse(birthday)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (nickname != null && !nickname.equals("")) {
-            NicknameType nicknames = new NicknameType();
-            nicknames.addNickname(nickname);
-            vCard.setNicknames(nicknames);
-        }
-
-        if ((street != null && !street.equals("")) || (city != null && !city.equals("")) || (country != null && !country.equals(""))) {
-            AddressType address = new AddressType();
-            if (street != null && !street.equals("")) {
-                address.setStreetAddress(street);
-            }
-            if (city != null && !city.equals("")) {
-                address.setLocality(city);
-            }
-            if (country != null && !country.equals("")) {
-                address.setCountryName(country);
-            }
-            vCard.addAddress(address);
-        }
-
-        if (phone != null && !phone.equals("")) {
-            vCard.addTelephoneNumber(new TelephoneType(phone));
-        }
-
-        if (mobilePhone != null && !mobilePhone.equals("")) {
-            vCard.addTelephoneNumber(new TelephoneType(mobilePhone));
-        }
-
-        if (mail != null && !mail.equals("")) {
-            String[] mails = mail.split(", *");
-            for (String mail : mails) {
-                vCard.addEmail(new EmailType(mail));
-            }
-        }
-
-        vCard.setEnd(new EndType());
-
-        return vCard;
     }
 
     public ContentValues getContentValues() {

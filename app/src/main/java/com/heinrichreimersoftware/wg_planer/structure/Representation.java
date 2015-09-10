@@ -4,8 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.heinrichreimersoftware.wg_planer.R;
 import com.heinrichreimersoftware.wg_planer.data.RepresentationsDbHelper;
 import com.heinrichreimersoftware.wg_planer.data.TeachersContentHelper;
+import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
+import com.heinrichreimersoftware.wg_planer.utils.ColorUtils;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -16,71 +19,45 @@ public class Representation {
     private Calendar date;
     private int firstLessonNumber;
     private int lastLessonNumber;
-    private String representedTeacher;
-    private Subject representedSubject;
-    private String representingTeacher;
-    private String representedRoom;
-    private String representingRoom;
-    private String representedFrom;
-    private String representedTo;
-    private String representationText;
+    private Subject subject;
+    private String fromTeacher;
+    private String fromRoom;
+    private String from;
+    private String toTeacher;
+    private String toRoom;
+    private String to;
+    private String description;
 
-    public Representation(String schoolClass,
-                          Calendar date,
-                          int firstLessonNumber,
-                          int lastLessonNumber,
-                          String representedTeacher,
-                          Subject representedSubject,
-                          String representingTeacher,
-                          String representedRoom,
-                          String representingRoom,
-                          String representedFrom,
-                          String representedTo,
-                          String representationText) {
-        this.schoolClass = schoolClass;
-        this.date = date;
-        this.firstLessonNumber = firstLessonNumber;
-        this.lastLessonNumber = lastLessonNumber;
-        this.representedTeacher = representedTeacher;
-        this.representedSubject = representedSubject;
-        this.representingTeacher = representingTeacher;
-        this.representedRoom = representedRoom;
-        this.representingRoom = representingRoom;
-        this.representedFrom = representedFrom;
-        this.representedTo = representedTo;
-        this.representationText = representationText;
-    }
-
-    public static Representation fromCursor(Cursor curRepresentations) {
-        String schoolClass = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS));
+    public static Representation fromCursor(Cursor cursor) {
         Calendar date = new GregorianCalendar();
-        date.setTimeInMillis(curRepresentations.getLong(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_DATE)));
-        int firstLessonNumber = curRepresentations.getInt(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER));
-        int lastLessonNumber = curRepresentations.getInt(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_LAST_LESSON_NUMBER));
-        String representedTeacher = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_TEACHER));
+        date.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(
+                RepresentationsDbHelper.REPRESENTATIONS_COL_DATE)));
 
-        SubjectFactory subjectFactory = new SubjectFactory();
-        Subject representedSubject = subjectFactory.fromShorthand(curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_SUBJECT)));
-
-        String representingTeacher = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTING_TEACHER));
-        String representedRoom = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_ROOM));
-        String representingRoom = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTING_ROOM));
-        String representedFrom = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_FROM));
-        String representedTo = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_TO));
-        String representationText = curRepresentations.getString(curRepresentations.getColumnIndex(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTATION_TEXT));
-
-        return new Representation(schoolClass,
-                date,
-                firstLessonNumber,
-                lastLessonNumber,
-                representedTeacher,
-                representedSubject,
-                representingTeacher,
-                representedRoom,
-                representingRoom,
-                representedFrom,
-                representedTo,
-                representationText);
+        return new Builder()
+                .schoolClass(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS)))
+                .date(date)
+                .firstLessonNumber(cursor.getInt(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER)))
+                .lastLessonNumber(cursor.getInt(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_LAST_LESSON_NUMBER)))
+                .subject(new SubjectFactory().fromShorthand(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_SUBJECT))))
+                .fromTeacher(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_TEACHER)))
+                .fromRoom(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_ROOM)))
+                .from(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_FROM)))
+                .toTeacher(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_TO_TEACHER)))
+                .toRoom(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_TO_ROOM)))
+                .to(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_TO)))
+                .description(cursor.getString(cursor.getColumnIndex(
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_DESCRIPTION)))
+                .build();
     }
 
     public String getSchoolClass() {
@@ -115,68 +92,69 @@ public class Representation {
         this.lastLessonNumber = lastLessonNumber;
     }
 
-    public String getRepresentedTeacher() {
-        return representedTeacher;
+    public String getFromTeacher() {
+        return fromTeacher;
     }
 
-    public void setRepresentedTeacher(String representedTeacher) {
-        this.representedTeacher = representedTeacher;
+    public void setFromTeacher(String fromTeacher) {
+        this.fromTeacher = fromTeacher;
     }
 
-    public Subject getRepresentedSubject() {
-        return representedSubject;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setRepresentedSubject(Subject representedSubject) {
-        this.representedSubject = representedSubject;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
-    public String getRepresentingTeacher() {
-        return representingTeacher;
+    public String getToTeacher() {
+        return toTeacher;
     }
 
-    public void setRepresentingTeacher(String representingTeacher) {
-        this.representingTeacher = representingTeacher;
+    public void setToTeacher(String toTeacher) {
+        this.toTeacher = toTeacher;
     }
 
-    public String getRepresentedRoom() {
-        return representedRoom;
+    public String getFromRoom() {
+        return fromRoom;
     }
 
-    public void setRepresentedRoom(String representedRoom) {
-        this.representedRoom = representedRoom;
+    public void setFromRoom(String fromRoom) {
+        this.fromRoom = fromRoom;
     }
 
-    public String getRepresentingRoom() {
-        return representingRoom;
+    public String getToRoom() {
+        return toRoom;
     }
 
-    public void setRepresentingRoom(String representingRoom) {
-        this.representingRoom = representingRoom;
+    public void setToRoom(String toRoom) {
+        this.toRoom = toRoom;
     }
 
-    public String getRepresentedFrom() {
-        return representedFrom;
+    public String getFrom() {
+        return from;
     }
 
-    public void setRepresentedFrom(String representedFrom) {
-        this.representedFrom = representedFrom;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
-    public String getRepresentedTo() {
-        return representedTo;
+    public String getTo() {
+        return to;
     }
 
-    public void setRepresentedTo(String representedTo) {
-        this.representedTo = representedTo;
+    public void setTo(String to) {
+        this.to = to;
     }
 
-    public String getRepresentationText() {
-        return representationText;
+    public String getDescription() {
+        if (description.equals("\u00A0")) return null;
+        return description;
     }
 
-    public void setRepresentationText(String representationText) {
-        this.representationText = representationText;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public ContentValues getContentValues() {
@@ -185,14 +163,14 @@ public class Representation {
         values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_DATE, date.getTimeInMillis());
         values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER, firstLessonNumber);
         values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_LAST_LESSON_NUMBER, lastLessonNumber);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_TEACHER, representedTeacher);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_SUBJECT, representedSubject.getShorthand());
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTING_TEACHER, representingTeacher);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_ROOM, representedRoom);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTING_ROOM, representingRoom);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_FROM, representedFrom);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTED_TO, representedTo);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_REPRESENTATION_TEXT, representationText);
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_TEACHER, fromTeacher);
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_SUBJECT, subject.getShorthand());
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_TO_TEACHER, toTeacher);
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_ROOM, fromRoom);
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_TO_ROOM, toRoom);
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FROM, from);
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_TO, to);
+        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_DESCRIPTION, description);
         return values;
     }
 
@@ -207,109 +185,325 @@ public class Representation {
         if (date != representation.date) return false;
         if (firstLessonNumber != representation.firstLessonNumber) return false;
         if (lastLessonNumber != representation.lastLessonNumber) return false;
-        if (!representedTeacher.equals(representation.representedTeacher)) return false;
-        if (!representedSubject.equals(representation.representedSubject)) return false;
-        if (!representingTeacher.equals(representation.representingTeacher)) return false;
-        if (!representedRoom.equals(representation.representedRoom)) return false;
-        if (!representingRoom.equals(representation.representingRoom)) return false;
-        if (!representedFrom.equals(representation.representedFrom)) return false;
-        if (!representedTo.equals(representation.representedTo)) return false;
-        if (!representationText.equals(representation.representationText)) return false;
+        if (!subject.equals(representation.subject)) return false;
+        if (!fromTeacher.equals(representation.fromTeacher)) return false;
+        if (!fromRoom.equals(representation.fromRoom)) return false;
+        if (!from.equals(representation.from)) return false;
+        if (!toTeacher.equals(representation.toTeacher)) return false;
+        if (!toRoom.equals(representation.toRoom)) return false;
+        if (!to.equals(representation.to)) return false;
+        if (!description.equals(representation.description)) return false;
         return true;
     }
 
-    public String getRepresentedSubjectText(boolean hasSetSchoolClass) {
-        String representationSubjectText = representedSubject.getFullName();
-
-        SubjectFactory subjectFactory = new SubjectFactory();
-        if (subjectFactory.isMultiTeacherSubject(representedSubject)) {
-            representationSubjectText += " (" + representedTeacher;
-            if (!hasSetSchoolClass) {
-                representationSubjectText += ", " + schoolClass;
-            }
-            representationSubjectText += ")";
-        } else {
-            if (!hasSetSchoolClass) {
-                representationSubjectText += " (" + schoolClass + ")";
-            }
-        }
-        return representationSubjectText;
+    public Formatter getFormatter(Context context) {
+        return new Formatter(context, this);
     }
 
-    public String getRepresentedSubjectText() {
-        return getRepresentedSubjectText(true);
-    }
+    public static class Builder {
 
-    public String getSummary() {
-        String output = "";
+        private String schoolClass;
+        private Calendar date;
+        private int firstLessonNumber;
+        private int lastLessonNumber;
+        private Subject subject;
+        private String fromTeacher;
+        private String fromRoom;
+        private String from;
+        private String toTeacher;
+        private String toRoom;
+        private String to;
+        private String description;
 
-        output += getRepresentedSubjectText();
-
-        if (representedTo.equals("Entfall")) {
-            output += " - Entfall";
-        } else if (!representedFrom.equals("") && !representedFrom.equals("\u00A0")) {
-            output += " - Vertretung";
-            if (!representedTo.equals("") && !representedTo.equals("\u00A0")) {
-                output += "/Verlegt";
-            }
-        } else if (!representedTo.equals("") && !representedTo.equals("\u00A0")) {
-            output += " - Verlegt";
-        } else {
-            output += " - Vertretung";
+        public String schoolClass() {
+            return schoolClass;
         }
 
-        return output;
-    }
-
-    public String getDescription(Context context) {
-        String output = "";
-        if (firstLessonNumber == lastLessonNumber) {
-            output += firstLessonNumber + ". Stunde: ";
-        } else {
-            output += firstLessonNumber + ".-" + lastLessonNumber + ". Stunde: ";
+        public Builder schoolClass(String schoolClass) {
+            this.schoolClass = schoolClass;
+            return this;
         }
 
-        Teacher teacher = TeachersContentHelper.getTeacher(context, representedTeacher);
+        public Calendar date() {
+            return date;
+        }
 
-        SubjectFactory subjectFactory = new SubjectFactory();
+        public Builder date(Calendar date) {
+            this.date = date;
+            return this;
+        }
 
-        if (subjectFactory.isMultiTeacherSubject(representedSubject)) {
-            if (teacher != null && teacher.getLastName() != null && !teacher.getLastName().equals("")) {
-                output += representedSubject.getFullName() + " (" + teacher.getLastName() + ")";
+        public int firstLessonNumber() {
+            return firstLessonNumber;
+        }
+
+        public Builder firstLessonNumber(int firstLessonNumber) {
+            this.firstLessonNumber = firstLessonNumber;
+            return this;
+        }
+
+        public int lastLessonNumber() {
+            return lastLessonNumber;
+        }
+
+        public Builder lastLessonNumber(int lastLessonNumber) {
+            this.lastLessonNumber = lastLessonNumber;
+            return this;
+        }
+
+        public Subject subject() {
+            return subject;
+        }
+
+        public Builder subject(Subject subject) {
+            this.subject = subject;
+            return this;
+        }
+
+        public String fromTeacher() {
+            return fromTeacher;
+        }
+
+        public Builder fromTeacher(String fromTeacher) {
+            this.fromTeacher = fromTeacher;
+            return this;
+        }
+
+        public String fromRoom() {
+            return fromRoom;
+        }
+
+        public Builder fromRoom(String fromRoom) {
+            this.fromRoom = fromRoom;
+            return this;
+        }
+
+        public String from() {
+            return from;
+        }
+
+        public Builder from(String from) {
+            this.from = from;
+            return this;
+        }
+
+        public String toTeacher() {
+            return toTeacher;
+        }
+
+        public Builder toTeacher(String toTeacher) {
+            this.toTeacher = toTeacher;
+            return this;
+        }
+
+        public String toRoom() {
+            return toRoom;
+        }
+
+        public Builder toRoom(String toRoom) {
+            this.toRoom = toRoom;
+            return this;
+        }
+
+        public String to() {
+            return to;
+        }
+
+        public Builder to(String to) {
+            this.to = to;
+            return this;
+        }
+
+        public String description() {
+            return description;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Representation build() {
+            Representation representation = new Representation();
+
+            representation.setSchoolClass(schoolClass);
+            representation.setDate(date);
+            representation.setFirstLessonNumber(firstLessonNumber);
+            representation.setLastLessonNumber(lastLessonNumber);
+            representation.setSubject(subject);
+            representation.setFromTeacher(fromTeacher);
+            representation.setFromRoom(fromRoom);
+            representation.setFrom(from);
+            representation.setToTeacher(toTeacher);
+            representation.setToRoom(toRoom);
+            representation.setTo(to);
+            representation.setDescription(description);
+
+            return representation;
+        }
+    }
+
+    public class Formatter {
+
+        private Context context;
+        private Representation representation;
+
+        private Formatter(Context context, Representation representation) {
+            this.context = context;
+            this.representation = representation;
+        }
+
+        public String time() {
+            if (representation.getFirstLessonNumber() == representation.getLastLessonNumber()) {
+                return context.getString(R.string.format_lesson_1, representation.getFirstLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
             } else {
-                output += representedSubject.getFullName() + " (" + representedTeacher + ")";
+                return context.getString(R.string.format_lesson_2, representation.getFirstLessonNumber(), representation.getLastLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
             }
-        } else {
-            output += representedSubject.getFullName();
         }
 
-        if (representedTo.equals("Entfall")) {
-            output += " - Entfall";
-        } else if (!representedFrom.equals("") && !representedFrom.equals("\u00A0")) {
-            output += " - Vertretung";
-            if (!representedTo.equals("") && !representedTo.equals("\u00A0")) {
-                output += "/Verlegt von " + representedFrom;
+        public int color() {
+            Calendar currentTime = new GregorianCalendar();
+            Calendar representationEndTime = representation.getDate();
+            Calendar time = LessonTimeFactory.fromRepresentation(representation).getEndTime();
+
+            representationEndTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
+            representationEndTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
+            representationEndTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
+            representationEndTime.add(Calendar.HOUR, -1);
+            if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                representationEndTime.add(Calendar.WEEK_OF_YEAR, 1);
             }
-            output += " nach " + representedTo +
-                    " in " + representingRoom;
-        } else if (!representedTo.equals("") && !representedTo.equals("\u00A0")) {
-            output += " - Verlegt nach " + representedTo;
-        } else {
-            output += " - Vertretung" +
-                    " in " + representingRoom;
+
+            if (representationEndTime.before(currentTime)) {
+                return ColorUtils.grey(representation.getSubject().getColor());
+            } else {
+                return representation.getSubject().getColor();
+            }
         }
 
-        if (!representationText.equals("") && !representationText.equals("\u00A0")) {
-            output += " (" + representationText + ")";
+        public String info() {
+            if (!representation.getTo().equals("") && !representation.getTo().equals("\u00A0")) {
+                return "";
+            } else {
+                String info = "";
+                info += "in " + representation.getToRoom();
+
+                Teacher teacher = TeachersContentHelper.getTeacher(context, representation.getToTeacher());
+                if (teacher != null && !teacher.getLastName().equals("")) {
+                    info += " (" + teacher.getLastName() + ")";
+                } else {
+                    info += " (" + representation.getToTeacher() + ")";
+                }
+                return info;
+            }
         }
 
-        return output;
+        public String type() {
+            String type = "";
+
+            if (representation.getTo().equals("Entfall")) {
+                type += representation.getTo();
+            } else if (!representation.getFrom().equals("") && !representation.getFrom().equals("\u00A0")) {
+                type += "Vertretung von " + representation.getFrom();
+                if (!representation.getTo().equals("") && !representation.getTo().equals("\u00A0") && !representation.getFrom().equals("") && !representation.getFrom().equals("\u00A0")) {
+                    type += "\nVerlegt nach " + representation.getTo();
+                }
+            } else if (!representation.getTo().equals("") && !representation.getTo().equals("\u00A0")) {
+                type += "Verlegt nach " + representation.getTo();
+            } else {
+                type += "Vertretung";
+            }
+
+            return type;
+        }
+
+        public String subject() {
+            boolean hasSetSchoolClass = false;
+
+            User user = UserContentHelper.getUser(context);
+            if (user != null && user.getSchoolClass() != null && !user.getSchoolClass().equals(""))
+                hasSetSchoolClass = true;
+
+            String representationSubjectText = representation.subject.getFullName();
+
+            SubjectFactory subjectFactory = new SubjectFactory();
+            if (subjectFactory.isMultiTeacherSubject(representation.subject)) {
+                representationSubjectText += " (" + representation.fromTeacher;
+                if (!hasSetSchoolClass) {
+                    representationSubjectText += ", " + representation.schoolClass;
+                }
+                representationSubjectText += ")";
+            } else {
+                if (!hasSetSchoolClass) {
+                    representationSubjectText += " (" + representation.schoolClass + ")";
+                }
+            }
+            return representationSubjectText;
+        }
+
+        public String summary() {
+            String output = subject();
+
+            if (representation.to.equals("Entfall")) {
+                output += " - Entfall";
+            } else if (!representation.from.equals("") && !representation.from.equals("\u00A0")) {
+                output += " - Vertretung";
+                if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
+                    output += "/Verlegt";
+                }
+            } else if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
+                output += " - Verlegt";
+            } else {
+                output += " - Vertretung";
+            }
+
+            return output;
+        }
+
+        public String description() {
+            String description = "";
+            if (representation.firstLessonNumber == representation.lastLessonNumber) {
+                description += representation.firstLessonNumber + ". Stunde: ";
+            } else {
+                description += representation.firstLessonNumber + ".-" + representation.lastLessonNumber + ". Stunde: ";
+            }
+
+            Teacher teacher = TeachersContentHelper.getTeacher(context, representation.fromTeacher);
+
+            SubjectFactory subjectFactory = new SubjectFactory();
+
+            if (subjectFactory.isMultiTeacherSubject(representation.subject)) {
+                if (teacher != null && teacher.getLastName() != null &&
+                        !teacher.getLastName().equals("")) {
+                    description += representation.subject.getFullName() + " (" + teacher.getLastName() + ")";
+                } else {
+                    description += representation.subject.getFullName() + " (" + representation.fromTeacher + ")";
+                }
+            } else {
+                description += representation.subject.getFullName();
+            }
+
+            if (representation.to.equals("Entfall")) {
+                description += " - Entfall";
+            } else if (!representation.from.equals("") && !representation.from.equals("\u00A0")) {
+                description += " - Vertretung";
+                if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
+                    description += "/Verlegt von " + representation.from;
+                }
+                description += " nach " + representation.to +
+                        " in " + representation.toRoom;
+            } else if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
+                description += " - Verlegt nach " + representation.to;
+            } else {
+                description += " - Vertretung" +
+                        " in " + representation.toRoom;
+            }
+
+            if (!representation.description.equals("") && !representation.description.equals("\u00A0")) {
+                description += " (" + representation.description + ")";
+            }
+
+            return description;
+        }
     }
-
-
-    @Override
-    public String toString() {
-        return schoolClass + ": " + representedSubject + ", " + firstLessonNumber + "-" + lastLessonNumber + "(" + date.get(Calendar.DAY_OF_MONTH) + "." + date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR) + ")";
-    }
-
 }

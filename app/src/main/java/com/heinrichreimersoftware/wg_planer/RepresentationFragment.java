@@ -56,7 +56,7 @@ public class RepresentationFragment extends Fragment {
 
         list.setItemAnimator(new FadeInAnimator());
 
-        RepresentationAdapter adapter = new RepresentationAdapter(getActivity());
+        RepresentationAdapter adapter = new RepresentationAdapter();
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {

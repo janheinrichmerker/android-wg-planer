@@ -50,8 +50,12 @@ public class TeachersSyncAdapter extends AbstractThreadedSyncAdapter {
                 int insertedRows = provider.bulkInsert(TeachersContract.CONTENT_URI, teachersValues);
                 syncResult.stats.numInserts += insertedRows;
             }
-        } catch (RemoteException | AuthenticatorException | OperationCanceledException | IOException e) {
+        } catch (AuthenticatorException e) {
             e.printStackTrace();
+            syncResult.stats.numAuthExceptions++;
+        } catch (OperationCanceledException | RemoteException | IOException e) {
+            e.printStackTrace();
+            syncResult.stats.numIoExceptions++;
         }
     }
 }

@@ -57,6 +57,9 @@ public class BitmapUtils {
 
         File file = new File(directory, filename);
 
+        /* Delete old file if exists */
+        if (file.exists()) file.delete();
+
         Log.d(MainActivity.TAG, "Save bitmap to sd: " + file.getAbsolutePath());
 
         try {

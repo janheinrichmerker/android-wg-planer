@@ -60,6 +60,7 @@
     <string name="key_preference_notifications">key_preference_notifications</string>
 
     <string name="key_preference_automatic_sync">key_preference_automatic_sync</string>
+    <string name="key_preference_update_user_info">key_preference_update_user_info</string>
     <string name="key_preference_logout">key_preference_logout</string>
 
     <string name="key_preference_feedback">key_preference_feedback</string>
@@ -79,6 +80,7 @@
     <string name="title_preference_sync">Synchronisation</string>
     <string name="label_preference_sync_on">Automatische Synchronisation an</string>
     <string name="label_preference_sync_off">Automatische Synchronisation aus</string>
+    <string name="title_preference_update_user_info">Benutzerinformationen aktualisieren</string>
     <string name="title_preference_logout">Ausloggen</string>
 
     <string name="title_preference_category_about">Informationen</string>

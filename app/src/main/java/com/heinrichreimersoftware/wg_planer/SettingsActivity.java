@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.app.ActivityManager;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.heinrichreimersoftware.wg_planer.activity.AppCompatPreferenceActivity;
 import com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral;
+import com.heinrichreimersoftware.wg_planer.data.UserContract;
 import com.heinrichreimersoftware.wg_planer.dialog.InfoDialogBuilder;
 import com.heinrichreimersoftware.wg_planer.utils.SyncUtils;
 
@@ -53,6 +55,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pre
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent(SettingsActivity.this, ClassesActivity.class);
                     startActivity(intent);
+                    return false;
+                }
+            });
+        }
+
+        Preference updateUserInfoPreference = findPreference(getString(R.string.key_preference_update_user_info));
+        if (updateUserInfoPreference != null) {
+            updateUserInfoPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+                    AccountManager accountManager = AccountManager.get(SettingsActivity.this);
+                    if (accountManager != null) {
+                        for (Account account : accountManager.getAccountsByType(AccountGeneral.ACCOUNT_TYPE)) {
+                            ContentResolver.requestSync(account, UserContract.AUTHORITY, bundle);
+                        }
+                    }
                     return false;
                 }
             });

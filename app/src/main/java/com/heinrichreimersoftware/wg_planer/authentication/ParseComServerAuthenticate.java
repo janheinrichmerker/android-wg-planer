@@ -64,13 +64,7 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
                 throw new NetworkException();
             }
 
-            Document doc;
-            try {
-                doc = Jsoup.parse(Utils.stringToInputStream(html), "UTF-8", ParseComServerAccessor.IDESK_URL);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new NetworkException();
-            }
+            Document doc = Jsoup.parse(html, ParseComServerAccessor.IDESK_URL);
 
             Elements errorElements = doc.select("table.ms > tbody > tr > td.vam > p.err.hac");
             if (errorElements.size() > 1) {
