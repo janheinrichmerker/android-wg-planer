@@ -43,6 +43,7 @@ public class TeachersDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean tableExists(SQLiteDatabase db) {
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" +
                 TEACHERS_TABLE_NAME + "'", null);

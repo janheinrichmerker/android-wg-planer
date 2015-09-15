@@ -106,7 +106,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             return;
         }
         long nearestLessonStartTime = LessonTimeFactory.fromLesson(lesson).getStartTimeMillis();
-        if (System.currentTimeMillis() >= nearestLessonStartTime - 2 * Constants.FIVE_MINUTES) {
+        if (System.currentTimeMillis() >= nearestLessonStartTime - Constants.FIFTEEN_MINUTES) {
             sendNotification(lesson);
         } else {
             Intent retryIntent = new Intent(getBaseContext(), GeofenceTransitionsIntentService.class);
@@ -115,9 +115,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setWindow(AlarmManager.RTC, nearestLessonStartTime - 2 * Constants.FIVE_MINUTES, nearestLessonStartTime, pendingIntent);
+                alarmManager.setWindow(AlarmManager.RTC, nearestLessonStartTime - Constants.FIFTEEN_MINUTES, nearestLessonStartTime - Constants.TEN_MINUTES, pendingIntent);
             } else {
-                alarmManager.set(AlarmManager.RTC, nearestLessonStartTime - Constants.FIVE_MINUTES, pendingIntent);
+                alarmManager.set(AlarmManager.RTC, nearestLessonStartTime - Constants.TEN_MINUTES, pendingIntent);
             }
         }
     }

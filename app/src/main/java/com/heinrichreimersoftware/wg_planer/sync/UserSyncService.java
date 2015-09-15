@@ -6,20 +6,20 @@ import android.os.IBinder;
 
 public class UserSyncService extends Service {
 
-    private static final Object sSyncAdapterLock = new Object();
-    private static UserSyncAdapter sSyncAdapter = null;
+    private static final Object syncAdapterLock = new Object();
+    private static UserSyncAdapter syncAdapter = null;
 
     @Override
     public void onCreate() {
-        synchronized (sSyncAdapterLock) {
-            if (sSyncAdapter == null) {
-                sSyncAdapter = new UserSyncAdapter(getApplicationContext(), true);
+        synchronized (syncAdapterLock) {
+            if (syncAdapter == null) {
+                syncAdapter = new UserSyncAdapter(getApplicationContext(), true);
             }
         }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return sSyncAdapter.getSyncAdapterBinder();
+        return syncAdapter.getSyncAdapterBinder();
     }
 }

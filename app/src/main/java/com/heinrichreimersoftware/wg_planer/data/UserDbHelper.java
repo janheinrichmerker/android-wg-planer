@@ -87,6 +87,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean tableExists(SQLiteDatabase db) {
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + USER_TABLE_NAME + "'", null);
         if (cursor != null) {

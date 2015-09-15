@@ -18,6 +18,7 @@
         <ImageView
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
+            android:contentDescription="@string/label_color_indicator"
             android:src="@drawable/circle"
             app:colorFilter="@{item.color}" />
 

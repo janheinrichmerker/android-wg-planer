@@ -23,11 +23,11 @@
             android:id="@+id/pager_tab_strip"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:paddingLeft="@dimen/tabs_margin"
+            android:paddingRight="@dimen/tabs_margin"
             app:pstsIndicatorColor="?android:attr/textColorPrimaryInverse"
             app:pstsTabBackground="@drawable/list_selector"
-            app:pstsTabPaddingLeftRight="8dp"
+            app:pstsTabPaddingLeftRight="@dimen/tab_margin"
             app:pstsTabTextColor="@color/tab_text" />
 
     </LinearLayout>

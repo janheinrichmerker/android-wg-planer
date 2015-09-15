@@ -33,14 +33,22 @@ public class LessonNotification {
                 Constants.GEOFENCE_NOTIFICATION_PENDING_INTENT_ID, PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()
+                .bigText(formatter.rooms(true) + "\n" +
+                        formatter.time() + "\n" +
+                        formatter.teachers());
+
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
                 .setContentTitle(formatter.subjects())
-                .setContentText(formatter.rooms())
+                .setContentText(formatter.rooms(true))
                 .setContentIntent(resultPendingIntent)
                 .setSmallIcon(R.drawable.ic_notification_timetable)
                 .setColor(lesson.getSubjects().size() <= 1 ? formatter.color() : context.getResources().getColor(R.color.material_green_500))
                 .setWhen(LessonTimeFactory.fromLesson(lesson).getStartTimeMillis())
-                .setCategory(NotificationCompat.CATEGORY_EVENT);
+                .setCategory(NotificationCompat.CATEGORY_EVENT)
+                .setStyle(style)
+                .setOnlyAlertOnce(true)
+                .setAutoCancel(false);
         if (lesson.getSubjects().size() > 1) {
             notification.setNumber(lesson.getSubjects().size());
         }

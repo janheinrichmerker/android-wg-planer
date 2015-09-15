@@ -112,6 +112,7 @@ public class Lesson {
         return lessonEndTime.before(currentTime);
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -201,9 +202,9 @@ public class Lesson {
 
         public String time() {
             if (lesson.getFirstLessonNumber() == lesson.getLastLessonNumber()) {
-                return context.getString(R.string.format_lesson_1, lesson.getFirstLessonNumber(), LessonTimeFactory.fromLesson(lesson));
+                return context.getString(R.string.format_lesson_time_1, lesson.getFirstLessonNumber(), LessonTimeFactory.fromLesson(lesson));
             } else {
-                return context.getString(R.string.format_lesson_2, lesson.getFirstLessonNumber(), lesson.getLastLessonNumber(), LessonTimeFactory.fromLesson(lesson));
+                return context.getString(R.string.format_lesson_time_2, lesson.getFirstLessonNumber(), lesson.getLastLessonNumber(), LessonTimeFactory.fromLesson(lesson));
             }
         }
 
@@ -267,6 +268,10 @@ public class Lesson {
         }
 
         public String rooms() {
+            return rooms(false);
+        }
+
+        public String rooms(boolean withBuilding) {
             if (subjects.size() > 1) {
                 String roomsText = "";
 
@@ -274,7 +279,17 @@ public class Lesson {
                     if (i != 0) {
                         roomsText += ", ";
                     }
-                    roomsText += subjects.get(i).getRoom();
+                    String room = subjects.get(i).getRoom();
+                    if (withBuilding) {
+                        String building = null;
+                        if (room.startsWith("A"))
+                            building = context.getString(R.string.main_building);
+                        if (room.startsWith("B"))
+                            building = context.getString(R.string.branch_office);
+                        roomsText += room + (building == null ? "" : " (" + building + ")");
+                    } else {
+                        roomsText += room;
+                    }
                 }
 
                 return roomsText;

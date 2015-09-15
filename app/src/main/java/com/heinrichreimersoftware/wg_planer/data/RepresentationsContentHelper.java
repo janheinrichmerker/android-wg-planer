@@ -16,8 +16,14 @@ public class RepresentationsContentHelper {
     public static List<Representation> getRepresentations(@NonNull Context context) {
         List<Representation> representations = new ArrayList<>();
 
-        Cursor cursor = context.getContentResolver().query(RepresentationsContract.CONTENT_URI, null, null, null, RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
+        Cursor cursor = context.getContentResolver().query(
+                RepresentationsContract.CONTENT_URI,
+                null,
+                null,
+                null,
+                RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
 
+        if (cursor == null) return new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);
@@ -33,8 +39,15 @@ public class RepresentationsContentHelper {
     public static List<Representation> getRepresentations(@NonNull Context context, @NonNull Calendar date) {
         List<Representation> representations = new ArrayList<>();
 
-        Cursor cursor = context.getContentResolver().query(RepresentationsContract.CONTENT_URI, null, RepresentationsDbHelper.REPRESENTATIONS_COL_DATE + " = '" + date.getTimeInMillis() + "'", null, RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
+        Cursor cursor = context.getContentResolver().query(
+                RepresentationsContract.CONTENT_URI,
+                null,
+                RepresentationsDbHelper.REPRESENTATIONS_COL_DATE + " = '" +
+                        date.getTimeInMillis() + "'",
+                null,
+                RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
 
+        if (cursor == null) return new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);
@@ -67,15 +80,24 @@ public class RepresentationsContentHelper {
         boolean first = true;
         for (String schoolClass : schoolClassesArray) {
             if (first) {
-                selectionSchoolClass += RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS + " LIKE '" + schoolClass + "%'";
+                selectionSchoolClass += RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS +
+                        " LIKE '" + schoolClass + "%'";
                 first = false;
             } else {
-                selectionSchoolClass += " OR " + RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS + " LIKE '" + schoolClass + "%'";
+                selectionSchoolClass += " OR " +
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS + " LIKE '" +
+                        schoolClass + "%'";
             }
         }
 
-        Cursor cursor = context.getContentResolver().query(RepresentationsContract.CONTENT_URI, null, selectionSchoolClass, null, RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
+        Cursor cursor = context.getContentResolver().query(
+                RepresentationsContract.CONTENT_URI,
+                null,
+                selectionSchoolClass,
+                null,
+                RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
 
+        if (cursor == null) return new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);
@@ -96,15 +118,25 @@ public class RepresentationsContentHelper {
         boolean first = true;
         for (String schoolClass : schoolClassesArray) {
             if (first) {
-                selectionSchoolClass += RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS + " LIKE '" + schoolClass + "%'";
+                selectionSchoolClass += RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS +
+                        " LIKE '" + schoolClass + "%'";
                 first = false;
             } else {
-                selectionSchoolClass += " OR " + RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS + " LIKE '" + schoolClass + "%'";
+                selectionSchoolClass += " OR " +
+                        RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS + " LIKE '" +
+                        schoolClass + "%'";
             }
         }
 
-        Cursor cursor = context.getContentResolver().query(RepresentationsContract.CONTENT_URI, null, selectionSchoolClass + " AND " + RepresentationsDbHelper.REPRESENTATIONS_COL_DATE + " = '" + date.getTimeInMillis() + "'", null, RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
+        Cursor cursor = context.getContentResolver().query(
+                RepresentationsContract.CONTENT_URI,
+                null,
+                selectionSchoolClass + " AND " + RepresentationsDbHelper.REPRESENTATIONS_COL_DATE +
+                        " = '" + date.getTimeInMillis() + "'",
+                null,
+                RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER);
 
+        if (cursor == null) return new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 Representation representation = Representation.fromCursor(cursor);

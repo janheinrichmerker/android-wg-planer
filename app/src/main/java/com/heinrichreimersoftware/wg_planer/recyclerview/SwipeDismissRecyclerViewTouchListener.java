@@ -21,6 +21,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -37,7 +38,7 @@ import java.util.List;
 
 /**
  * A {@link View.OnTouchListener} that makes the list items in a {@link ListView}
- * dismissable. {@link ListView} is given special treatment because by default it handles touches
+ * dismissible. {@link ListView} is given special treatment because by default it handles touches
  * for its list items... i.e. it's in charge of drawing the pressed state (the list selector),
  * handling list item clicks, etc.
  * <p/>
@@ -69,11 +70,12 @@ import java.util.List;
  * <p>This class Requires API level 12 or later due to use of {@link
  * ViewPropertyAnimator}.</p>
  * <p/>
- * <p>For a generalized {@link View.OnTouchListener} that makes any view dismissable,
+ * <p>For a generalized {@link View.OnTouchListener} that makes any view dismissible,
  * see {@link SwipeDismissTouchListener}.</p>
  *
  * @see SwipeDismissTouchListener
  */
+@SuppressWarnings("JavadocReference")
 public class SwipeDismissRecyclerViewTouchListener implements View.OnTouchListener {
     // Cached ViewConfiguration and system-wide constant values
     private int mSlop;
@@ -87,7 +89,7 @@ public class SwipeDismissRecyclerViewTouchListener implements View.OnTouchListen
     private int mViewWidth = 1; // 1 and not 0 to prevent dividing by zero
 
     // Transient properties
-    private List<PendingDismissData> mPendingDismisses = new ArrayList<PendingDismissData>();
+    private List<PendingDismissData> mPendingDismisses = new ArrayList<>();
     private int mDismissAnimationRefCount = 0;
     private float mDownX;
     private float mDownY;
@@ -101,7 +103,7 @@ public class SwipeDismissRecyclerViewTouchListener implements View.OnTouchListen
     /**
      * Constructs a new swipe-to-dismiss touch listener for the given list view.
      *
-     * @param recyclerView The list view whose items should be dismissable.
+     * @param recyclerView The list view whose items should be dismissible.
      * @param callbacks    The callback to trigger when the user has indicated that she would like to
      *                     dismiss one or more list items.
      */
@@ -147,6 +149,7 @@ public class SwipeDismissRecyclerViewTouchListener implements View.OnTouchListen
         };
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (mViewWidth < 2) {
@@ -162,10 +165,10 @@ public class SwipeDismissRecyclerViewTouchListener implements View.OnTouchListen
                 // Find the child view that was touched (perform a hit test)
                 Rect rect = new Rect();
                 int childCount = mRecyclerView.getChildCount();
-                int[] listViewCoords = new int[2];
-                mRecyclerView.getLocationOnScreen(listViewCoords);
-                int x = (int) motionEvent.getRawX() - listViewCoords[0];
-                int y = (int) motionEvent.getRawY() - listViewCoords[1];
+                int[] listViewCoordinates = new int[2];
+                mRecyclerView.getLocationOnScreen(listViewCoordinates);
+                int x = (int) motionEvent.getRawX() - listViewCoordinates[0];
+                int y = (int) motionEvent.getRawY() - listViewCoordinates[1];
                 View child;
                 for (int i = 0; i < childCount; i++) {
                     child = mRecyclerView.getChildAt(i);
@@ -237,7 +240,7 @@ public class SwipeDismissRecyclerViewTouchListener implements View.OnTouchListen
                 }
                 if (dismiss && mDownPosition != ListView.INVALID_POSITION) {
                     // dismiss
-                    final View downView = mDownView; // mDownView gets null'd before animation ends
+                    final View downView = mDownView; // mDownView gets null before animation ends
                     final int downPosition = mDownPosition;
                     ++mDismissAnimationRefCount;
                     mDownView.animate()
@@ -395,7 +398,7 @@ public class SwipeDismissRecyclerViewTouchListener implements View.OnTouchListen
         }
 
         @Override
-        public int compareTo(PendingDismissData other) {
+        public int compareTo(@NonNull PendingDismissData other) {
             // Sort by descending position
             return other.position - position;
         }

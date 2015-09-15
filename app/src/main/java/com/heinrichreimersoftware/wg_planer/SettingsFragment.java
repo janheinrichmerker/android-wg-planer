@@ -78,8 +78,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     new MaterialDialog.Builder(getActivity())
-                            .title(R.string.title_dialog_logout)
-                            .content(R.string.text_dialog_logout)
+                            .title(R.string.title_dialog_confirm_logout)
+                            .content(R.string.text_dialog_confirm_logout)
                             .positiveText(android.R.string.yes)
                             .negativeText(android.R.string.cancel)
                             .callback(new MaterialDialog.ButtonCallback() {
@@ -151,6 +151,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onPause();
     }
 
+    @SuppressWarnings("deprecation")
     private void logout() {
         AccountManager accountManager = AccountManager.get(getActivity());
         if (accountManager != null) {
@@ -164,14 +165,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         public void run(AccountManagerFuture<Bundle> future) {
                             try {
                                 if (future.getResult().containsKey(AccountManager.KEY_BOOLEAN_RESULT) && future.getResult().getBoolean(AccountManager.KEY_BOOLEAN_RESULT)) {
-                                    Toast.makeText(getActivity(), "\"" + account.name + "\" erfolgreich ausgeloggt.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.text_logout_success, account.name), Toast.LENGTH_SHORT).show();
                                     getActivity().finish();
                                     return;
                                 }
-                                Toast.makeText(getActivity(), "Ausloggen nicht möglich.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.text_logout_not_allowed, Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Toast.makeText(getActivity(), "Ausloggen fehlgeschlagen.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.text_logout_failed, Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -182,14 +183,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         public void run(AccountManagerFuture<Boolean> future) {
                             try {
                                 if (future.getResult()) {
-                                    Toast.makeText(getActivity(), "\"" + account.name + "\" erfolgreich ausgeloggt.", Toast.LENGTH_SHORT).show(); //TODO string resources
+                                    Toast.makeText(getActivity(), getString(R.string.text_logout_success, account.name), Toast.LENGTH_SHORT).show();
                                     getActivity().finish();
                                     return;
                                 }
-                                Toast.makeText(getActivity(), "Ausloggen nicht möglich.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.text_logout_not_allowed, Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Toast.makeText(getActivity(), "Ausloggen fehlgeschlagen.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.text_logout_failed, Toast.LENGTH_SHORT).show();
                             }
 
                         }

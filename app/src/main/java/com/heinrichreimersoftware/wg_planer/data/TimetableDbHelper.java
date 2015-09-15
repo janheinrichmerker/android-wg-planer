@@ -47,6 +47,7 @@ public class TimetableDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean tableExists(SQLiteDatabase db) {
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" +
                 TIMETABLE_TABLE_NAME + "'", null);

@@ -35,8 +35,7 @@ public class AuthToken {
 
     public String toJson() {
         Gson gson = new Gson();
-        String json = gson.toJson(this, AuthToken.class);
-        return json;
+        return gson.toJson(this, AuthToken.class);
     }
 
     public void fromJson(String json) {
@@ -51,8 +50,7 @@ public class AuthToken {
     }
 
     public String toBase64() {
-        String base64 = Base64.encodeToString(this.toJson().getBytes(), Base64.DEFAULT);
-        return base64;
+        return Base64.encodeToString(this.toJson().getBytes(), Base64.DEFAULT);
     }
 
     public void fromBase64(String base64) {

@@ -1,11 +1,13 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.util.Base64;
 
 import com.google.gson.Gson;
+import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.data.UserDbHelper;
 import com.heinrichreimersoftware.wg_planer.utils.BitmapUtils;
 
@@ -97,7 +99,7 @@ public class User {
         this.bitmap = bitmap;
     }
 
-    public static User fromCursor(Cursor curRepresentations) {
+    public static User fromCursor(Context context, Cursor curRepresentations) {
         String username = curRepresentations.getString(curRepresentations.getColumnIndex(UserDbHelper.USER_COL_USERNAME));
         String password = curRepresentations.getString(curRepresentations.getColumnIndex(UserDbHelper.USER_COL_PASSWORD));
         String imageUrl = curRepresentations.getString(curRepresentations.getColumnIndex(UserDbHelper.USER_COL_IMAGE_URL));
@@ -125,7 +127,7 @@ public class User {
         String authToken = curRepresentations.getString(curRepresentations.getColumnIndex(UserDbHelper.USER_COL_AUTH_TOKEN));
         String bitmapFileName = curRepresentations.getString(curRepresentations.getColumnIndex(UserDbHelper.USER_COL_LOCAL_IMAGE_FILE_NAME));
 
-        Bitmap bitmap = BitmapUtils.loadBitmapFromSd(bitmapFileName);
+        Bitmap bitmap = BitmapUtils.loadBitmapFromSd(context, bitmapFileName);
 
         return new User(username,
                 password,
@@ -427,7 +429,7 @@ public class User {
         }
     }
 
-    public ContentValues getContentValues() {
+    public ContentValues getContentValues(Context context) {
         ContentValues values = new ContentValues();
         values.put(UserDbHelper.USER_COL_USERNAME, username);
         values.put(UserDbHelper.USER_COL_PASSWORD, password);
@@ -454,11 +456,9 @@ public class User {
         values.put(UserDbHelper.USER_COL_SKYPE, skype);
         values.put(UserDbHelper.USER_COL_OID, oid);
         values.put(UserDbHelper.USER_COL_AUTH_TOKEN, authToken);
+        values.put(UserDbHelper.USER_COL_LOCAL_IMAGE_FILE_NAME, Constants.PROFILE_IMAGE);
 
-        String bitmapFileName = "Profilbild " + this.oid + ".png";
-        values.put(UserDbHelper.USER_COL_LOCAL_IMAGE_FILE_NAME, bitmapFileName);
-
-        BitmapUtils.saveBitmapToSd(this.bitmap, bitmapFileName);
+        BitmapUtils.saveBitmapToSd(context, this.bitmap, Constants.PROFILE_IMAGE);
 
         return values;
     }

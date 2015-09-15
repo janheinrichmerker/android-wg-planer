@@ -33,7 +33,7 @@ public class TeachersSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             String authToken = mAccountManager.blockingGetAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, true);
 
-            ParseComServerAccessor parseComService = new ParseComServerAccessor(getContext());
+            SyncServerInterface parseComService = new SyncServerInterface(getContext());
             List<Teacher> teachers = parseComService.getTeachers(authToken);
 
             int deletedRows = provider.delete(TeachersContract.CONTENT_URI, null, null);

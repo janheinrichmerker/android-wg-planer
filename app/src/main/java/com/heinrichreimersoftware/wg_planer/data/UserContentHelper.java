@@ -13,10 +13,17 @@ public class UserContentHelper {
     public static List<User> getUsers(@NonNull Context context) {
         List<User> users = new ArrayList<>();
 
-        Cursor cursor = context.getContentResolver().query(UserContract.CONTENT_URI, null, null, null, null);
+        Cursor cursor = context.getContentResolver().query(
+                UserContract.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor == null) return new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                User user = User.fromCursor(cursor);
+                User user = User.fromCursor(context, cursor);
                 users.add(user);
             } while (cursor.moveToNext());
         }
@@ -25,19 +32,24 @@ public class UserContentHelper {
     }
 
     public static User getUser(@NonNull Context context) {
-        Cursor cursor = context.getContentResolver().query(UserContract.CONTENT_URI, null, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    User user = User.fromCursor(cursor);
-                    if (user != null) {
-                        cursor.close();
-                        return user;
-                    }
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
+        Cursor cursor = context.getContentResolver().query(
+                UserContract.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor == null) return null;
+        if (cursor.moveToFirst()) {
+            do {
+                User user = User.fromCursor(context, cursor);
+                if (user != null) {
+                    cursor.close();
+                    return user;
+                }
+            } while (cursor.moveToNext());
         }
+        cursor.close();
         return null;
     }
 

@@ -59,6 +59,7 @@ public class RepresentationsDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean tableExists(SQLiteDatabase db) {
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" +
                 REPRESENTATIONS_TABLE_NAME + "'", null);

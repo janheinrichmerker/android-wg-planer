@@ -26,8 +26,7 @@ import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 
-
-public class ParseComServerAuthenticate implements ServerAuthenticate {
+public class AuthenticatorServerInterface {
 
     public static String login(Context context, OkHttpClient client, String username, String password) throws NetworkException, UnknownUsernameException, WrongPasswordException, WrongCredentialsException, Base64Exception {
 
@@ -91,7 +90,6 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
         throw new NetworkException("No connection");
     }
 
-    @Override
     public String userSignIn(String username, String password, String authType, Context context) throws UnknownUsernameException, WrongPasswordException, NetworkException, WrongCredentialsException, Base64Exception {
 
 

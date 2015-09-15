@@ -36,7 +36,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             String authToken = mAccountManager.blockingGetAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, true);
 
-            ParseComServerAccessor parseComService = new ParseComServerAccessor(getContext());
+            SyncServerInterface parseComService = new SyncServerInterface(getContext());
             List<Lesson> lessons = parseComService.getTimetable(authToken);
 
             if (lessons != null) {

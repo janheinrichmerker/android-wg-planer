@@ -130,7 +130,6 @@ public class MainActivity extends DrawerActivity {
                     .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
                         @Override
                         public void onClick(DrawerProfile drawerProfile, long id) {
-                            //TODO open user info dialog instead
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.setDataAndType(Uri.parse("file://" + user.getBitmapPath()), "image/*");

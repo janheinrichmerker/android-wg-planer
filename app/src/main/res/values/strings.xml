@@ -30,7 +30,6 @@
     <string name="title_activity_main">Wilhelm-Gymnasium</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_settings">Einstellungen</string>
-    <string name="title_fragment_user_info">Benutzerinformationen</string>
     <string name="title_fragment_representation">Vertretungsplan</string>
     <string name="title_fragment_representation_monday">Vertretungsplan Montag</string>
     <string name="title_fragment_timetable">Stundenplan</string>
@@ -65,9 +64,17 @@
     <string name="label_login_error_wrong_credentials">Falsche Anmeldedaten</string>
     <string name="label_login_error_wrong_password">Falsches Password</string>
 
+    <!-- Login -->
+    <string name="text_logout_success">"%1$s" erfolgreich ausgeloggt</string>
+    <string name="text_logout_not_allowed">Ausloggen nicht möglich</string>
+    <string name="text_logout_failed">Ausloggen fehlgeschlagen</string>
+
     <!-- Dialogs -->
-    <string name="title_dialog_logout">Ausloggen</string>
-    <string name="text_dialog_logout">Möchtest Du Dich wirklich ausloggen?</string>
+    <string name="title_dialog_permission_rationale">Berechtigungsanfrage</string>
+    <string name="text_dialog_permission_rationale">"Wilhelm-Gymnasium" braucht diese Berechtigung, um standortbasierte Benachrichtigungen zu aktivieren.</string>
+
+    <string name="title_dialog_confirm_logout">Ausloggen</string>
+    <string name="text_dialog_confirm_logout">Möchtest Du Dich wirklich ausloggen?</string>
 
     <string name="title_dialog_add_class">Kurs hinzufügen</string>
     <string name="hint_dialog_add_class">Kürzel (z.B. PH1, re2, If1)</string>
@@ -81,17 +88,26 @@
     <string name="title_dialog_confirm_privacy">Datenschutzhinweis</string>
     <string name="label_dialog_confirm_privacy">Um Dir ein bestmögliches Nutzererlebnis zu ermöglichen, greift diese App auf Deine iServ-Daten zu.</string>
 
-    <string name="title_dialog_confirm_logout">Ausloggen</string>
-    <string name="label_dialog_confirm_logout">Möchtest Du Dich wirklich abmelden?</string>
-
     <string name="label_dialog_info_copyright">Copyright \u00A9 %1$d Heinrich Reimer</string>
     <string name="label_dialog_info_version">Version: %1$s</string>
     <string name="label_dialog_info_description">Mit der Vertretungsplan-App vom Wilhelm-Gymnasium kannst Du jederzeit auf Deinen Stundenplan und auf Deinen Vertretungsplan zugreifen.</string>
     <string name="label_dialog_info_user"><i>Benutzername:</i> %1$s\n<i>Klasse:</i> %2$s</string>
 
     <!-- Formats -->
-    <string name="format_lesson_1">Stunde: %1$d (%2$s)"</string>
-    <string name="format_lesson_2">Stunde: %1$d-%2$d (%3$s)"</string>
+    <string name="format_lesson_time_1">Stunde: %1$d (%2$s)</string>
+    <string name="format_lesson_time_2">Stunde: %1$d-%2$d (%3$s)</string>
+    <string name="format_lesson_number">%1$d - %2$d</string>
+
+    <string name="main_building">Hauptgebäude</string>
+    <string name="branch_office">Außenstelle</string>
+
+    <string name="monday">Montag</string>
+    <string name="tuesday">Dienstag</string>
+    <string name="wednesday">Mittwoch</string>
+    <string name="thursday">Donnerstag</string>
+    <string name="friday">Freitag</string>
+    <string name="saturday">Samstag</string>
+    <string name="sunday">Sonntag</string>
 
     <!-- Authenticator/content provider -->
     <string name="title_authenticator">Wilhelm-Gymnasium</string>
@@ -111,4 +127,7 @@
     <!-- DashClock -->
     <string name="title_dashclock">@string/title_app</string>
     <string name="label_dashclock">Zeigt Deine aktuellen Vertretungen an.</string>
+
+    <!-- Content descriptions -->
+    <string name="label_color_indicator">Farbindikator</string>
 </resources>

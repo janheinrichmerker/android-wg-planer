@@ -19,8 +19,6 @@ import java.util.List;
 
 public class DashClockExtensionRepresentations extends DashClockExtension {
 
-    //FIXME
-
     @Override
     protected void onInitialize(boolean isReconnect) {
         Log.d(MainActivity.TAG, "Initializing Dashclock extension for new representations");

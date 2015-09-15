@@ -11,5 +11,5 @@ public class AccountGeneral {
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS = "Vollzugriff";
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS_LABEL = "Vollzugriff auf den Wilhelm-Gymnasium Account";
 
-    public static final ServerAuthenticate sServerAuthenticate = new ParseComServerAuthenticate();
+    public static final AuthenticatorServerInterface AUTHENTICATOR_SERVER_INTERFACE = new AuthenticatorServerInterface();
 }

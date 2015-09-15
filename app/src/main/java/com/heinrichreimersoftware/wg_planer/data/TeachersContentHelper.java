@@ -13,7 +13,14 @@ public class TeachersContentHelper {
     public static List<Teacher> getTeachers(@NonNull Context context) {
         List<Teacher> teachers = new ArrayList<>();
 
-        Cursor cursor = context.getContentResolver().query(TeachersContract.CONTENT_URI, null, null, null, TeachersDbHelper.TEACHERS_COL_SHORTHAND);
+        Cursor cursor = context.getContentResolver().query(
+                TeachersContract.CONTENT_URI,
+                null,
+                null,
+                null,
+                TeachersDbHelper.TEACHERS_COL_SHORTHAND);
+
+        if (cursor == null) return new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 Teacher teacher = Teacher.fromCursor(cursor);
@@ -25,7 +32,14 @@ public class TeachersContentHelper {
     }
 
     public static Teacher getTeacher(@NonNull Context context, @NonNull String shorthand) {
-        Cursor cursor = context.getContentResolver().query(TeachersContract.CONTENT_URI, null, TeachersDbHelper.TEACHERS_COL_SHORTHAND + " = '" + shorthand + "'", null, TeachersDbHelper.TEACHERS_COL_SHORTHAND);
+        Cursor cursor = context.getContentResolver().query(
+                TeachersContract.CONTENT_URI,
+                null,
+                TeachersDbHelper.TEACHERS_COL_SHORTHAND + " = '" + shorthand + "'",
+                null,
+                TeachersDbHelper.TEACHERS_COL_SHORTHAND);
+
+        if (cursor == null) return null;
         if (cursor.moveToFirst()) {
             do {
                 Teacher teacher = Teacher.fromCursor(cursor);

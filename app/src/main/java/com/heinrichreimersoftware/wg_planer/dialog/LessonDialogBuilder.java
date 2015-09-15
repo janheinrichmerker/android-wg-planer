@@ -3,9 +3,9 @@ package com.heinrichreimersoftware.wg_planer.dialog;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,9 +54,9 @@ public class LessonDialogBuilder extends MaterialDialog.Builder {
         super(context);
 
         positiveText(R.string.action_close);
+        customView(R.layout.dialog_view_lesson, true);
 
-        View root = LayoutInflater.from(context).inflate(R.layout.dialog_view_lesson, null);
-        ButterKnife.bind(this, root);
+        ButterKnife.bind(this, customView);
 
         List<TeacherSubject> subjects = lesson.getSubjects();
 
@@ -81,7 +81,7 @@ public class LessonDialogBuilder extends MaterialDialog.Builder {
             subjectText = subjects.get(0).getFullName();
         }
 
-        Drawable colorIndicator = context.getResources().getDrawable(R.drawable.circle);
+        Drawable colorIndicator = ResourcesCompat.getDrawable(context.getResources(), R.drawable.circle, context.getTheme());
         if (colorIndicator != null) {
             colorIndicator.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             icon(colorIndicator);
@@ -89,12 +89,12 @@ public class LessonDialogBuilder extends MaterialDialog.Builder {
 
         title(subjectText);
 
-        day.setText(CalendarUtils.dayToString(lesson.getDay()));
+        day.setText(CalendarUtils.dayToString(context, lesson.getDay()));
 
         if (lesson.getFirstLessonNumber() == lesson.getLastLessonNumber()) {
-            hours.setText("" + lesson.getFirstLessonNumber());
+            hours.setText(String.valueOf(lesson.getFirstLessonNumber()));
         } else {
-            hours.setText(lesson.getFirstLessonNumber() + " - " + lesson.getLastLessonNumber());
+            hours.setText(context.getString(R.string.format_lesson_number, lesson.getFirstLessonNumber(), lesson.getLastLessonNumber()));
         }
 
         CalendarInterval lessonTime = LessonTimeFactory.fromLesson(lesson);
@@ -129,8 +129,6 @@ public class LessonDialogBuilder extends MaterialDialog.Builder {
         adapter.addAll(lesson.getSubjects());
         list.setAdapter(adapter);
 
-        list.getLayoutParams().height = adapter.getItemCount() * getContext().getResources().getDimensionPixelSize(R.dimen.list_item_height_icon);
-
-        customView(root, true);
+        list.getLayoutParams().height = adapter.getItemCount() * context.getResources().getDimensionPixelSize(R.dimen.list_item_height_icon);
     }
 }

@@ -5,13 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.wg_planer.notifications.TimetableNotification;
 import com.heinrichreimersoftware.wg_planer.utils.Utils;
 
@@ -38,7 +38,7 @@ public class TimetableNavigationFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_timetable_navigation, container, false);
         ButterKnife.bind(this, rootView);
 
-        ActionBarActivity activity = (ActionBarActivity) getActivity();
+        DrawerActivity activity = (DrawerActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
         getActivity().setTitle(R.string.title_fragment_timetable);

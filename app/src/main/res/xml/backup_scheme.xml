@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude
+        domain="database"
+        path="com.heinrichreimersoftware.wg_planer.db" />
+    <exclude
+        domain="file"
+        path="profile.png" />
+</full-backup-content>

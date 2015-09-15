@@ -37,8 +37,6 @@ public class SyncStatusManager {
         syncObserver = new SyncStatusObserver() {
             @Override
             public void onStatusChanged(final int which) {
-                boolean currentSyncActive = false;
-
                 AccountManager accountManager = AccountManager.get(mContext);
                 if (accountManager != null) {
                     Account[] accounts = accountManager.getAccountsByType(AccountGeneral.ACCOUNT_TYPE);
@@ -77,6 +75,7 @@ public class SyncStatusManager {
         };
     }
 
+    @SuppressWarnings("deprecation")
     private static boolean isSyncActive(Account account, String authority) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             for (SyncInfo syncInfo : ContentResolver.getCurrentSyncs()) {

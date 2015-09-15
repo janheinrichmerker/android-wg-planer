@@ -36,7 +36,7 @@ public class RepresentationsSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             String authToken = mAccountManager.blockingGetAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, true);
 
-            ParseComServerAccessor parseComService = new ParseComServerAccessor(getContext());
+            SyncServerInterface parseComService = new SyncServerInterface(getContext());
             List<Representation> representations = parseComService.getRepresentations(authToken);
 
             int deletedRows = provider.delete(RepresentationsContract.CONTENT_URI, null, null);

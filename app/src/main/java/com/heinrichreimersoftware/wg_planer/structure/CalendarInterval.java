@@ -25,6 +25,7 @@ public class CalendarInterval {
         this.endTime = endTime;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -32,8 +33,8 @@ public class CalendarInterval {
 
         CalendarInterval interval = (CalendarInterval) o;
 
-        if (startTime != interval.startTime) return false;
-        if (endTime != interval.endTime) return false;
+        if (!startTime.equals(interval.startTime)) return false;
+        if (!endTime.equals(interval.endTime)) return false;
         return true;
     }
 

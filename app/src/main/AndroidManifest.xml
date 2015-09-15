@@ -3,7 +3,6 @@
     package="com.heinrichreimersoftware.wg_planer">
 
     <!-- Hardware permissions -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Network permissions -->
@@ -29,8 +28,11 @@
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_scheme"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/title_app">
+        android:installLocation="auto"
+        android:label="@string/title_app"
+        android:supportsRtl="true">
 
         <!-- GUI activities -->
         <activity
@@ -94,7 +96,7 @@
         </service>
 
         <!-- Geofence service -->
-        <service android:name=".geo.GeofenceTransitionsIntentService"></service>
+        <service android:name=".geo.GeofenceTransitionsIntentService"/>
 
         <!-- Dashclock service -->
         <service

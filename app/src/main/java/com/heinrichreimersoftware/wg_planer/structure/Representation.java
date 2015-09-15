@@ -189,6 +189,7 @@ public class Representation {
         return endTime.before(currentTime);
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -197,7 +198,7 @@ public class Representation {
         Representation representation = (Representation) o;
 
         if (!schoolClass.equals(representation.schoolClass)) return false;
-        if (date != representation.date) return false;
+        if (!date.equals(representation.date)) return false;
         if (firstLessonNumber != representation.firstLessonNumber) return false;
         if (lastLessonNumber != representation.lastLessonNumber) return false;
         if (!subject.equals(representation.subject)) return false;
@@ -370,9 +371,9 @@ public class Representation {
 
         public String time() {
             if (representation.getFirstLessonNumber() == representation.getLastLessonNumber()) {
-                return context.getString(R.string.format_lesson_1, representation.getFirstLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
+                return context.getString(R.string.format_lesson_time_1, representation.getFirstLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
             } else {
-                return context.getString(R.string.format_lesson_2, representation.getFirstLessonNumber(), representation.getLastLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
+                return context.getString(R.string.format_lesson_time_2, representation.getFirstLessonNumber(), representation.getLastLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
             }
         }
 

@@ -78,9 +78,8 @@ public class RepresentationsNotification {
 
                 String contentText = formatter.description();
 
-                NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
-                style.setBigContentTitle(formatter.summary());
-                style.bigText(contentText);
+                NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()
+                        .bigText(contentText);
 
                 notification.setContentTitle(formatter.summary())
                         .setContentText(contentText)

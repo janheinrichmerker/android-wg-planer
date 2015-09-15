@@ -21,6 +21,7 @@
         <ImageView
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
+            android:contentDescription="@string/label_color_indicator"
             android:src="@drawable/circle"
             app:lessonColor="@{item}" />
 

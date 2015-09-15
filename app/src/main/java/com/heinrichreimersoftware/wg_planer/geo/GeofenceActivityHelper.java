@@ -8,8 +8,8 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.location.Geofence;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
@@ -47,8 +47,10 @@ public class GeofenceActivityHelper extends GeofenceHelper {
                 if (activity.checkSelfPermission(Constants.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     startMonitoring();
                 } else if (activity.shouldShowRequestPermissionRationale(Constants.ACCESS_FINE_LOCATION)) {
-                    //TODO dialog instead of toast
-                    Toast.makeText(activity, "\"Wilhelm-Gymnasium\" braucht diese Berechtigung, um Dir standortbasierte Benachrichtigungen zu bieten.", Toast.LENGTH_LONG).show(); //TODO string resource
+                    new MaterialDialog.Builder(activity)
+                            .title(R.string.title_dialog_permission_rationale)
+                            .content(R.string.text_dialog_permission_rationale)
+                            .show();
                 } else {
                     activity.requestPermissions(new String[]{Constants.ACCESS_FINE_LOCATION}, Constants.WG_GEOFENCE_REQUEST_CODE);
                 }

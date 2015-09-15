@@ -6,20 +6,20 @@ import android.os.IBinder;
 
 public class TeachersSyncService extends Service {
 
-    private static final Object sSyncAdapterLock = new Object();
-    private static TeachersSyncAdapter sSyncAdapter = null;
+    private static final Object syncAdapterLock = new Object();
+    private static TeachersSyncAdapter syncAdapter = null;
 
     @Override
     public void onCreate() {
-        synchronized (sSyncAdapterLock) {
-            if (sSyncAdapter == null) {
-                sSyncAdapter = new TeachersSyncAdapter(getApplicationContext(), true);
+        synchronized (syncAdapterLock) {
+            if (syncAdapter == null) {
+                syncAdapter = new TeachersSyncAdapter(getApplicationContext(), true);
             }
         }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return sSyncAdapter.getSyncAdapterBinder();
+        return syncAdapter.getSyncAdapterBinder();
     }
 }

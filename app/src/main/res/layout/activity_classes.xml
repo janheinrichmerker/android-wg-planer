@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -13,7 +14,8 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarStyle"
         app:contentInsetStart="@dimen/baseline_content"
-        app:navigationIcon="@drawable/ic_check" />
+        app:navigationIcon="@drawable/ic_check"
+        tools:ignore="UnusedAttribute" />
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

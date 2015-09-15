@@ -2,7 +2,6 @@ package com.heinrichreimersoftware.wg_planer.dialog;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,9 +28,9 @@ public class InfoDialogBuilder extends MaterialDialog.Builder {
         super(context);
 
         positiveText(R.string.action_close);
+        customView(R.layout.dialog_view_info, true);
 
-        View root = LayoutInflater.from(context).inflate(R.layout.dialog_view_info, null);
-        ButterKnife.bind(this, root);
+        ButterKnife.bind(this, customView);
 
         String versionName = "";
         try {
@@ -61,7 +60,5 @@ public class InfoDialogBuilder extends MaterialDialog.Builder {
         }
 
         userInfo.setText(context.getResources().getString(R.string.label_dialog_info_user, username, schoolClass));
-
-        customView(root, true);
     }
 }

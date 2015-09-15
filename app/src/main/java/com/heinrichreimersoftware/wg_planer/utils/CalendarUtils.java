@@ -1,5 +1,9 @@
 package com.heinrichreimersoftware.wg_planer.utils;
 
+import android.content.Context;
+
+import com.heinrichreimersoftware.wg_planer.R;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -41,24 +45,24 @@ public class CalendarUtils {
         return date.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY || date.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY;
     }
 
-    public static String dayToString(int day) {
+    public static String dayToString(Context context, int day) {
         switch (day) {
             case Calendar.MONDAY:
-                return "Montag"; //TODO string resource
+                return context.getString(R.string.monday);
             case Calendar.TUESDAY:
-                return "Dienstag";
+                return context.getString(R.string.tuesday);
             case Calendar.WEDNESDAY:
-                return "Mitwoch";
+                return context.getString(R.string.wednesday);
             case Calendar.THURSDAY:
-                return "Donnerstag";
+                return context.getString(R.string.thursday);
             case Calendar.FRIDAY:
-                return "Freitag";
+                return context.getString(R.string.friday);
             case Calendar.SATURDAY:
-                return "Samstag";
+                return context.getString(R.string.saturday);
             case Calendar.SUNDAY:
-                return "Sonntag";
+                return context.getString(R.string.sunday);
             default:
-                return "";
+                return null;
         }
     }
 

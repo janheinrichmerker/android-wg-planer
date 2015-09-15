@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,7 @@ import com.heinrichreimersoftware.wg_planer.exceptions.WrongPasswordException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral.sServerAuthenticate;
+import static com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral.AUTHENTICATOR_SERVER_INTERFACE;
 
 public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
@@ -71,7 +72,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            BitmapDrawable appIcon = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_launcher);
+            BitmapDrawable appIcon = (BitmapDrawable) ResourcesCompat.getDrawable(getResources(), R.drawable.ic_launcher, getTheme());
             setTaskDescription(new ActivityManager.TaskDescription(
                             getString(R.string.title_app),
                             (appIcon != null) ? appIcon.getBitmap() : null,
@@ -157,8 +158,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        int REQ_SIGNUP = 1;
-        if (requestCode == REQ_SIGNUP && resultCode == RESULT_OK) {
+        int REQ_SIGN_UP = 1;
+        if (requestCode == REQ_SIGN_UP && resultCode == RESULT_OK) {
             finishLogin(data);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -207,7 +208,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                     Bundle data = new Bundle();
                     try {
                         String authToken;
-                        authToken = sServerAuthenticate.userSignIn(userNameFinal, userPassFinal, mAuthTokenType, context);
+                        authToken = AUTHENTICATOR_SERVER_INTERFACE.userSignIn(userNameFinal, userPassFinal, mAuthTokenType, context);
 
                         data.putString(AccountManager.KEY_ACCOUNT_NAME, userNameFinal);
                         data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);

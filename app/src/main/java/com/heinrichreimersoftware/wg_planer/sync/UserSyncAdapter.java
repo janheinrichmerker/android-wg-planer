@@ -32,7 +32,7 @@ public class UserSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             String authToken = mAccountManager.blockingGetAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, true);
 
-            ParseComServerAccessor parseComService = new ParseComServerAccessor(getContext());
+            SyncServerInterface parseComService = new SyncServerInterface(getContext());
             User user = parseComService.getUserInfo(authToken);
 
             if (user != null) {
@@ -44,7 +44,7 @@ public class UserSyncAdapter extends AbstractThreadedSyncAdapter {
                     syncResult.stats.numDeletes += deletedRows;
 
                     ContentValues userValues[] = new ContentValues[1];
-                    userValues[0] = user.getContentValues();
+                    userValues[0] = user.getContentValues(getContext());
 
                     int insertedRows = provider.bulkInsert(UserContract.CONTENT_URI, userValues);
                     syncResult.stats.numInserts += insertedRows;

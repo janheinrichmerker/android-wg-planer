@@ -34,6 +34,7 @@ public class Teacher {
                 webLink);
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

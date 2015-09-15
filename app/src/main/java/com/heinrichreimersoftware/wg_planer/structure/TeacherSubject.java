@@ -64,6 +64,7 @@ public class TeacherSubject extends Subject {
         }
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

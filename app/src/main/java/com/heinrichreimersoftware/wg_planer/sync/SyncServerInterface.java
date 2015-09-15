@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.csvreader.CsvReader;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
-import com.heinrichreimersoftware.wg_planer.authentication.ParseComServerAuthenticate;
+import com.heinrichreimersoftware.wg_planer.authentication.AuthenticatorServerInterface;
 import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
 import com.heinrichreimersoftware.wg_planer.exceptions.Base64Exception;
 import com.heinrichreimersoftware.wg_planer.exceptions.NetworkException;
@@ -54,7 +54,7 @@ import static com.heinrichreimersoftware.wg_planer.Constants.TIMETABLE_BASE_URL;
 import static com.heinrichreimersoftware.wg_planer.Constants.TIMETABLE_NAV_URL;
 import static com.heinrichreimersoftware.wg_planer.Constants.USER_INFO_URL;
 
-public class ParseComServerAccessor {
+public class SyncServerInterface {
 
 
     public static final String TEACHER_CSV_URL = "http://heinrichreimersoftware.com/api/wg_planer/teachers/";
@@ -62,7 +62,8 @@ public class ParseComServerAccessor {
     public static final int TOMORROW = 1;
     private Context context;
     private OkHttpClient client = new OkHttpClient();
-    public ParseComServerAccessor(Context context) {
+
+    public SyncServerInterface(Context context) {
         this.context = context;
 
         CookieManager cookieManager = new CookieManager();
@@ -88,7 +89,7 @@ public class ParseComServerAccessor {
     public boolean login(String auth) {
         try {
             AuthToken authToken = new AuthToken(auth);
-            String newAuth = ParseComServerAuthenticate.login(context, client, authToken.getUsername(), authToken.getPassword());
+            String newAuth = AuthenticatorServerInterface.login(context, client, authToken.getUsername(), authToken.getPassword());
             if (newAuth != null && newAuth.equals(auth)) {
                 return true;
             }

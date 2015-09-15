@@ -46,19 +46,4 @@ public class Utils {
         }
         return (numberString);
     }
-
-    public static class BITMAP extends BitmapUtils {
-    }
-
-    public static class CALENDAR extends CalendarUtils {
-    }
-
-    public static class CLASSES extends ClassesUtils {
-    }
-
-    public static class COLOR extends ColorUtils {
-    }
-
-    public static class SYNC extends SyncUtils {
-    }
 }
