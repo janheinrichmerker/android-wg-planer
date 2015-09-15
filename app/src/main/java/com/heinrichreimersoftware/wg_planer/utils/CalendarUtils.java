@@ -40,4 +40,56 @@ public class CalendarUtils {
         Calendar date = new GregorianCalendar();
         return date.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY || date.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY;
     }
+
+    public static String dayToString(int day) {
+        switch (day) {
+            case Calendar.MONDAY:
+                return "Montag"; //TODO string resource
+            case Calendar.TUESDAY:
+                return "Dienstag";
+            case Calendar.WEDNESDAY:
+                return "Mitwoch";
+            case Calendar.THURSDAY:
+                return "Donnerstag";
+            case Calendar.FRIDAY:
+                return "Freitag";
+            case Calendar.SATURDAY:
+                return "Samstag";
+            case Calendar.SUNDAY:
+                return "Sonntag";
+            default:
+                return "";
+        }
+    }
+
+    public static int monthNumberToMonth(int monthNumber) {
+        switch (monthNumber) {
+            case 1:
+                return Calendar.JANUARY;
+            case 2:
+                return Calendar.FEBRUARY;
+            case 3:
+                return Calendar.MARCH;
+            case 4:
+                return Calendar.APRIL;
+            case 5:
+                return Calendar.MAY;
+            case 6:
+                return Calendar.JUNE;
+            case 7:
+                return Calendar.JULY;
+            case 8:
+                return Calendar.AUGUST;
+            case 9:
+                return Calendar.SEPTEMBER;
+            case 10:
+                return Calendar.OCTOBER;
+            case 11:
+                return Calendar.NOVEMBER;
+            case 12:
+                return Calendar.DECEMBER;
+            default:
+                return -1;
+        }
+    }
 }

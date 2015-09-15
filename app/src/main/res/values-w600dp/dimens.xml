@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="baseline">24dp</dimen>
+    <dimen name="baseline_content">80dp</dimen>
+    <dimen name="baseline_content_relative">56dp</dimen>
+
+    <dimen name="card_margin">16dp</dimen>
+
+    <dimen name="fab_margin">24dp</dimen>
+
+</resources>

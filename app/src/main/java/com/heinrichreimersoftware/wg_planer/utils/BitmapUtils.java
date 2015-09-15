@@ -1,7 +1,6 @@
 package com.heinrichreimersoftware.wg_planer.utils;
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -16,38 +15,6 @@ import java.io.IOException;
 public class BitmapUtils {
 
     public static final String PATH_SD_IMAGES = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Wilhelm-Gymnasium";
-
-    public static Bitmap getCroppedBitmap(Bitmap originalBmp, int width, int height) {
-        if (width > 0 && height > 0) {
-            int originalBmpWidth = originalBmp.getWidth();
-            int originalBmpHeight = originalBmp.getHeight();
-            float originalBmpRatio = originalBmpWidth / originalBmpHeight;
-
-            float desiredRatio = width / height;
-
-            if (originalBmpRatio < desiredRatio) {
-                float resizeFactor = ((float) width) / originalBmpWidth;
-                int resizedHeight = Math.round(resizeFactor * originalBmpHeight);
-                Bitmap resizedBmp = Bitmap.createScaledBitmap(originalBmp, width, resizedHeight, true);
-
-                return Bitmap.createBitmap(resizedBmp, 0, ((resizedHeight - height) / 2), width, height);
-            } else if (originalBmpRatio > desiredRatio) {
-                float resizeFactor = ((float) height) / originalBmpHeight;
-                int resizedWidth = Math.round(resizeFactor * originalBmpWidth);
-                Bitmap resizedBmp = Bitmap.createScaledBitmap(originalBmp, resizedWidth, height, true);
-
-                return Bitmap.createBitmap(resizedBmp, ((resizedWidth - width) / 2), 0, width, height);
-            } else {
-                return Bitmap.createScaledBitmap(originalBmp, width, height, true);
-            }
-        }
-        return null;
-    }
-
-    public static Bitmap getCroppedBitmapFromResource(int res, int width, int height, Context context) {
-        Bitmap originalBmp = BitmapFactory.decodeResource(context.getResources(), res);
-        return getCroppedBitmap(originalBmp, width, height);
-    }
 
     public static boolean saveBitmapToSd(Bitmap bitmap, String filename) {
         if (bitmap == null) return false;

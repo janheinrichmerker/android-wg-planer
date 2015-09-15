@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.data.DbHelper;
 
@@ -125,12 +126,12 @@ public class WgPlanerAuthenticator extends AbstractAccountAuthenticator {
 
         if (!result.containsKey(AccountManager.KEY_INTENT) && result.containsKey(AccountManager.KEY_BOOLEAN_RESULT) && result.getBoolean(AccountManager.KEY_BOOLEAN_RESULT)) {
             Log.d("WG-Planer", "Clear user data...");
-            Editor loginSettings = context.getSharedPreferences(MainActivity.PREFERENCES_LOGIN, 0).edit();
+            Editor loginSettings = context.getSharedPreferences(Constants.PREFERENCES_LOGIN, 0).edit();
             loginSettings.clear();
             loginSettings.apply();
 
             Log.d("WG-Planer", "Clear cookie data...");
-            Editor cookieSettings = context.getSharedPreferences(MainActivity.PREFERENCES_COOKIE, 0).edit();
+            Editor cookieSettings = context.getSharedPreferences(Constants.PREFERENCES_COOKIE, 0).edit();
             cookieSettings.clear();
             cookieSettings.apply();
 
@@ -138,7 +139,7 @@ public class WgPlanerAuthenticator extends AbstractAccountAuthenticator {
             Editor settings = PreferenceManager.getDefaultSharedPreferences(context).edit();
             settings.clear();
             settings.apply();
-            Editor settingsHasSetDefault = context.getSharedPreferences(MainActivity.PREFERENCES_SETTINGS_HAS_SET_DEFAULT, 0).edit();
+            Editor settingsHasSetDefault = context.getSharedPreferences(Constants.PREFERENCES_KEY_HAS_SET_DEFAULT, 0).edit();
             settingsHasSetDefault.clear();
             settingsHasSetDefault.apply();
 

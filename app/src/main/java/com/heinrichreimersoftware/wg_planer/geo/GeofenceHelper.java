@@ -6,11 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -49,8 +47,7 @@ public class GeofenceHelper extends PlayServicesHelper {
     }
 
     private void updateMonitoring() {
-        Log.d(MainActivity.TAG, "GeofenceHelper updating monitoring");
-        Toast.makeText(getContext(), "Updating monitoring", Toast.LENGTH_SHORT).show();
+        Log.d(MainActivity.TAG, "updateMonitoring()");
         if (getGoogleApiClient().isConnected()) {
             if (shouldMonitor) {
                 LocationServices.GeofencingApi.addGeofences(
@@ -58,41 +55,29 @@ public class GeofenceHelper extends PlayServicesHelper {
                         getGeoFencingRequest(),
                         getGeofencePendingIntent()
                 ).setResultCallback(new AddGeofenceResultCallback());
-
-                Location location = LocationServices.FusedLocationApi.getLastLocation(getGoogleApiClient());
-                Log.d(MainActivity.TAG, "GeofenceHelper starting monitoring at {lat=" + location.getLatitude() +
-                        "; long=" + location.getLongitude() + "; alt=" + location.getAltitude() +
-                        "; accuracy=" + location.getAccuracy() + "}");
-                for (Geofence geofence : getGeoFencingRequest().getGeofences()) {
-                    Log.d(MainActivity.TAG, "GeofenceHelper monitoring geofence: " + geofence.getRequestId());
-                }
-                Toast.makeText(getContext(), "Starting monitoring", Toast.LENGTH_SHORT).show();
             } else {
                 LocationServices.GeofencingApi.removeGeofences(
                         getGoogleApiClient(),
                         getGeofencePendingIntent()
                 ).setResultCallback(new RemoveGeofenceResultCallback());
-                Log.d(MainActivity.TAG, "GeofenceHelper stopping monitoring");
-                Toast.makeText(getContext(), "Stopping monitoring", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     public void startMonitoring() {
-        Log.d(MainActivity.TAG, "GeofenceHelper trying to start monitoring");
-
+        Log.d(MainActivity.TAG, "startMonitoring()");
         shouldMonitor = true;
         updateMonitoring();
     }
 
     public void stopMonitoring() {
-        Log.d(MainActivity.TAG, "GeofenceHelper trying to stop monitoring");
-
+        Log.d(MainActivity.TAG, "stopMonitoring()");
         shouldMonitor = false;
         updateMonitoring();
     }
 
     private GeofencingRequest getGeoFencingRequest() {
+        Log.d(MainActivity.TAG, "getGeoFencingRequest()");
         return new GeofencingRequest.Builder()
                 .addGeofences(mGeofences)
                 .setInitialTrigger(mInitialTrigger)
@@ -100,18 +85,17 @@ public class GeofenceHelper extends PlayServicesHelper {
     }
 
     private PendingIntent getGeofencePendingIntent() {
-        Log.d(MainActivity.TAG, "GeofenceHelper get geofence pending intent");
+        Log.d(MainActivity.TAG, "getGeofencePendingIntent()");
         if (mGeofencePendingIntent == null) {
-            Log.d(MainActivity.TAG, "GeofenceHelper create geofence pending intent");
             Intent intent = new Intent(getContext(), mIntentService);
             mGeofencePendingIntent = PendingIntent.getService(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        Log.d(MainActivity.TAG, "GeofenceHelper geofence pending intent: " + mGeofencePendingIntent.toString());
         return mGeofencePendingIntent;
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(MainActivity.TAG, "onConnectionFailed(" + connectionResult + ")");
         if (connectionResult.hasResolution()) {
             try {
                 connectionResult.startResolutionForResult((Activity) getContext(),
@@ -127,13 +111,14 @@ public class GeofenceHelper extends PlayServicesHelper {
 
     @Override
     public void onConnected(Bundle bundle) {
+        Log.d(MainActivity.TAG, "onConnected(" + bundle + ")");
         super.onConnected(bundle);
-        Log.d(MainActivity.TAG, "GeofenceHelper connected");
         updateMonitoring();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
+        Log.d(MainActivity.TAG, "onConnectionSuspended(" + i + ")");
         if (null != mGeofencePendingIntent) {
             updateMonitoring();
         }
@@ -149,9 +134,9 @@ public class GeofenceHelper extends PlayServicesHelper {
         @Override
         public void onResult(Status status) {
             if (status.isSuccess()) {
-                Log.d(MainActivity.TAG, "GeofenceHelper Adding geofence succeeded");
+                Log.d(MainActivity.TAG, "GeofenceHelper Adding geofence(s) succeeded");
             } else {
-                Log.d(MainActivity.TAG, "GeofenceHelper Adding geofence failed: " + status);
+                Log.d(MainActivity.TAG, "GeofenceHelper Adding geofence(s) failed: " + status);
             }
         }
     }
@@ -160,9 +145,9 @@ public class GeofenceHelper extends PlayServicesHelper {
         @Override
         public void onResult(Status status) {
             if (status.isSuccess()) {
-                Log.d(MainActivity.TAG, "GeofenceHelper Removing geofence succeeded");
+                Log.d(MainActivity.TAG, "GeofenceHelper Removing geofence(s) succeeded");
             } else {
-                Log.d(MainActivity.TAG, "GeofenceHelper Removing geofence failed: " + status);
+                Log.d(MainActivity.TAG, "GeofenceHelper Removing geofence(s) failed: " + status);
             }
         }
     }

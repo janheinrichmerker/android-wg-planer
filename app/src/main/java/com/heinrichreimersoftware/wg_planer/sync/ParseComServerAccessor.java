@@ -22,6 +22,7 @@ import com.heinrichreimersoftware.wg_planer.structure.SubjectFactory;
 import com.heinrichreimersoftware.wg_planer.structure.Teacher;
 import com.heinrichreimersoftware.wg_planer.structure.TeacherSubject;
 import com.heinrichreimersoftware.wg_planer.structure.User;
+import com.heinrichreimersoftware.wg_planer.utils.CalendarUtils;
 import com.heinrichreimersoftware.wg_planer.utils.ClassesUtils;
 import com.heinrichreimersoftware.wg_planer.utils.Utils;
 import com.squareup.okhttp.OkHttpClient;
@@ -46,18 +47,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.heinrichreimersoftware.wg_planer.Constants.IDESK_URL;
+import static com.heinrichreimersoftware.wg_planer.Constants.REPRESENTATIONS_URL_TODAY;
+import static com.heinrichreimersoftware.wg_planer.Constants.REPRESENTATIONS_URL_TOMORROW;
+import static com.heinrichreimersoftware.wg_planer.Constants.TIMETABLE_BASE_URL;
+import static com.heinrichreimersoftware.wg_planer.Constants.TIMETABLE_NAV_URL;
+import static com.heinrichreimersoftware.wg_planer.Constants.USER_INFO_URL;
+
 public class ParseComServerAccessor {
 
-    public static final String IDESK_URL = "https://wilhelm-gym.net/idesk/";
-    public static final String INFO_PANEL_URL = IDESK_URL + "infodisplay/mods/link.local.php/";
-
-    public static final String USER_INFO_URL = IDESK_URL + "addr/my.php/";
-
-    public static final String REPRESENTATIONS_URL_TODAY = INFO_PANEL_URL + "panelId=28/Vtr/Internet2/Klassen/f1/subst_001.htm";
-    public static final String REPRESENTATIONS_URL_TOMORROW = INFO_PANEL_URL + "panelId=32/Vtr/Internet2/Klassen/f2/subst_001.htm";
-
-    public static final String TIMETABLE_BASE_URL = INFO_PANEL_URL + "panelId=40/Stundenplan/Klassen/";
-    public static final String TIMETABLE_NAV_URL = TIMETABLE_BASE_URL + "frames/navbar.htm";
 
     public static final String TEACHER_CSV_URL = "http://heinrichreimersoftware.com/api/wg_planer/teachers/";
     public static final int TODAY = 0;
@@ -240,7 +238,7 @@ public class ParseComServerAccessor {
         Calendar date = new GregorianCalendar();
         try {
             date.set(Calendar.YEAR, Integer.parseInt(dateStrings[2]));
-            date.set(Calendar.MONTH, Utils.monthNumberToMonth(Integer.parseInt(dateStrings[1])));
+            date.set(Calendar.MONTH, CalendarUtils.monthNumberToMonth(Integer.parseInt(dateStrings[1])));
             date.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateStrings[0]));
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -250,15 +248,15 @@ public class ParseComServerAccessor {
         date.set(Calendar.SECOND, 0);
         date.set(Calendar.MILLISECOND, 0);
 
-			/*
-            Elements infos = docToday.select("td[colspan=2]");
-			String info = "";
-			int i = 0;
-			while(i < infos.size()){
-				info = info + infos.get(i).text();
-				i++;
-			}
-			*/
+        /*
+        Elements infos = docToday.select("td[colspan=2]");
+		String info = "";
+		int i = 0;
+		while(i < infos.size()){
+			info = info + infos.get(i).text();
+			i++;
+		}
+		*/
 
         int colIndexLessonNumberUnparsed = 0;
         int colIndexFromTeacher = 1;

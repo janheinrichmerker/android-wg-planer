@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.heinrichreimersoftware.wg_planer.notifications.NotificationTimetable;
+import com.heinrichreimersoftware.wg_planer.notifications.TimetableNotification;
 import com.heinrichreimersoftware.wg_planer.utils.Utils;
 
 import java.util.Calendar;
@@ -43,7 +43,7 @@ public class TimetableNavigationFragment extends Fragment {
 
         getActivity().setTitle(R.string.title_fragment_timetable);
 
-        NotificationTimetable.cancelNotification(getActivity());
+        TimetableNotification.cancel(getActivity());
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         sectionsPagerAdapter.notifyDataSetChanged();

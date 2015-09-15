@@ -174,6 +174,21 @@ public class Representation {
         return values;
     }
 
+    public boolean isOver() {
+        Calendar currentTime = new GregorianCalendar();
+        Calendar endTime = (Calendar) date.clone();
+        Calendar time = LessonTimeFactory.fromRepresentation(this).getEndTime();
+
+        endTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
+        endTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
+        endTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
+        //endTime.add(Calendar.MILLISECOND, -currentTime.getTimeZone().getOffset(currentTime.getTimeInMillis()));
+        if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            endTime.add(Calendar.WEEK_OF_YEAR, 1);
+        }
+        return endTime.before(currentTime);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -362,19 +377,7 @@ public class Representation {
         }
 
         public int color() {
-            Calendar currentTime = new GregorianCalendar();
-            Calendar representationEndTime = representation.getDate();
-            Calendar time = LessonTimeFactory.fromRepresentation(representation).getEndTime();
-
-            representationEndTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
-            representationEndTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-            representationEndTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
-            representationEndTime.add(Calendar.HOUR, -1);
-            if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                representationEndTime.add(Calendar.WEEK_OF_YEAR, 1);
-            }
-
-            if (representationEndTime.before(currentTime)) {
+            if (representation.isOver()) {
                 return ColorUtils.grey(representation.getSubject().getColor());
             } else {
                 return representation.getSubject().getColor();

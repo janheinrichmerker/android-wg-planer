@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.heinrichreimersoftware.wg_planer.notifications.NotificationRepresentations;
+import com.heinrichreimersoftware.wg_planer.notifications.RepresentationsNotification;
 import com.heinrichreimersoftware.wg_planer.utils.CalendarUtils;
 import com.heinrichreimersoftware.wg_planer.utils.Utils;
 
@@ -43,7 +43,7 @@ public class RepresentationNavigationFragment extends Fragment {
         ActionBarActivity activity = (ActionBarActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
-        NotificationRepresentations.cancelNotification(getActivity());
+        RepresentationsNotification.cancel(getActivity());
 
         Calendar calendar = new GregorianCalendar();
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);

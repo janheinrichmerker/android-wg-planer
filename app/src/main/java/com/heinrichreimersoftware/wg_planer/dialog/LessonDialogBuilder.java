@@ -19,8 +19,8 @@ import com.heinrichreimersoftware.wg_planer.structure.Lesson;
 import com.heinrichreimersoftware.wg_planer.structure.LessonTimeFactory;
 import com.heinrichreimersoftware.wg_planer.structure.Teacher;
 import com.heinrichreimersoftware.wg_planer.structure.TeacherSubject;
+import com.heinrichreimersoftware.wg_planer.utils.CalendarUtils;
 import com.heinrichreimersoftware.wg_planer.utils.ColorUtils;
-import com.heinrichreimersoftware.wg_planer.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public class LessonDialogBuilder extends MaterialDialog.Builder {
 
         title(subjectText);
 
-        day.setText(Utils.dayToString(lesson.getDay()));
+        day.setText(CalendarUtils.dayToString(lesson.getDay()));
 
         if (lesson.getFirstLessonNumber() == lesson.getLastLessonNumber()) {
             hours.setText("" + lesson.getFirstLessonNumber());

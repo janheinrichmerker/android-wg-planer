@@ -25,6 +25,21 @@
             android:key="@string/key_preference_notifications"
             android:title="@string/title_preference_notifications" />
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="@string/key_preference_notifications"
+            android:key="@string/key_preference_geo_notifications"
+            android:summaryOff="@string/label_preference_geo_notifications_off"
+            android:summaryOn="@string/label_preference_geo_notifications_on"
+            android:title="@string/title_preference_geo_notifications" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_preference_geo_silent"
+            android:summaryOff="@string/label_preference_geo_silent_off"
+            android:summaryOn="@string/label_preference_geo_silent_on"
+            android:title="@string/title_preference_geo_silent" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_preference_category_account">
@@ -49,15 +64,6 @@
     <PreferenceCategory android:title="@string/title_preference_category_about">
 
         <Preference
-            android:key="@string/key_preference_more_apps"
-            android:summary="@string/label_preference_more_apps"
-            android:title="@string/title_preference_more_apps">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="market://search?q=pub:Heinrich+Reimer" />
-        </Preference>
-
-        <Preference
             android:key="@string/key_preference_info"
             android:summary="@string/label_preference_info"
             android:title="@string/title_preference_info" />
@@ -73,6 +79,15 @@
                     android:name="android.intent.extra.SUBJECT"
                     android:value="@string/title_mail_feedback" />
             </intent>
+        </Preference>
+
+        <Preference
+            android:key="@string/key_preference_more_apps"
+            android:summary="@string/label_preference_more_apps"
+            android:title="@string/title_preference_more_apps">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="market://search?q=pub:Heinrich+Reimer" />
         </Preference>
 
         <Preference

@@ -11,13 +11,10 @@ import com.heinrichreimersoftware.wg_planer.R;
 import com.heinrichreimersoftware.wg_planer.data.RepresentationsContentHelper;
 import com.heinrichreimersoftware.wg_planer.data.RepresentationsContract;
 import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
-import com.heinrichreimersoftware.wg_planer.structure.LessonTimeFactory;
 import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.structure.User;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class DashClockExtensionRepresentations extends DashClockExtension {
@@ -47,23 +44,9 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
                 allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context);
             }
 
-
-            Calendar currentTime = new GregorianCalendar();
             List<Representation> representations = new ArrayList<>();
             for (Representation representation : allRepresentations) {
-                Calendar representationEndTime = representation.getDate();
-                Calendar time = LessonTimeFactory.fromRepresentation(representation).getEndTime();
-
-                representationEndTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
-                representationEndTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-                representationEndTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
-                representationEndTime.add(Calendar.MINUTE, 5);
-                representationEndTime.add(Calendar.HOUR, -1);
-                if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                    representationEndTime.add(Calendar.WEEK_OF_YEAR, 1);
-                }
-
-                if (representationEndTime.after(currentTime)) {
+                if (!representation.isOver()) {
                     representations.add(representation);
                 }
             }
@@ -101,7 +84,7 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
                 }
 
                 Intent clickIntent = new Intent(context, MainActivity.class);
-                clickIntent.putExtra(MainActivity.INTENT_EXTRA_SELECTED_ITEM, MainActivity.DRAWER_ID_REPRESENTATIONS);
+                clickIntent.putExtra(MainActivity.EXTRA_SELECTED_ITEM, MainActivity.DRAWER_ID_REPRESENTATIONS);
 
                 publishUpdate(new ExtensionData()
                         .visible(true)

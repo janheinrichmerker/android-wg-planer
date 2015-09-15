@@ -52,47 +52,6 @@
     <string name="label_empty_view_teachers">Keine Lehrer</string>
     <string name="label_empty_view_courses">Keine Kurse</string>
 
-    <!-- Settings -->
-    <string name="key_preference_classes_general">key_preference_classes_general</string>
-    <string name="key_preference_classes_list_click">key_preference_classes_list_click</string>
-    <string name="key_preference_classes_list">key_preference_classes_list</string>
-
-    <string name="key_preference_notifications">key_preference_notifications</string>
-
-    <string name="key_preference_automatic_sync">key_preference_automatic_sync</string>
-    <string name="key_preference_update_user_info">key_preference_update_user_info</string>
-    <string name="key_preference_logout">key_preference_logout</string>
-
-    <string name="key_preference_feedback">key_preference_feedback</string>
-    <string name="key_preference_more_apps">key_preference_more_apps</string>
-    <string name="key_preference_info">key_preference_info</string>
-    <string name="key_preference_licenses">key_preference_licenses</string>
-
-    <string name="title_preference_category_courses">Kurse</string>
-    <string name="title_preference_courses">Kurse</string>
-    <string name="label_preference_courses_on">Nur ausgewählte Kurse anzeigen</string>
-    <string name="label_preference_courses_off">Alle Kurse anzeigen</string>
-    <string name="title_preference_courses_list">Kurse auswählen</string>
-
-    <string name="title_preference_notifications">Benachrichtigungen</string>
-
-    <string name="title_preference_category_account">Account</string>
-    <string name="title_preference_sync">Synchronisation</string>
-    <string name="label_preference_sync_on">Automatische Synchronisation an</string>
-    <string name="label_preference_sync_off">Automatische Synchronisation aus</string>
-    <string name="title_preference_update_user_info">Benutzerinformationen aktualisieren</string>
-    <string name="title_preference_logout">Ausloggen</string>
-
-    <string name="title_preference_category_about">Informationen</string>
-    <string name="title_preference_contact">Entwickler kontaktieren</string>
-    <string name="label_preference_contact">Fehler oder Problem melden</string>
-    <string name="title_preference_more_apps">Mehr Apps</string>
-    <string name="label_preference_more_apps">Weitere Apps dieses Entwicklers</string>
-    <string name="title_preference_info">Info</string>
-    <string name="label_preference_info">Informationen zu dieser App</string>
-    <string name="title_preference_licenses">Open-Source-Lizenzen</string>
-    <string name="label_preference_licenses">Rechtliche Hinweise zu Lizenzen</string>
-
     <!-- Login -->
     <string name="title_login">@string/title_activity_login</string>
     <string name="hint_login_username">vorname.nachname</string>
@@ -151,5 +110,5 @@
 
     <!-- DashClock -->
     <string name="title_dashclock">@string/title_app</string>
-    <string name="label_dashclock">Zeigt Deine aktueller Vertretungen an.</string>
+    <string name="label_dashclock">Zeigt Deine aktuellen Vertretungen an.</string>
 </resources>

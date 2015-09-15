@@ -96,6 +96,22 @@ public class Lesson {
         }
     }
 
+    public boolean isOver() {
+        Calendar currentTime = new GregorianCalendar();
+        Calendar lessonEndTime = new GregorianCalendar();
+        Calendar time = LessonTimeFactory.fromLesson(this).getEndTime();
+
+        lessonEndTime.set(Calendar.DAY_OF_WEEK, day);
+        lessonEndTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
+        lessonEndTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
+        lessonEndTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
+        //lessonEndTime.add(Calendar.MILLISECOND, -currentTime.getTimeZone().getOffset(currentTime.getTimeInMillis()));
+        if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            lessonEndTime.add(Calendar.WEEK_OF_YEAR, 1);
+        }
+        return lessonEndTime.before(currentTime);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -192,36 +208,20 @@ public class Lesson {
         }
 
         public int color() {
-            Calendar currentTime = new GregorianCalendar();
-            Calendar lessonEndTime = new GregorianCalendar();
-            Calendar time = LessonTimeFactory.fromLesson(lesson).getEndTime();
-
-            lessonEndTime.set(Calendar.WEEK_OF_YEAR, currentTime.get(Calendar.WEEK_OF_YEAR));
-            lessonEndTime.set(Calendar.DAY_OF_WEEK, lesson.getDay());
-            lessonEndTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
-            lessonEndTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-            lessonEndTime.set(Calendar.SECOND, time.get(Calendar.SECOND));
-            lessonEndTime.add(Calendar.HOUR, -1);
-            if (currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || currentTime.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                lessonEndTime.add(Calendar.WEEK_OF_YEAR, 1);
-            }
-
             List<TeacherSubject> subjects = lesson.getSubjects();
             int color;
 
             if (subjects.size() > 1) {
                 List<Integer> colors = new ArrayList<>();
-
                 for (TeacherSubject subject : subjects) {
                     colors.add(subject.getColor());
                 }
-
                 color = ColorUtils.averageColor(colors);
             } else {
                 color = subjects.get(0).getColor();
             }
 
-            if (lessonEndTime.before(currentTime)) {
+            if (lesson.isOver()) {
                 return ColorUtils.grey(color);
             } else {
                 return color;

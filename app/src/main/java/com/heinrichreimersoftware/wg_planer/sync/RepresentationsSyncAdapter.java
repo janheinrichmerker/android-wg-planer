@@ -15,7 +15,7 @@ import android.os.RemoteException;
 import com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral;
 import com.heinrichreimersoftware.wg_planer.data.RepresentationsContentHelper;
 import com.heinrichreimersoftware.wg_planer.data.RepresentationsContract;
-import com.heinrichreimersoftware.wg_planer.notifications.NotificationRepresentations;
+import com.heinrichreimersoftware.wg_planer.notifications.RepresentationsNotification;
 import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.utils.ClassesUtils;
 
@@ -55,7 +55,7 @@ public class RepresentationsSyncAdapter extends AbstractThreadedSyncAdapter {
                 List<Representation> oldRepresentations = RepresentationsContentHelper.getRepresentations(getContext());
                 List<Representation> filteredRepresentations = ClassesUtils.filterRepresentations(getContext(), representations);
                 if (filteredRepresentations.size() != oldRepresentations.size()/* || !representations.containsAll(oldRepresentations)*/) {
-                    NotificationRepresentations.makeNotification(getContext());
+                    RepresentationsNotification.notify(getContext());
                 }
             } else {
                 syncResult.stats.numParseExceptions++;

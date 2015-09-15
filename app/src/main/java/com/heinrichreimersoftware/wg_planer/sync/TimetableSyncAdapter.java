@@ -15,7 +15,7 @@ import android.os.RemoteException;
 import com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral;
 import com.heinrichreimersoftware.wg_planer.data.TimetableContentHelper;
 import com.heinrichreimersoftware.wg_planer.data.TimetableContract;
-import com.heinrichreimersoftware.wg_planer.notifications.NotificationTimetable;
+import com.heinrichreimersoftware.wg_planer.notifications.TimetableNotification;
 import com.heinrichreimersoftware.wg_planer.structure.Lesson;
 import com.heinrichreimersoftware.wg_planer.utils.ClassesUtils;
 
@@ -56,7 +56,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                     List<Lesson> oldLessons = TimetableContentHelper.getTimetable(getContext());
                     List<Lesson> filteredLessons = ClassesUtils.filterLessons(getContext(), lessons);
                     if (filteredLessons.size() != oldLessons.size() || !filteredLessons.containsAll(oldLessons)) {
-                        NotificationTimetable.makeNotification(getContext());
+                        TimetableNotification.notify(getContext());
                     }
                 }
             } else {

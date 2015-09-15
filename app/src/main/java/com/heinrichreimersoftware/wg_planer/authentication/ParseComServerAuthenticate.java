@@ -3,6 +3,7 @@ package com.heinrichreimersoftware.wg_planer.authentication;
 import android.content.Context;
 import android.util.Log;
 
+import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.exceptions.Base64Exception;
 import com.heinrichreimersoftware.wg_planer.exceptions.NetworkException;
@@ -10,7 +11,6 @@ import com.heinrichreimersoftware.wg_planer.exceptions.UnknownUsernameException;
 import com.heinrichreimersoftware.wg_planer.exceptions.WrongCredentialsException;
 import com.heinrichreimersoftware.wg_planer.exceptions.WrongPasswordException;
 import com.heinrichreimersoftware.wg_planer.structure.AuthToken;
-import com.heinrichreimersoftware.wg_planer.sync.ParseComServerAccessor;
 import com.heinrichreimersoftware.wg_planer.utils.Utils;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -40,7 +40,7 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
                     .build();
 
             Request request = new Request.Builder()
-                    .url(ParseComServerAccessor.IDESK_URL)
+                    .url(Constants.IDESK_URL)
                     .post(data)
                     .build();
 
@@ -64,7 +64,7 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
                 throw new NetworkException();
             }
 
-            Document doc = Jsoup.parse(html, ParseComServerAccessor.IDESK_URL);
+            Document doc = Jsoup.parse(html, Constants.IDESK_URL);
 
             Elements errorElements = doc.select("table.ms > tbody > tr > td.vam > p.err.hac");
             if (errorElements.size() > 1) {
