@@ -24,3 +24,10 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+-keep public class com.google.android.gms.**
+-dontwarn com.google.android.gms.**
+
+-dontwarn android.support.**
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }

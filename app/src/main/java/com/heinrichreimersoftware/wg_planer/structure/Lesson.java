@@ -201,10 +201,14 @@ public class Lesson {
         }
 
         public String time() {
+            return time(true);
+        }
+
+        public String time(boolean withLabel) {
             if (lesson.getFirstLessonNumber() == lesson.getLastLessonNumber()) {
-                return context.getString(R.string.format_lesson_time_1, lesson.getFirstLessonNumber(), LessonTimeFactory.fromLesson(lesson));
+                return context.getString(withLabel ? R.string.format_lesson_time_with_label_1 : R.string.format_lesson_time_1, lesson.getFirstLessonNumber(), LessonTimeFactory.fromLesson(lesson));
             } else {
-                return context.getString(R.string.format_lesson_time_2, lesson.getFirstLessonNumber(), lesson.getLastLessonNumber(), LessonTimeFactory.fromLesson(lesson));
+                return context.getString(withLabel ? R.string.format_lesson_time_with_label_2 : R.string.format_lesson_time_2, lesson.getFirstLessonNumber(), lesson.getLastLessonNumber(), LessonTimeFactory.fromLesson(lesson));
             }
         }
 

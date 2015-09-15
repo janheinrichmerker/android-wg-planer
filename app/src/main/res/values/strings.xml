@@ -93,9 +93,14 @@
     <string name="label_dialog_info_description">Mit der Vertretungsplan-App vom Wilhelm-Gymnasium kannst Du jederzeit auf Deinen Stundenplan und auf Deinen Vertretungsplan zugreifen.</string>
     <string name="label_dialog_info_user"><i>Benutzername:</i> %1$s\n<i>Klasse:</i> %2$s</string>
 
+    <!-- Notifications -->
+    <string name="text_notification_lesson">&lt;b>Raum&lt;/b>: %1$s&lt;br/>&lt;b>Stunde&lt;/b>: %2$s&lt;br/>&lt;b>Lehrer&lt;/b>: %3$s</string>
+
     <!-- Formats -->
-    <string name="format_lesson_time_1">Stunde: %1$d (%2$s)</string>
-    <string name="format_lesson_time_2">Stunde: %1$d-%2$d (%3$s)</string>
+    <string name="format_lesson_time_with_label_1">Stunde: %1$d (%2$s)</string>
+    <string name="format_lesson_time_with_label_2">Stunde: %1$d-%2$d (%3$s)</string>
+    <string name="format_lesson_time_1">%1$d (%2$s)</string>
+    <string name="format_lesson_time_2">%1$d-%2$d (%3$s)</string>
     <string name="format_lesson_number">%1$d - %2$d</string>
 
     <string name="main_building">Hauptgebäude</string>

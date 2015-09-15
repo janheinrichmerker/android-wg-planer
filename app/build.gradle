@@ -14,7 +14,7 @@ apply plugin: 'io.fabric'
 def versionMajor = 4
 def versionMinor = 1
 def versionPatch = 0
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 
 repositories {
     maven {
@@ -38,7 +38,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false //TODO turn this on after much more testing
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -70,7 +70,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.heinrichreimersoftware.materialdrawer:library:2.1.2'
     compile 'com.jpardogo.materialtabstrip:library:1.1.0'
-    compile 'com.afollestad:material-dialogs:0.7.9.0' ///
+    compile 'com.afollestad:material-dialogs:0.7.9.0'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     compile 'jp.wasabeef:recyclerview-animators:1.2.1@aar'
     compile 'com.github.clans:fab:1.6.0'

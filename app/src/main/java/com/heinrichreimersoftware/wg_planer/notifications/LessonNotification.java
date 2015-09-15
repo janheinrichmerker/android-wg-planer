@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.Html;
 import android.util.Log;
 
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -34,9 +35,7 @@ public class LessonNotification {
         );
 
         NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()
-                .bigText(formatter.rooms(true) + "\n" +
-                        formatter.time() + "\n" +
-                        formatter.teachers());
+                .bigText(Html.fromHtml(context.getString(R.string.text_notification_lesson, formatter.rooms(true), formatter.time(false), formatter.teachers())));
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
                 .setContentTitle(formatter.subjects())
