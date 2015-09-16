@@ -69,9 +69,18 @@
             android:title="@string/title_preference_info" />
 
         <Preference
+            android:key="@string/key_preference_help"
+            android:summary="@string/label_preference_help"
+            android:title="@string/title_preference_help">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://heinrichreimersoftware.com/wg-planer-einrichtung/" />
+        </Preference>
+
+        <Preference
             android:key="@string/key_preference_feedback"
-            android:summary="@string/label_preference_contact"
-            android:title="@string/title_preference_contact">
+            android:summary="@string/label_preference_feedback"
+            android:title="@string/title_preference_feedback">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="@string/url_email_feedback">

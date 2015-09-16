@@ -284,11 +284,11 @@ public class Lesson {
                         roomsText += ", ";
                     }
                     String room = subjects.get(i).getRoom();
-                    if (withBuilding) {
+                    if (withBuilding && room.length() > 0) {
                         String building = null;
-                        if (room.startsWith("A"))
+                        if (room.charAt(0) == 'A')
                             building = context.getString(R.string.main_building);
-                        if (room.startsWith("B"))
+                        if (room.charAt(0) == 'B')
                             building = context.getString(R.string.branch_office);
                         roomsText += room + (building == null ? "" : " (" + building + ")");
                     } else {
@@ -298,7 +298,16 @@ public class Lesson {
 
                 return roomsText;
             } else {
-                return subjects.get(0).getRoom();
+                String room = subjects.get(0).getRoom();
+                if (withBuilding && room.length() > 0) {
+                    String building = null;
+                    if (room.charAt(0) == 'A')
+                        building = context.getString(R.string.main_building);
+                    if (room.charAt(0) == 'B')
+                        building = context.getString(R.string.branch_office);
+                    room += building == null ? "" : " (" + building + ")";
+                }
+                return room;
             }
         }
     }

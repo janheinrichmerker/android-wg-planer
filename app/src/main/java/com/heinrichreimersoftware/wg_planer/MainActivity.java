@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -126,16 +125,7 @@ public class MainActivity extends DrawerActivity {
         if (user != null) {
             DrawerProfile profile = new DrawerProfile()
                     .setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_wg, getTheme()))
-                    .setName(user.getName())
-                    .setOnProfileClickListener(new DrawerProfile.OnProfileClickListener() {
-                        @Override
-                        public void onClick(DrawerProfile drawerProfile, long id) {
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.parse("file://" + user.getBitmapPath()), "image/*");
-                            startActivity(intent);
-                        }
-                    });
+                    .setName(user.getName());
             Bitmap avatar = user.getBitmap();
             if (avatar != null) {
                 profile.setRoundedAvatar(this, avatar);

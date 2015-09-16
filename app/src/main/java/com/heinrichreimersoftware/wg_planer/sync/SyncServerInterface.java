@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -673,7 +674,7 @@ public class SyncServerInterface {
             try {
                 while (reader.readRecord()) {
                     Teacher teacher = new Teacher();
-                    teacher.setShorthand(reader.get(0));
+                    teacher.setShorthand(Normalizer.normalize(reader.get(0), Normalizer.Form.NFD));
                     teacher.setLastName(reader.get(1));
                     teacher.setFirstName(reader.get(2));
                     teacher.setWebLink(reader.get(3));

@@ -389,14 +389,6 @@ public class User {
         this.bitmap = bitmap;
     }
 
-    public String getBitmapPath() {
-        return BitmapUtils.PATH_SD_IMAGES + "/Profilbild " + this.oid + ".png";
-    }
-
-    public String getBitmapFileName() {
-        return "Profilbild " + this.oid + ".png";
-    }
-
     public String toJson() {
         return new Gson().toJson(new AuthToken(this.username, this.password), AuthToken.class);
     }

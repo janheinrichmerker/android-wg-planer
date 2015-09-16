@@ -13,9 +13,10 @@
     <string name="key_preference_update_user_info">key_preference_update_user_info</string>
     <string name="key_preference_logout">key_preference_logout</string>
 
+    <string name="key_preference_info">key_preference_info</string>
+    <string name="key_preference_help">key_preference_help</string>
     <string name="key_preference_feedback">key_preference_feedback</string>
     <string name="key_preference_more_apps">key_preference_more_apps</string>
-    <string name="key_preference_info">key_preference_info</string>
     <string name="key_preference_licenses">key_preference_licenses</string>
 
     <string name="title_preference_category_courses">Kurse</string>
@@ -29,8 +30,8 @@
     <string name="label_preference_geo_notifications_on">In der Nähe der Schule Benachrichtigungen zur aktuellen Stunde anzeigen</string>
     <string name="label_preference_geo_notifications_off">Keine Benachrichtigungen zur aktuellen Stunde anzeigen</string>
     <string name="title_preference_geo_silent">Lautlos Modus</string>
-    <string name="label_preference_geo_silent_on">In der Nähe der Schule Gerät stummschalten</string>
-    <string name="label_preference_geo_silent_off">Nicht stummschalten</string>
+    <string name="label_preference_geo_silent_on">In der Nähe der Schule Gerät stumm schalten</string>
+    <string name="label_preference_geo_silent_off">Nicht stumm schalten</string>
 
     <string name="title_preference_category_account">Account</string>
     <string name="title_preference_sync">Synchronisation</string>
@@ -40,12 +41,14 @@
     <string name="title_preference_logout">Ausloggen</string>
 
     <string name="title_preference_category_about">Informationen</string>
-    <string name="title_preference_contact">Entwickler kontaktieren</string>
-    <string name="label_preference_contact">Fehler oder Problem melden</string>
-    <string name="title_preference_more_apps">Mehr Apps</string>
-    <string name="label_preference_more_apps">Weitere Apps dieses Entwicklers</string>
     <string name="title_preference_info">Info</string>
     <string name="label_preference_info">Informationen zu dieser App</string>
+    <string name="title_preference_help">Hilfe</string>
+    <string name="label_preference_help">Anleitung zur Einrichtung und Benutzung ansehen</string>
+    <string name="title_preference_feedback">Entwickler kontaktieren</string>
+    <string name="label_preference_feedback">Fehler oder Problem melden</string>
+    <string name="title_preference_more_apps">Mehr Apps</string>
+    <string name="label_preference_more_apps">Weitere Apps dieses Entwicklers</string>
     <string name="title_preference_licenses">Open-Source-Lizenzen</string>
     <string name="label_preference_licenses">Rechtliche Hinweise zu Lizenzen</string>
 

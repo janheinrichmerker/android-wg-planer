@@ -34,8 +34,10 @@ public class LessonNotification {
                 Constants.GEOFENCE_NOTIFICATION_PENDING_INTENT_ID, PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()
-                .bigText(Html.fromHtml(context.getString(R.string.text_notification_lesson, formatter.rooms(true), formatter.time(false), formatter.teachers())));
+        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle()
+                .addLine(Html.fromHtml(context.getString(R.string.text_notification_lesson_room, formatter.rooms(true))))
+                .addLine(Html.fromHtml(context.getString(R.string.text_notification_lesson_time, formatter.time(false))))
+                .addLine(Html.fromHtml(context.getString(R.string.text_notification_lesson_teacher, formatter.teachers())));
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
                 .setContentTitle(formatter.subjects())

@@ -17,6 +17,7 @@ public class BitmapUtils {
     public static final String PATH_SD_IMAGES = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Wilhelm-Gymnasium";
 
     public static boolean saveBitmapToSd(Context context, Bitmap bitmap, String filename) {
+        if (bitmap == null) return false;
         try {
             FileOutputStream fOut = context.openFileOutput(filename, Context.MODE_PRIVATE);
 
