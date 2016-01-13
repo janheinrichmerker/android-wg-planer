@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
+    <!--suppress AndroidUnknownAttribute -->
+    <data class="SubjectItem">
         <variable
             name="item"
             type="com.heinrichreimersoftware.wg_planer.structure.TeacherSubject" />

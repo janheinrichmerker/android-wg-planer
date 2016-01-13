@@ -1,60 +1,43 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.text.TextUtils;
-
-import com.heinrichreimersoftware.wg_planer.data.TeachersDbHelper;
+import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimersoftware.wg_planer.Constants;
 
 public class Teacher {
-    public String shorthand = "";
-    public String firstName = "";
-    public String lastName = "";
-    public String webLink = "";
+    @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
+    private long id;
 
-    public Teacher(String shorthand, String firstName, String lastName, String webLink) {
-        this.shorthand = shorthand;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.webLink = webLink;
-    }
+    @Column(name = Constants.DATABASE_COLUMN_NAME_TITLE)
+    private String title;
+    @Column(name = Constants.DATABASE_COLUMN_NAME_FIRST_NAME)
+    private String firstName;
+    @Column(name = Constants.DATABASE_COLUMN_NAME_LAST_NAME)
+    private String lastName;
+    @Column(name = Constants.DATABASE_COLUMN_NAME_SHORTHAND)
+    private String shorthand;
+    @Column(name = Constants.DATABASE_COLUMN_NAME_URL)
+    private String url;
+    @Column(name = Constants.DATABASE_COLUMN_NAME_IMG_URL)
+    private String imgUrl;
 
     public Teacher() {
     }
 
-    public static Teacher fromCursor(Cursor curRepresentations) {
-        String shorthand = curRepresentations.getString(curRepresentations.getColumnIndex(TeachersDbHelper.TEACHERS_COL_SHORTHAND));
-        String firstName = curRepresentations.getString(curRepresentations.getColumnIndex(TeachersDbHelper.TEACHERS_COL_FIRST_NAME));
-        String lastName = curRepresentations.getString(curRepresentations.getColumnIndex(TeachersDbHelper.TEACHERS_COL_LAST_NAME));
-        String webLink = curRepresentations.getString(curRepresentations.getColumnIndex(TeachersDbHelper.TEACHERS_COL_WEB_LINK));
-
-        return new Teacher(shorthand,
-                firstName,
-                lastName,
-                webLink);
+    public Teacher(Builder builder) {
+        title = builder.title;
+        firstName = builder.firstName;
+        lastName = builder.lastName;
+        shorthand = builder.shorthand;
+        url = builder.url;
+        imgUrl = builder.imgUrl;
     }
 
-    @SuppressWarnings("RedundantIfStatement")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Teacher representation = (Teacher) o;
-
-        if (!shorthand.equals(representation.shorthand)) return false;
-        if (!firstName.equals(representation.firstName)) return false;
-        if (!lastName.equals(representation.lastName)) return false;
-        if (!webLink.equals(representation.webLink)) return false;
-        return true;
+    public String getTitle() {
+        return title;
     }
 
-    public String getShorthand() {
-        return shorthand;
-    }
-
-    public void setShorthand(String shorthand) {
-        this.shorthand = shorthand;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getFirstName() {
@@ -74,37 +57,114 @@ public class Teacher {
     }
 
     public String getFullName() {
-        String fullName = "";
-        if (!TextUtils.isEmpty(firstName)) {
-            fullName += firstName;
-            if (!TextUtils.isEmpty(lastName)) {
-                fullName += " ";
-            }
+        return firstName + " " + lastName;
+    }
+
+    public String getShorthand() {
+        return shorthand;
+    }
+
+    public void setShorthand(String shorthand) {
+        this.shorthand = shorthand;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    @SuppressWarnings("RedundantIfStatement")
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Teacher representation = (Teacher) o;
+
+        if (!title.equals(representation.title)) return false;
+        if (!firstName.equals(representation.firstName)) return false;
+        if (!lastName.equals(representation.lastName)) return false;
+        if (!shorthand.equals(representation.shorthand)) return false;
+        if (!url.equals(representation.url)) return false;
+        if (!imgUrl.equals(representation.imgUrl)) return false;
+        return true;
+    }
+
+    public static class Builder {
+        private String title;
+        private String firstName;
+        private String lastName;
+        private String shorthand;
+        private String url;
+        private String imgUrl;
+
+        public String title() {
+            return title;
         }
-        if (!TextUtils.isEmpty(lastName)) {
-            fullName += lastName;
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
         }
-        return fullName;
-    }
 
-    public String getWebLink() {
-        return webLink;
-    }
+        public String firstName() {
+            return firstName;
+        }
 
-    public void setWebLink(String webLink) {
-        this.webLink = webLink;
-    }
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
 
-    public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
-        values.put(TeachersDbHelper.TEACHERS_COL_SHORTHAND, shorthand);
-        values.put(TeachersDbHelper.TEACHERS_COL_FIRST_NAME, firstName);
-        values.put(TeachersDbHelper.TEACHERS_COL_LAST_NAME, lastName);
-        values.put(TeachersDbHelper.TEACHERS_COL_WEB_LINK, webLink);
-        return values;
-    }
+        public String lastName() {
+            return lastName;
+        }
 
-    public String toString() {
-        return this.getShorthand() + ": " + this.getFirstName() + " " + this.getLastName() + ": " + this.getWebLink();
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public String shorthand() {
+            return shorthand;
+        }
+
+        public Builder shorthand(String shorthand) {
+            this.shorthand = shorthand;
+            return this;
+        }
+
+        public String url() {
+            return url;
+        }
+
+        public Builder url(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public String imgUrl() {
+            return imgUrl;
+        }
+
+        public Builder imgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+            return this;
+        }
+
+        public Teacher build() {
+            return new Teacher(this);
+        }
     }
 }

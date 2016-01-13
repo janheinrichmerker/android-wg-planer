@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,19 +23,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.exceptions.Base64Exception;
-import com.heinrichreimersoftware.wg_planer.exceptions.NetworkException;
-import com.heinrichreimersoftware.wg_planer.exceptions.UnknownUsernameException;
-import com.heinrichreimersoftware.wg_planer.exceptions.WrongCredentialsException;
-import com.heinrichreimersoftware.wg_planer.exceptions.WrongPasswordException;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral.AUTHENTICATOR_SERVER_INTERFACE;
 
 public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
@@ -76,7 +74,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             setTaskDescription(new ActivityManager.TaskDescription(
                             getString(R.string.title_app),
                             (appIcon != null) ? appIcon.getBitmap() : null,
-                            getResources().getColor(R.color.material_green_600))
+                            ContextCompat.getColor(this, R.color.material_green_600))
             );
         }
 
@@ -96,15 +94,16 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                         .content(R.string.label_dialog_confirm_privacy)
                         .positiveText(android.R.string.ok)
                         .negativeText(android.R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 sharedPreferences.edit().putBoolean(LOGIN_EULA_READ, true).apply();
                                 dialog.cancel();
                             }
-
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onNegative(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 finish();
                             }
                         })
@@ -208,25 +207,15 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                     Bundle data = new Bundle();
                     try {
                         String authToken;
-                        authToken = AUTHENTICATOR_SERVER_INTERFACE.userSignIn(userNameFinal, userPassFinal, mAuthTokenType, context);
+                        authToken = AuthenticatorServerInterface.login(userNameFinal);
 
                         data.putString(AccountManager.KEY_ACCOUNT_NAME, userNameFinal);
                         data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
                         data.putString(AccountManager.KEY_AUTHTOKEN, authToken);
                         data.putString(PARAM_USER_PASS, userPassFinal);
 
-                    } catch (Base64Exception e) {
-                        data.putInt(KEY_ERROR_MESSAGE, R.string.label_login_error_base64);
-                    } catch (NetworkException e) {
+                    } catch (IOException e) {
                         data.putInt(KEY_ERROR_MESSAGE, R.string.label_login_error_network);
-                    } catch (UnknownUsernameException e) {
-                        data.putInt(KEY_ERROR_MESSAGE, R.string.label_login_error_unknown_username);
-                    } catch (WrongCredentialsException e) {
-                        data.putInt(KEY_ERROR_MESSAGE, R.string.label_login_error_wrong_credentials);
-                    } catch (WrongPasswordException e) {
-                        data.putInt(KEY_ERROR_MESSAGE, R.string.label_login_error_wrong_password);
-                    } catch (Exception e) {
-                        data.putInt(KEY_ERROR_MESSAGE, R.string.label_login_error_unknown);
                     }
 
                     final Intent res = new Intent();

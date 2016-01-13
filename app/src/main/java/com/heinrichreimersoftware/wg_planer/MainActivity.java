@@ -18,9 +18,12 @@ import com.google.android.gms.location.Geofence;
 import com.heinrichreimersoftware.materialdrawer.DrawerActivity;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
-import com.heinrichreimersoftware.wg_planer.data.RepresentationsContentHelper;
-import com.heinrichreimersoftware.wg_planer.data.RepresentationsContract;
-import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
+import com.heinrichreimersoftware.materialdrawer.theme.DrawerTheme;
+import com.heinrichreimersoftware.wg_planer.content.RepresentationsContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
+import com.heinrichreimersoftware.wg_planer.fragment.RepresentationNavigationFragment;
+import com.heinrichreimersoftware.wg_planer.fragment.TeacherFragment;
+import com.heinrichreimersoftware.wg_planer.fragment.TimetableNavigationFragment;
 import com.heinrichreimersoftware.wg_planer.geo.GeofenceActivityHelper;
 import com.heinrichreimersoftware.wg_planer.geo.GeofenceHelper;
 import com.heinrichreimersoftware.wg_planer.geo.GeofenceTransitionsIntentService;
@@ -73,6 +76,9 @@ public class MainActivity extends DrawerActivity {
         }
 
         updateDrawerList();
+        setDrawerTheme(new DrawerTheme(this)
+                        .setStatusBarBackgroundColorRes(android.R.color.transparent)
+        );
 
         long id = DRAWER_ID_TIMETABLE;
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_SELECTED_ITEM)) {

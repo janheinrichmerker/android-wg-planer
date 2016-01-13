@@ -11,8 +11,8 @@ import android.util.Log;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.data.RepresentationsContentHelper;
-import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.RepresentationsContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
 import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.structure.User;
 

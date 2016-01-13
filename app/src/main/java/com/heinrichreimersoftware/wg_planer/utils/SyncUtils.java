@@ -11,10 +11,6 @@ import android.support.annotation.NonNull;
 
 import com.heinrichreimersoftware.wg_planer.R;
 import com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral;
-import com.heinrichreimersoftware.wg_planer.data.RepresentationsContract;
-import com.heinrichreimersoftware.wg_planer.data.TeachersContract;
-import com.heinrichreimersoftware.wg_planer.data.TimetableContract;
-import com.heinrichreimersoftware.wg_planer.data.UserContract;
 
 public class SyncUtils {
 

@@ -1,15 +1,13 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.data.TeachersContentHelper;
-import com.heinrichreimersoftware.wg_planer.data.TimetableDbHelper;
+import com.heinrichreimersoftware.wg_planer.content.TeachersContentHelper;
 import com.heinrichreimersoftware.wg_planer.utils.ColorUtils;
+import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,27 +16,27 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Lesson {
+    @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
+    private long id;
 
+    @Column(name = Constants.DATABASE_COLUMN_NAME_DAY)
     private int day;
+    @Column(name = Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
     private int firstLessonNumber;
+    @Column(name = Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
     private int lastLessonNumber;
-    private List<TeacherSubject> subjects;
+    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_SUBJECTS,
+            tableName = Constants.DATABASE_TABLE_NAME_TEACHER_SUBJECTS)
+    private List<TeacherSubject> subjects; //FIXME
 
-    public static Lesson fromCursor(Cursor curRepresentations) {
-        List<TeacherSubject> subjects = new Gson().fromJson(
-                curRepresentations.getString(curRepresentations.getColumnIndex(
-                        TimetableDbHelper.TIMETABLE_COL_SUBJECTS)),
-                new TypeToken<List<TeacherSubject>>() {
-                }.getType());
-        return new Builder()
-                .day(curRepresentations.getInt(curRepresentations.getColumnIndex(
-                        TimetableDbHelper.TIMETABLE_COL_DAY)))
-                .firstLessonNumber(curRepresentations.getInt(curRepresentations.getColumnIndex(
-                        TimetableDbHelper.TIMETABLE_COL_FIRST_LESSON_NUMBER)))
-                .lastLessonNumber(curRepresentations.getInt(curRepresentations.getColumnIndex(
-                        TimetableDbHelper.TIMETABLE_COL_LAST_LESSON_NUMBER)))
-                .subjects(subjects)
-                .build();
+    public Lesson() {
+    }
+
+    public Lesson(Builder builder) {
+        day = builder.day;
+        firstLessonNumber = builder.firstLessonNumber;
+        lastLessonNumber = builder.lastLessonNumber;
+        subjects = builder.subjects;
     }
 
     public int getDay() {
@@ -71,29 +69,6 @@ public class Lesson {
 
     public void setSubjects(List<TeacherSubject> subjects) {
         this.subjects = subjects;
-    }
-
-    public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
-        values.put(TimetableDbHelper.TIMETABLE_COL_DAY, day);
-        values.put(TimetableDbHelper.TIMETABLE_COL_FIRST_LESSON_NUMBER, firstLessonNumber);
-        values.put(TimetableDbHelper.TIMETABLE_COL_LAST_LESSON_NUMBER, lastLessonNumber);
-        values.put(TimetableDbHelper.TIMETABLE_COL_SUBJECTS, new Gson().toJson(subjects));
-        return values;
-    }
-
-    public void mergeWith(Lesson lesson) {
-        subjects.addAll(lesson.getSubjects());
-
-        for (int i = 0; i < subjects.size(); i++) {
-            TeacherSubject subject1 = subjects.get(i);
-            for (int j = i + 1; j < subjects.size(); j++) {
-                TeacherSubject subject2 = subjects.get(j);
-                if (subject1.equals(subject2)) {
-                    subjects.remove(j);
-                }
-            }
-        }
     }
 
     public boolean isOver() {
@@ -132,7 +107,6 @@ public class Lesson {
     }
 
     public static class Builder {
-
         private int day;
         private int firstLessonNumber;
         private int lastLessonNumber;
@@ -179,14 +153,7 @@ public class Lesson {
         }
 
         public Lesson build() {
-            Lesson lesson = new Lesson();
-
-            lesson.setDay(day);
-            lesson.setFirstLessonNumber(firstLessonNumber);
-            lesson.setLastLessonNumber(lastLessonNumber);
-            lesson.setSubjects(subjects);
-
-            return lesson;
+            return new Lesson(this);
         }
     }
 

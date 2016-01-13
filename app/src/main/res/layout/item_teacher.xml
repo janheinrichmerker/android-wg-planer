@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
+    <!--suppress AndroidUnknownAttribute -->
+    <data class="TeacherItem">
         <variable
             name="item"
             type="com.heinrichreimersoftware.wg_planer.structure.Teacher" />
@@ -18,7 +18,7 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/baseline"
         android:paddingRight="@dimen/baseline"
-        app:webLink="@{item.webLink}">
+        app:webLink="@{item.url}">
 
         <TextView
             android:layout_width="@dimen/baseline_content_relative"

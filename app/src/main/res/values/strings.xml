@@ -44,6 +44,7 @@
         <item quantity="one">Eine aktuelle Vertretung</item>
         <item quantity="other">%1$d aktuelle Vertretungen</item>
     </plurals>
+    <string name="content_description_changes">Änderungen</string>
 
     <!-- Empty views -->
     <string name="label_empty_view_representations">Keine Vertretungen</string>
@@ -115,6 +116,8 @@
     <string name="friday">Freitag</string>
     <string name="saturday">Samstag</string>
     <string name="sunday">Sonntag</string>
+
+    <string name="elimination">Entfall</string>
 
     <!-- Authenticator/content provider -->
     <string name="title_authenticator">Wilhelm-Gymnasium</string>

@@ -8,9 +8,8 @@ import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.data.RepresentationsContentHelper;
-import com.heinrichreimersoftware.wg_planer.data.RepresentationsContract;
-import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.RepresentationsContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
 import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.structure.User;
 
@@ -36,8 +35,8 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
             User user = UserContentHelper.getUser(context);
 
             List<Representation> allRepresentations;
-            if (user != null && !user.getSchoolClass().equals("")) {
-                allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context, user.getSchoolClass());
+            if (user != null && user.getSchoolClasses() != null && user.getSchoolClasses().length == 0) {
+                allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context, user.getSchoolClasses());
             } else {
                 allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context);
             }
@@ -68,7 +67,7 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
                         if (!first) {
                             expandedBody += ", ";
                         }
-                        expandedBody += representation.getFormatter(context).subject();
+                        expandedBody += Representation.Formatter.subject(context, representation);
                         first = false;
                     }
                 } else {
@@ -76,9 +75,8 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
 
                     status = representation.getSubject().getShorthand();
                     icon = R.drawable.ic_notification_representation;
-                    Representation.Formatter formatter = representation.getFormatter(context);
-                    expandedTitle = formatter.summary();
-                    expandedBody = formatter.description();
+                    expandedTitle = Representation.Formatter.summary(context, representation);
+                    expandedBody = Representation.Formatter.description(context, representation);
                 }
 
                 Intent clickIntent = new Intent(context, MainActivity.class);

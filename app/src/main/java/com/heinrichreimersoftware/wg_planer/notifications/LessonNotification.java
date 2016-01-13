@@ -13,7 +13,7 @@ import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.R;
 import com.heinrichreimersoftware.wg_planer.structure.Lesson;
-import com.heinrichreimersoftware.wg_planer.structure.LessonTimeFactory;
+import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
 
 public class LessonNotification {
     public static void notify(Context context, Lesson lesson) {

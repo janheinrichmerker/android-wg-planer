@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.location.Geofence;
+import com.heinrichreimersoftware.wg_planer.fragment.SettingsFragment;
 import com.heinrichreimersoftware.wg_planer.geo.GeofenceActivityHelper;
 import com.heinrichreimersoftware.wg_planer.geo.GeofenceHelper;
 import com.heinrichreimersoftware.wg_planer.geo.GeofenceTransitionsIntentService;

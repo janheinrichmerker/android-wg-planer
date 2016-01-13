@@ -17,7 +17,10 @@ import android.widget.Toast;
 
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
-import com.heinrichreimersoftware.wg_planer.data.DbHelper;
+import com.heinrichreimersoftware.wg_planer.content.RepresentationsContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.TeachersContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.TimetableContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
 
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS;
@@ -144,13 +147,10 @@ public class WgPlanerAuthenticator extends AbstractAccountAuthenticator {
             settingsHasSetDefault.apply();
 
             Log.d("WG-Planer", "Clear database...");
-            context.deleteDatabase(DbHelper.DATABASE_NAME);
-            /*
             RepresentationsContentHelper.clearRepresentations(context);
             TimetableContentHelper.clearTimetable(context);
             TeachersContentHelper.clearTeachers(context);
             UserContentHelper.clearUsers(context);
-            //*/
         }
 
         Log.d(MainActivity.TAG, "getAccountRemovalAllowed(): " + result.toString());

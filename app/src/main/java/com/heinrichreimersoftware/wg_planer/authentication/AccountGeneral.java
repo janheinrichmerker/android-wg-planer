@@ -10,6 +10,4 @@ public class AccountGeneral {
     /*Auth token types*/
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS = "Vollzugriff";
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS_LABEL = "Vollzugriff auf den Wilhelm-Gymnasium Account";
-
-    public static final AuthenticatorServerInterface AUTHENTICATOR_SERVER_INTERFACE = new AuthenticatorServerInterface();
 }

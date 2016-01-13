@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class CalendarInterval {
-
     private Calendar startTime;
     private Calendar endTime;
 

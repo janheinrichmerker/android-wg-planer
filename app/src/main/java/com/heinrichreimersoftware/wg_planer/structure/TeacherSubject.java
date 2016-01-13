@@ -1,24 +1,29 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
-public class TeacherSubject extends Subject {
+import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimersoftware.wg_planer.Constants;
 
-    protected String teacher;
+public class TeacherSubject extends Subject {
+    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_TEACHER,
+            tableName = Constants.DATABASE_TABLE_NAME_TEACHERS)
+    protected Teacher teacher; //FIXME
+    @Column(name = "room")
     protected String room;
 
-    public TeacherSubject(String shorthand, String fullName, int color, String teacher, String room) {
-        super(shorthand, fullName, color);
-        this.shorthand = shorthand;
-        this.fullName = fullName;
-        this.color = color;
-        this.teacher = teacher;
-        this.room = room;
+    public TeacherSubject() {
     }
 
-    public String getTeacher() {
+    public TeacherSubject(Builder builder) {
+        super(builder);
+        teacher = builder.teacher;
+        room = builder.room;
+    }
+
+    public Teacher getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 
@@ -43,9 +48,30 @@ public class TeacherSubject extends Subject {
         return true;
     }
 
+    public static class Builder extends Subject.Builder {
+        protected Teacher teacher;
+        protected String room;
 
-    @Override
-    public String toString() {
-        return fullName + "(" + shorthand + "): " + teacher + " in " + room;
+        public Teacher teacher() {
+            return teacher;
+        }
+
+        public Builder teacher(Teacher teacher) {
+            this.teacher = teacher;
+            return this;
+        }
+
+        public String room() {
+            return room;
+        }
+
+        public Builder room(String room) {
+            this.room = room;
+            return this;
+        }
+
+        public TeacherSubject build() {
+            return new TeacherSubject(this);
+        }
     }
 }

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
 import com.heinrichreimersoftware.wg_planer.structure.User;
 
 import java.util.Calendar;

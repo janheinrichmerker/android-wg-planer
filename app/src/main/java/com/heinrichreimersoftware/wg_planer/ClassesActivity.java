@@ -20,10 +20,10 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
-import com.heinrichreimersoftware.wg_planer.adapters.ClassesAdapter;
+import com.heinrichreimersoftware.wg_planer.adapter.ClassesAdapter;
 import com.heinrichreimersoftware.wg_planer.recyclerview.DividerItemDecoration;
 import com.heinrichreimersoftware.wg_planer.recyclerview.SwipeDismissRecyclerViewTouchListener;
-import com.heinrichreimersoftware.wg_planer.structure.SubjectComparator;
+import com.heinrichreimersoftware.wg_planer.utils.SubjectComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;

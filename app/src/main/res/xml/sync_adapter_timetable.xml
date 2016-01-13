@@ -2,7 +2,7 @@
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
     android:accountType="com.heinrichreimersoftware.wg_planer_auth"
     android:allowParallelSyncs="false"
-    android:contentAuthority="com.heinrichreimersoftware.lessons.provider"
+    android:contentAuthority="com.heinrichreimersoftware.wg_planer.content.lessons"
     android:isAlwaysSyncable="false"
     android:supportsUploading="false"
     android:userVisible="true" />

@@ -166,26 +166,6 @@
         </service>
 
         <!-- Content providers -->
-        <provider
-            android:name=".data.RepresentationsContentProvider"
-            android:authorities="com.heinrichreimersoftware.representations.provider"
-            android:exported="false"
-            android:label="@string/title_provider_representations" />
-        <provider
-            android:name=".data.TimetableContentProvider"
-            android:authorities="com.heinrichreimersoftware.lessons.provider"
-            android:exported="false"
-            android:label="@string/title_provider_timetable" />
-        <provider
-            android:name=".data.TeachersContentProvider"
-            android:authorities="com.heinrichreimersoftware.teachers.provider"
-            android:exported="false"
-            android:label="@string/title_provider_teachers" />
-        <provider
-            android:name=".data.UserContentProvider"
-            android:authorities="com.heinrichreimersoftware.users.provider"
-            android:exported="false"
-            android:label="@string/title_provider_user" />
 
         <!-- Crashlytics -->
         <meta-data

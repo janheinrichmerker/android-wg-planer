@@ -1,63 +1,47 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
+import android.text.TextUtils;
 
+import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.data.RepresentationsDbHelper;
-import com.heinrichreimersoftware.wg_planer.data.TeachersContentHelper;
-import com.heinrichreimersoftware.wg_planer.data.UserContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.TeachersContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
 import com.heinrichreimersoftware.wg_planer.utils.ColorUtils;
+import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
+import com.heinrichreimersoftware.wg_planer.utils.factories.SubjectFactory;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Representation {
+    @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
+    private long id;
 
+    @Column(name = Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS)
     private String schoolClass;
-    private Calendar date;
-    private int firstLessonNumber;
-    private int lastLessonNumber;
-    private Subject subject;
-    private String fromTeacher;
-    private String fromRoom;
-    private String from;
-    private String toTeacher;
-    private String toRoom;
-    private String to;
+    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_SUBJECT,
+            tableName = Constants.DATABASE_TABLE_NAME_SUBJECTS)
+    private Subject subject; //FIXME
+    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_FROM,
+            tableName = Constants.DATABASE_TABLE_NAME_FROM_TOS)
+    private FromTo from; //FIXME
+    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_TO,
+            tableName = Constants.DATABASE_TABLE_NAME_FROM_TOS)
+    private FromTo to; //FIXME
+    @Column(name = Constants.DATABASE_COLUMN_NAME_DESCRIPTION)
     private String description;
 
-    public static Representation fromCursor(Cursor cursor) {
-        Calendar date = new GregorianCalendar();
-        date.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(
-                RepresentationsDbHelper.REPRESENTATIONS_COL_DATE)));
+    public Representation() {
+    }
 
-        return new Builder()
-                .schoolClass(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS)))
-                .date(date)
-                .firstLessonNumber(cursor.getInt(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER)))
-                .lastLessonNumber(cursor.getInt(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_LAST_LESSON_NUMBER)))
-                .subject(new SubjectFactory().fromShorthand(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_SUBJECT))))
-                .fromTeacher(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_TEACHER)))
-                .fromRoom(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_ROOM)))
-                .from(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_FROM)))
-                .toTeacher(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_TO_TEACHER)))
-                .toRoom(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_TO_ROOM)))
-                .to(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_TO)))
-                .description(cursor.getString(cursor.getColumnIndex(
-                        RepresentationsDbHelper.REPRESENTATIONS_COL_DESCRIPTION)))
-                .build();
+    public Representation(Builder builder) {
+        schoolClass = builder.schoolClass;
+        subject = builder.subject;
+        from = builder.from;
+        to = builder.to;
+        description = builder.description;
     }
 
     public String getSchoolClass() {
@@ -68,38 +52,6 @@ public class Representation {
         this.schoolClass = schoolClass;
     }
 
-    public Calendar getDate() {
-        return date;
-    }
-
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
-    public int getFirstLessonNumber() {
-        return firstLessonNumber;
-    }
-
-    public void setFirstLessonNumber(int firstLessonNumber) {
-        this.firstLessonNumber = firstLessonNumber;
-    }
-
-    public int getLastLessonNumber() {
-        return lastLessonNumber;
-    }
-
-    public void setLastLessonNumber(int lastLessonNumber) {
-        this.lastLessonNumber = lastLessonNumber;
-    }
-
-    public String getFromTeacher() {
-        return fromTeacher;
-    }
-
-    public void setFromTeacher(String fromTeacher) {
-        this.fromTeacher = fromTeacher;
-    }
-
     public Subject getSubject() {
         return subject;
     }
@@ -108,48 +60,23 @@ public class Representation {
         this.subject = subject;
     }
 
-    public String getToTeacher() {
-        return toTeacher;
-    }
-
-    public void setToTeacher(String toTeacher) {
-        this.toTeacher = toTeacher;
-    }
-
-    public String getFromRoom() {
-        return fromRoom;
-    }
-
-    public void setFromRoom(String fromRoom) {
-        this.fromRoom = fromRoom;
-    }
-
-    public String getToRoom() {
-        return toRoom;
-    }
-
-    public void setToRoom(String toRoom) {
-        this.toRoom = toRoom;
-    }
-
-    public String getFrom() {
+    public FromTo getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(FromTo from) {
         this.from = from;
     }
 
-    public String getTo() {
+    public FromTo getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(FromTo to) {
         this.to = to;
     }
 
     public String getDescription() {
-        if (description.equals("\u00A0")) return null;
         return description;
     }
 
@@ -157,27 +84,10 @@ public class Representation {
         this.description = description;
     }
 
-    public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_SCHOOL_CLASS, schoolClass);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_DATE, date.getTimeInMillis());
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FIRST_LESSON_NUMBER, firstLessonNumber);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_LAST_LESSON_NUMBER, lastLessonNumber);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_TEACHER, fromTeacher);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_SUBJECT, subject.getShorthand());
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_TO_TEACHER, toTeacher);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FROM_ROOM, fromRoom);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_TO_ROOM, toRoom);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_FROM, from);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_TO, to);
-        values.put(RepresentationsDbHelper.REPRESENTATIONS_COL_DESCRIPTION, description);
-        return values;
-    }
-
     public boolean isOver() {
         Calendar currentTime = new GregorianCalendar();
-        Calendar endTime = (Calendar) date.clone();
-        Calendar time = LessonTimeFactory.fromRepresentation(this).getEndTime();
+        Calendar endTime = (Calendar) getFrom().getDate().clone();
+        Calendar time = LessonTimeFactory.fromRepresentationFromTo(getTo()).getEndTime();
 
         endTime.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
         endTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
@@ -198,37 +108,157 @@ public class Representation {
         Representation representation = (Representation) o;
 
         if (!schoolClass.equals(representation.schoolClass)) return false;
-        if (!date.equals(representation.date)) return false;
-        if (firstLessonNumber != representation.firstLessonNumber) return false;
-        if (lastLessonNumber != representation.lastLessonNumber) return false;
         if (!subject.equals(representation.subject)) return false;
-        if (!fromTeacher.equals(representation.fromTeacher)) return false;
-        if (!fromRoom.equals(representation.fromRoom)) return false;
         if (!from.equals(representation.from)) return false;
-        if (!toTeacher.equals(representation.toTeacher)) return false;
-        if (!toRoom.equals(representation.toRoom)) return false;
         if (!to.equals(representation.to)) return false;
         if (!description.equals(representation.description)) return false;
         return true;
     }
 
-    public Formatter getFormatter(Context context) {
-        return new Formatter(context, this);
+    public static class FromTo {
+        public static final FromTo ELIMINATION = new FromTo();
+
+        @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
+        private long id;
+
+        @Column(name = Constants.DATABASE_COLUMN_NAME_DATE)
+        private Calendar date;
+        @Column(name = Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
+        private int firstLessonNumber;
+        @Column(name = Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
+        private int lastLessonNumber;
+        @Column(name = Constants.DATABASE_COLUMN_NAME_ROOM)
+        private String room;
+        @Reference(columnName = Constants.DATABASE_COLUMN_NAME_TEACHER,
+                tableName = Constants.DATABASE_TABLE_NAME_TEACHERS)
+        private Teacher teacher; //FIXME
+
+        public FromTo() {
+        }
+
+        public FromTo(Builder builder) {
+            date = builder.date;
+            firstLessonNumber = builder.firstLessonNumber;
+            lastLessonNumber = builder.lastLessonNumber;
+            room = builder.room;
+            teacher = builder.teacher;
+        }
+
+        public Calendar getDate() {
+            return date;
+        }
+
+        public void setDate(Calendar date) {
+            this.date = date;
+        }
+
+        public int getFirstLessonNumber() {
+            return firstLessonNumber;
+        }
+
+        public void setFirstLessonNumber(int firstLessonNumber) {
+            this.firstLessonNumber = firstLessonNumber;
+        }
+
+        public int getLastLessonNumber() {
+            return lastLessonNumber;
+        }
+
+        public void setLastLessonNumber(int lastLessonNumber) {
+            this.lastLessonNumber = lastLessonNumber;
+        }
+
+        public String getRoom() {
+            return room;
+        }
+
+        public void setRoom(String room) {
+            this.room = room;
+        }
+
+        public Teacher getTeacher() {
+            return teacher;
+        }
+
+        public void setTeacher(Teacher teacher) {
+            this.teacher = teacher;
+        }
+
+        @SuppressWarnings("RedundantIfStatement")
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            FromTo fromTo = (FromTo) o;
+
+            if (!date.equals(fromTo.date)) return false;
+            if (firstLessonNumber != fromTo.firstLessonNumber) return false;
+            if (lastLessonNumber != fromTo.lastLessonNumber) return false;
+            if (!room.equals(fromTo.room)) return false;
+            if (!teacher.equals(fromTo.teacher)) return false;
+            return true;
+        }
+
+        public static class Builder {
+            private Calendar date;
+            private int firstLessonNumber;
+            private int lastLessonNumber;
+            private String room;
+            private Teacher teacher;
+
+            public Calendar date() {
+                return date;
+            }
+
+            public void date(Calendar date) {
+                this.date = date;
+            }
+
+            public int firstLessonNumber() {
+                return firstLessonNumber;
+            }
+
+            public void firstLessonNumber(int firstLessonNumber) {
+                this.firstLessonNumber = firstLessonNumber;
+            }
+
+            public int lastLessonNumber() {
+                return lastLessonNumber;
+            }
+
+            public void lastLessonNumber(int lastLessonNumber) {
+                this.lastLessonNumber = lastLessonNumber;
+            }
+
+            public String room() {
+                return room;
+            }
+
+            public void room(String room) {
+                this.room = room;
+            }
+
+            public Teacher teacher() {
+                return teacher;
+            }
+
+            public void teacher(Teacher teacher) {
+                this.teacher = teacher;
+            }
+
+            public FromTo build() {
+                return new FromTo(this);
+            }
+        }
     }
 
     public static class Builder {
 
         private String schoolClass;
-        private Calendar date;
-        private int firstLessonNumber;
-        private int lastLessonNumber;
         private Subject subject;
-        private String fromTeacher;
-        private String fromRoom;
-        private String from;
-        private String toTeacher;
-        private String toRoom;
-        private String to;
+        private FromTo from;
+        private FromTo to;
         private String description;
 
         public String schoolClass() {
@@ -237,33 +267,6 @@ public class Representation {
 
         public Builder schoolClass(String schoolClass) {
             this.schoolClass = schoolClass;
-            return this;
-        }
-
-        public Calendar date() {
-            return date;
-        }
-
-        public Builder date(Calendar date) {
-            this.date = date;
-            return this;
-        }
-
-        public int firstLessonNumber() {
-            return firstLessonNumber;
-        }
-
-        public Builder firstLessonNumber(int firstLessonNumber) {
-            this.firstLessonNumber = firstLessonNumber;
-            return this;
-        }
-
-        public int lastLessonNumber() {
-            return lastLessonNumber;
-        }
-
-        public Builder lastLessonNumber(int lastLessonNumber) {
-            this.lastLessonNumber = lastLessonNumber;
             return this;
         }
 
@@ -276,56 +279,20 @@ public class Representation {
             return this;
         }
 
-        public String fromTeacher() {
-            return fromTeacher;
-        }
-
-        public Builder fromTeacher(String fromTeacher) {
-            this.fromTeacher = fromTeacher;
-            return this;
-        }
-
-        public String fromRoom() {
-            return fromRoom;
-        }
-
-        public Builder fromRoom(String fromRoom) {
-            this.fromRoom = fromRoom;
-            return this;
-        }
-
-        public String from() {
+        public FromTo from() {
             return from;
         }
 
-        public Builder from(String from) {
+        public Builder from(FromTo from) {
             this.from = from;
             return this;
         }
 
-        public String toTeacher() {
-            return toTeacher;
-        }
-
-        public Builder toTeacher(String toTeacher) {
-            this.toTeacher = toTeacher;
-            return this;
-        }
-
-        public String toRoom() {
-            return toRoom;
-        }
-
-        public Builder toRoom(String toRoom) {
-            this.toRoom = toRoom;
-            return this;
-        }
-
-        public String to() {
+        public FromTo to() {
             return to;
         }
 
-        public Builder to(String to) {
+        public Builder to(FromTo to) {
             this.to = to;
             return this;
         }
@@ -340,44 +307,21 @@ public class Representation {
         }
 
         public Representation build() {
-            Representation representation = new Representation();
-
-            representation.setSchoolClass(schoolClass);
-            representation.setDate(date);
-            representation.setFirstLessonNumber(firstLessonNumber);
-            representation.setLastLessonNumber(lastLessonNumber);
-            representation.setSubject(subject);
-            representation.setFromTeacher(fromTeacher);
-            representation.setFromRoom(fromRoom);
-            representation.setFrom(from);
-            representation.setToTeacher(toTeacher);
-            representation.setToRoom(toRoom);
-            representation.setTo(to);
-            representation.setDescription(description);
-
-            return representation;
+            return new Representation(this);
         }
     }
 
-    public class Formatter {
+    public static class Formatter {
 
-        private Context context;
-        private Representation representation;
-
-        private Formatter(Context context, Representation representation) {
-            this.context = context;
-            this.representation = representation;
-        }
-
-        public String time() {
-            if (representation.getFirstLessonNumber() == representation.getLastLessonNumber()) {
-                return context.getString(R.string.format_lesson_time_1, representation.getFirstLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
+        public static String time(Context context, Representation.FromTo fromTo) {
+            if (fromTo.getFirstLessonNumber() == fromTo.getLastLessonNumber()) {
+                return context.getString(R.string.format_lesson_time_1, fromTo.getFirstLessonNumber(), LessonTimeFactory.fromRepresentationFromTo(fromTo));
             } else {
-                return context.getString(R.string.format_lesson_time_2, representation.getFirstLessonNumber(), representation.getLastLessonNumber(), LessonTimeFactory.fromRepresentation(representation));
+                return context.getString(R.string.format_lesson_time_2, fromTo.getFirstLessonNumber(), fromTo.getLastLessonNumber(), LessonTimeFactory.fromRepresentationFromTo(fromTo));
             }
         }
 
-        public int color() {
+        public static int color(Representation representation) {
             if (representation.isOver()) {
                 return ColorUtils.grey(representation.getSubject().getColor());
             } else {
@@ -385,78 +329,64 @@ public class Representation {
             }
         }
 
-        public String info() {
-            if (!representation.getTo().equals("") && !representation.getTo().equals("\u00A0")) {
+        public static String info(Context context, Representation representation) {
+            if (TextUtils.isEmpty(representation.getTo().getRoom()) || TextUtils.isEmpty(representation.getTo().getTeacher())) {
                 return "";
             } else {
                 String info = "";
-                info += "in " + representation.getToRoom();
+                info += "in " + representation.getTo().getRoom();
 
-                Teacher teacher = TeachersContentHelper.getTeacher(context, representation.getToTeacher());
+                Teacher teacher = TeachersContentHelper.getTeacher(context, representation.getTo().getTeacher());
                 if (teacher != null && !teacher.getLastName().equals("")) {
                     info += " (" + teacher.getLastName() + ")";
                 } else {
-                    info += " (" + representation.getToTeacher() + ")";
+                    info += " (" + representation.getTo().getTeacher() + ")";
                 }
                 return info;
             }
         }
 
-        public String type() {
-            String type = "";
+        public static String type(Representation representation) {
+            String type;
 
-            if (representation.getTo().equals("Entfall")) {
-                type += representation.getTo();
-            } else if (!representation.getFrom().equals("") && !representation.getFrom().equals("\u00A0")) {
-                type += "Vertretung von " + representation.getFrom();
-                if (!representation.getTo().equals("") && !representation.getTo().equals("\u00A0") && !representation.getFrom().equals("") && !representation.getFrom().equals("\u00A0")) {
-                    type += "\nVerlegt nach " + representation.getTo();
-                }
-            } else if (!representation.getTo().equals("") && !representation.getTo().equals("\u00A0")) {
-                type += "Verlegt nach " + representation.getTo();
+            if (representation.getTo().equals(FromTo.ELIMINATION)) {
+                type = "Entfall";
             } else {
-                type += "Vertretung";
+                type = "Vertretung";
             }
 
             return type;
         }
 
-        public String subject() {
+        public static String subject(Context context, Representation representation) {
             boolean hasSetSchoolClass = false;
 
             User user = UserContentHelper.getUser(context);
-            if (user != null && user.getSchoolClass() != null && !user.getSchoolClass().equals(""))
+            if (user != null && user.getSchoolClasses() != null && user.getSchoolClasses().length == 0)
                 hasSetSchoolClass = true;
 
-            String representationSubjectText = representation.subject.getFullName();
+            String representationSubjectText = representation.getSubject().getFullName();
 
             SubjectFactory subjectFactory = new SubjectFactory();
-            if (subjectFactory.isMultiTeacherSubject(representation.subject)) {
-                representationSubjectText += " (" + representation.fromTeacher;
+            if (subjectFactory.isMultiTeacherSubject(representation.getSubject())) {
+                representationSubjectText += " (" + representation.getFrom().getTeacher();
                 if (!hasSetSchoolClass) {
-                    representationSubjectText += ", " + representation.schoolClass;
+                    representationSubjectText += ", " + representation.getSchoolClass();
                 }
                 representationSubjectText += ")";
             } else {
                 if (!hasSetSchoolClass) {
-                    representationSubjectText += " (" + representation.schoolClass + ")";
+                    representationSubjectText += " (" + representation.getSchoolClass() + ")";
                 }
             }
             return representationSubjectText;
         }
 
-        public String summary() {
-            String output = subject();
+        public static String summary(Context context, Representation representation) {
+            String output = subject(context, representation);
 
-            if (representation.to.equals("Entfall")) {
+            if (representation.getTo().equals(FromTo.ELIMINATION)) {
                 output += " - Entfall";
-            } else if (!representation.from.equals("") && !representation.from.equals("\u00A0")) {
-                output += " - Vertretung";
-                if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
-                    output += "/Verlegt";
-                }
-            } else if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
-                output += " - Verlegt";
             } else {
                 output += " - Vertretung";
             }
@@ -464,47 +394,44 @@ public class Representation {
             return output;
         }
 
-        public String description() {
+        public static String description(Context context, Representation representation) {
             String description = "";
-            if (representation.firstLessonNumber == representation.lastLessonNumber) {
-                description += representation.firstLessonNumber + ". Stunde: ";
+            FromTo fromTo;
+            if (representation.getTo().getDate() != null && representation.getTo().getFirstLessonNumber() != 0 && representation.getTo().getLastLessonNumber() != 0) {
+                fromTo = representation.getTo();
             } else {
-                description += representation.firstLessonNumber + ".-" + representation.lastLessonNumber + ". Stunde: ";
+                fromTo = representation.getFrom();
             }
 
-            Teacher teacher = TeachersContentHelper.getTeacher(context, representation.fromTeacher);
+            if (fromTo.getFirstLessonNumber() == fromTo.getLastLessonNumber()) {
+                description += fromTo.getFirstLessonNumber() + ". Stunde: ";
+            } else {
+                description += fromTo.getFirstLessonNumber() + ".-" + fromTo.getLastLessonNumber() + ". Stunde: ";
+            }
+
+            Teacher teacher = TeachersContentHelper.getTeacher(context, fromTo.getTeacher());
 
             SubjectFactory subjectFactory = new SubjectFactory();
 
-            if (subjectFactory.isMultiTeacherSubject(representation.subject)) {
+            if (subjectFactory.isMultiTeacherSubject(representation.getSubject())) {
                 if (teacher != null && teacher.getLastName() != null &&
                         !teacher.getLastName().equals("")) {
-                    description += representation.subject.getFullName() + " (" + teacher.getLastName() + ")";
+                    description += representation.getSubject().getFullName() + " (" + teacher.getLastName() + ")";
                 } else {
-                    description += representation.subject.getFullName() + " (" + representation.fromTeacher + ")";
+                    description += representation.getSubject().getFullName() + " (" + fromTo.getTeacher() + ")";
                 }
             } else {
-                description += representation.subject.getFullName();
+                description += representation.getSubject().getFullName();
             }
 
-            if (representation.to.equals("Entfall")) {
+            if (representation.getTo().equals(FromTo.ELIMINATION)) {
                 description += " - Entfall";
-            } else if (!representation.from.equals("") && !representation.from.equals("\u00A0")) {
-                description += " - Vertretung";
-                if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
-                    description += "/Verlegt von " + representation.from;
-                }
-                description += " nach " + representation.to +
-                        " in " + representation.toRoom;
-            } else if (!representation.to.equals("") && !representation.to.equals("\u00A0")) {
-                description += " - Verlegt nach " + representation.to;
             } else {
-                description += " - Vertretung" +
-                        " in " + representation.toRoom;
+                description += " - Vertretung";
             }
 
-            if (!representation.description.equals("") && !representation.description.equals("\u00A0")) {
-                description += " (" + representation.description + ")";
+            if (!TextUtils.isEmpty(representation.getDescription())) {
+                description += " (" + representation.getDescription() + ")";
             }
 
             return description;

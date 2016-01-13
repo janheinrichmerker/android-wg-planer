@@ -16,10 +16,10 @@ import com.google.android.gms.location.GeofencingEvent;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.data.TimetableContentHelper;
+import com.heinrichreimersoftware.wg_planer.content.TimetableContentHelper;
 import com.heinrichreimersoftware.wg_planer.notifications.LessonNotification;
 import com.heinrichreimersoftware.wg_planer.structure.Lesson;
-import com.heinrichreimersoftware.wg_planer.structure.LessonTimeFactory;
+import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
 
 import java.util.List;
 

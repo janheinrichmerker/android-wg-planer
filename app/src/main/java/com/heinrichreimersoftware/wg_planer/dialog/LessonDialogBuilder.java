@@ -12,15 +12,15 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.adapters.SubjectAdapter;
-import com.heinrichreimersoftware.wg_planer.data.TeachersContentHelper;
+import com.heinrichreimersoftware.wg_planer.adapter.SubjectAdapter;
+import com.heinrichreimersoftware.wg_planer.content.TeachersContentHelper;
 import com.heinrichreimersoftware.wg_planer.structure.CalendarInterval;
 import com.heinrichreimersoftware.wg_planer.structure.Lesson;
-import com.heinrichreimersoftware.wg_planer.structure.LessonTimeFactory;
 import com.heinrichreimersoftware.wg_planer.structure.Teacher;
 import com.heinrichreimersoftware.wg_planer.structure.TeacherSubject;
 import com.heinrichreimersoftware.wg_planer.utils.CalendarUtils;
 import com.heinrichreimersoftware.wg_planer.utils.ColorUtils;
+import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
 
 import java.util.ArrayList;
 import java.util.List;

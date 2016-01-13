@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
+    <!--suppress AndroidUnknownAttribute -->
+    <data class="RepresentationItem">
         <import type="android.view.View" />
+
+        <import type="com.heinrichreimersoftware.wg_planer.structure.Representation.FromTo" />
 
         <variable
             name="item"
@@ -30,7 +33,7 @@
                 android:layout_height="@dimen/icon_size"
                 android:contentDescription="@string/label_color_indicator"
                 android:src="@drawable/circle"
-                app:representationColor="@{item}" />
+                app:colorFilter="@{item.getSubject().getColor()}" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,54 +46,124 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@{item.getSubject().getFullName()}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    tools:text="Physik 1" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="?android:attr/textColorSecondary"
-                    app:representationTime="@{item}" />
-
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            app:representationSubject="@{item}" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="0dp"
-                            android:layout_marginLeft="@dimen/text_padding"
-                            android:layout_marginRight="0dp"
-                            android:layout_marginStart="@dimen/text_padding"
-                            android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                             android:textColor="?android:attr/textColorSecondary"
-                            app:representationInfo="@{item}" />
+                            app:strikeThrough="@{(item.getFrom().getDate().equals(item.getTo().getDate()) &amp;&amp; item.getFrom().getFirstLessonNumber() == item.getTo().getFirstLessonNumber() &amp;&amp; item.getFrom().getLastLessonNumber() == item.getTo().getLastLessonNumber())}"
+                            app:time="@{item.getFrom()}"
+                            tools:text="Heute 1.-2." />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@{item.getFrom().getRoom()}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="?android:attr/textColorSecondary"
+                            app:strikeThrough="@{item.getFrom().getRoom().equals(item.getTo().getRoom())}"
+                            tools:text="B130" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@{item.getFrom().getTeacher().getLastName()}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="?android:attr/textColorSecondary"
+                            app:strikeThrough="@{item.getFrom().getTeacher().equals(item.getTo().getTeacher())}"
+                            tools:text="Bielenberg" />
 
                     </LinearLayout>
 
-                </HorizontalScrollView>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/baseline"
+                        android:contentDescription="@string/content_description_changes"
+                        android:src="@drawable/ic_arrow_forward" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="?android:attr/textColorSecondary"
-                    app:representationType="@{item}" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <!--suppress AndroidDomInspection -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@{(item.getFrom().getDate().equals(item.getTo().getDate()) &amp;&amp; item.getFrom().getFirstLessonNumber() == item.getTo().getFirstLessonNumber() &amp;&amp; item.getFrom().getLastLessonNumber() == item.getTo().getLastLessonNumber()) ? @color/text_color_secondary : @color/text_color_change}"
+                            android:visibility="@{item.getTo().equals(FromTo.ELIMINATION) ? View.GONE : View.VISIBLE}"
+                            app:time="@{item.getTo()}"
+                            tools:text="Heute 1.-2." />
+
+                        <!--suppress AndroidDomInspection -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@{item.getTo().getRoom()}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@{item.getFrom().getRoom().equals(item.getTo().getRoom()) ? @color/text_color_secondary : @color/text_color_change}"
+                            android:visibility="@{item.getTo().equals(FromTo.ELIMINATION) ? View.GONE : View.VISIBLE}"
+                            tools:text="B130" />
+
+                        <!--suppress AndroidDomInspection -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@{item.getTo().getTeacher().getLastName()}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                            android:textColor="@{item.getFrom().getTeacher().equals(item.getTo().getTeacher()) ? @color/text_color_secondary : @color/text_color_change}"
+                            android:visibility="@{item.getTo().equals(FromTo.ELIMINATION) ? View.GONE : View.VISIBLE}"
+                            tools:text="Bielenberg" />
+
+                        <!--suppress AndroidDomInspection -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/elimination"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textColor="@color/material_deep_orange_a700"
+                            android:visibility="@{item.getTo().equals(FromTo.ELIMINATION) ? View.VISIBLE : View.GONE}" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <!--suppress AndroidDomInspection -->
                 <TextView
@@ -99,7 +172,8 @@
                     android:text="@{item.description}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:visibility="@{item.description == null ? View.GONE : View.VISIBLE}" />
+                    android:visibility="@{item.description == null ? View.GONE : View.VISIBLE}"
+                    tools:text="Die Schüler haben Aufgaben." />
 
             </LinearLayout>
 

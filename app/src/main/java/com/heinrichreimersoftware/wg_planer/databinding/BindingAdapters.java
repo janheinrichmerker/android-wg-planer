@@ -2,9 +2,9 @@ package com.heinrichreimersoftware.wg_planer.databinding;
 
 import android.content.Intent;
 import android.databinding.BindingAdapter;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,34 +20,14 @@ public class BindingAdapters {
     /* Representation binding adapters */
     @BindingAdapter("app:representationColor")
     public static void indicatorColor(ImageView indicator, Representation representation) {
-        indicator.setColorFilter(representation.getFormatter(indicator.getContext()).color(), PorterDuff.Mode.SRC_IN);
+        indicator.setColorFilter(Representation.Formatter.color(representation), PorterDuff.Mode.SRC_IN);
     }
 
-    @BindingAdapter("app:representationTime")
-    public static void time(TextView textView, Representation representation) {
-        textView.setText(representation.getFormatter(textView.getContext()).time());
+    @BindingAdapter("app:time")
+    public static void time(TextView textView, Representation.FromTo fromTo) {
+        textView.setText(Representation.Formatter.time(textView.getContext(), fromTo));
     }
 
-    @BindingAdapter("app:representationInfo")
-    public static void info(TextView textView, Representation representation) {
-        String info = representation.getFormatter(textView.getContext()).info();
-        if (TextUtils.isEmpty(info)) {
-            textView.setVisibility(View.GONE);
-        } else {
-            textView.setVisibility(View.VISIBLE);
-            textView.setText(info);
-        }
-    }
-
-    @BindingAdapter("app:representationType")
-    public static void representationType(TextView textView, Representation representation) {
-        textView.setText(representation.getFormatter(textView.getContext()).type());
-    }
-
-    @BindingAdapter("app:representationSubject")
-    public static void representationSubject(TextView textView, Representation representation) {
-        textView.setText(representation.getFormatter(textView.getContext()).subject());
-    }
 
     /* Lesson binding adapters */
     @BindingAdapter("app:lessonColor")
@@ -86,10 +66,17 @@ public class BindingAdapters {
         });
     }
 
+
     /* General binding adapters */
     @BindingAdapter("app:colorFilter")
-    public static void indicatorColor(ImageView indicator, int color) {
-        indicator.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+    public static void colorFilter(ImageView view, int color) {
+        view.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+    }
+
+    /* General binding adapters */
+    @BindingAdapter("app:strikeThrough")
+    public static void strikeThrough(TextView view, boolean strikeThrough) {
+        view.setPaintFlags(view.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     @BindingAdapter("app:webLink")
