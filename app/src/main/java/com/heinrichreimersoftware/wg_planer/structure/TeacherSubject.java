@@ -1,13 +1,14 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
-import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
 
+@Table(Constants.DATABASE_TABLE_NAME_TEACHER_SUBJECTS)
 public class TeacherSubject extends Subject {
-    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_TEACHER,
-            tableName = Constants.DATABASE_TABLE_NAME_TEACHERS)
-    protected Teacher teacher; //FIXME
-    @Column(name = "room")
+    @Column(Constants.DATABASE_COLUMN_NAME_TEACHER)
+    protected Teacher teacher;
+    @Column(Constants.DATABASE_COLUMN_NAME_ROOM)
     protected String room;
 
     public TeacherSubject() {

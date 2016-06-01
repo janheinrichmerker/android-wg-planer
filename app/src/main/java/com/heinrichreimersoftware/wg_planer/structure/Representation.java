@@ -3,10 +3,10 @@ package com.heinrichreimersoftware.wg_planer.structure;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.content.TeachersContentHelper;
 import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
 import com.heinrichreimersoftware.wg_planer.utils.ColorUtils;
 import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
@@ -15,22 +15,17 @@ import com.heinrichreimersoftware.wg_planer.utils.factories.SubjectFactory;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+@Table(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS)
 public class Representation {
-    @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
-    private long id;
-
-    @Column(name = Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS)
+    @Column(Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS)
     private String schoolClass;
-    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_SUBJECT,
-            tableName = Constants.DATABASE_TABLE_NAME_SUBJECTS)
-    private Subject subject; //FIXME
-    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_FROM,
-            tableName = Constants.DATABASE_TABLE_NAME_FROM_TOS)
-    private FromTo from; //FIXME
-    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_TO,
-            tableName = Constants.DATABASE_TABLE_NAME_FROM_TOS)
-    private FromTo to; //FIXME
-    @Column(name = Constants.DATABASE_COLUMN_NAME_DESCRIPTION)
+    @Column(Constants.DATABASE_COLUMN_NAME_SUBJECT)
+    private Subject subject;
+    @Column(Constants.DATABASE_COLUMN_NAME_FROM)
+    private FromTo from;
+    @Column(Constants.DATABASE_COLUMN_NAME_TO)
+    private FromTo to;
+    @Column(Constants.DATABASE_COLUMN_NAME_DESCRIPTION)
     private String description;
 
     public Representation() {
@@ -115,23 +110,20 @@ public class Representation {
         return true;
     }
 
+    @Table(Constants.DATABASE_TABLE_NAME_FROM_TOS)
     public static class FromTo {
         public static final FromTo ELIMINATION = new FromTo();
 
-        @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
-        private long id;
-
-        @Column(name = Constants.DATABASE_COLUMN_NAME_DATE)
+        @Column(Constants.DATABASE_COLUMN_NAME_DATE)
         private Calendar date;
-        @Column(name = Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
+        @Column(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
         private int firstLessonNumber;
-        @Column(name = Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
+        @Column(Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
         private int lastLessonNumber;
-        @Column(name = Constants.DATABASE_COLUMN_NAME_ROOM)
+        @Column(Constants.DATABASE_COLUMN_NAME_ROOM)
         private String room;
-        @Reference(columnName = Constants.DATABASE_COLUMN_NAME_TEACHER,
-                tableName = Constants.DATABASE_TABLE_NAME_TEACHERS)
-        private Teacher teacher; //FIXME
+        @Column(Constants.DATABASE_COLUMN_NAME_TEACHER)
+        private Teacher teacher;
 
         public FromTo() {
         }
@@ -330,13 +322,13 @@ public class Representation {
         }
 
         public static String info(Context context, Representation representation) {
-            if (TextUtils.isEmpty(representation.getTo().getRoom()) || TextUtils.isEmpty(representation.getTo().getTeacher())) {
+            if (TextUtils.isEmpty(representation.getTo().getRoom()) || TextUtils.isEmpty(representation.getTo().getTeacher().getShorthand())) {
                 return "";
             } else {
                 String info = "";
                 info += "in " + representation.getTo().getRoom();
 
-                Teacher teacher = TeachersContentHelper.getTeacher(context, representation.getTo().getTeacher());
+                Teacher teacher = representation.getTo().getTeacher();
                 if (teacher != null && !teacher.getLastName().equals("")) {
                     info += " (" + teacher.getLastName() + ")";
                 } else {
@@ -409,7 +401,7 @@ public class Representation {
                 description += fromTo.getFirstLessonNumber() + ".-" + fromTo.getLastLessonNumber() + ". Stunde: ";
             }
 
-            Teacher teacher = TeachersContentHelper.getTeacher(context, fromTo.getTeacher());
+            Teacher teacher = fromTo.getTeacher();
 
             SubjectFactory subjectFactory = new SubjectFactory();
 

@@ -2,10 +2,10 @@ package com.heinrichreimersoftware.wg_planer.structure;
 
 import android.content.Context;
 
-import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.R;
-import com.heinrichreimersoftware.wg_planer.content.TeachersContentHelper;
 import com.heinrichreimersoftware.wg_planer.utils.ColorUtils;
 import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
 
@@ -15,18 +15,15 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+@Table(Constants.DATABASE_TABLE_NAME_LESSONS)
 public class Lesson {
-    @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
-    private long id;
-
-    @Column(name = Constants.DATABASE_COLUMN_NAME_DAY)
+    @Column(Constants.DATABASE_COLUMN_NAME_DAY)
     private int day;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
+    @Column(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
     private int firstLessonNumber;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
+    @Column(Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
     private int lastLessonNumber;
-    @Reference(columnName = Constants.DATABASE_COLUMN_NAME_SUBJECTS,
-            tableName = Constants.DATABASE_TABLE_NAME_TEACHER_SUBJECTS)
+    @Column(Constants.DATABASE_COLUMN_NAME_SUBJECTS)
     private List<TeacherSubject> subjects; //FIXME
 
     public Lesson() {
@@ -211,11 +208,11 @@ public class Lesson {
                     teachersText += subjects.get(i).getTeacher();
                 }
             } else {
-                Teacher teacher = TeachersContentHelper.getTeacher(context, subjects.get(0).getTeacher());
+                Teacher teacher = subjects.get(0).getTeacher();
                 if (teacher != null && !teacher.getLastName().equals("")) {
                     teachersText = teacher.getLastName();
                 } else {
-                    teachersText = subjects.get(0).getTeacher();
+                    teachersText = "";
                 }
             }
             return teachersText;

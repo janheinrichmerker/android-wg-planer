@@ -1,17 +1,16 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
-import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
 
+@Table(Constants.DATABASE_TABLE_NAME_SUBJECTS)
 public class Subject {
-    @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
-    protected long id;
-
-    @Column(name = Constants.DATABASE_COLUMN_NAME_SHORTHAND)
+    @Column(Constants.DATABASE_COLUMN_NAME_SHORTHAND)
     protected String shorthand;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_FULL_NAME)
+    @Column(Constants.DATABASE_COLUMN_NAME_FULL_NAME)
     protected String fullName;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_COLOR)
+    @Column(Constants.DATABASE_COLUMN_NAME_COLOR)
     protected int color;
 
     public Subject() {

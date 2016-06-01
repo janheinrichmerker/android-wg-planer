@@ -3,7 +3,7 @@ package com.heinrichreimersoftware.wg_planer.content;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.afollestad.inquiry.Inquiry;
+import com.heinrichreimer.inquiry.Inquiry;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.structure.Lesson;
 import com.heinrichreimersoftware.wg_planer.utils.ClassesUtils;
@@ -13,7 +13,7 @@ public class TimetableContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Lesson[] lessons = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_LESSONS, Lesson.class)
+                .select(Lesson.class)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
 
@@ -26,7 +26,7 @@ public class TimetableContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Lesson[] lessons = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_LESSONS, Lesson.class)
+                .select(Lesson.class)
                 .where(Constants.DATABASE_COLUMN_NAME_DAY + " = ?", day)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
@@ -40,7 +40,7 @@ public class TimetableContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .insertInto(Constants.DATABASE_TABLE_NAME_LESSONS, Lesson.class)
+                .insert(Lesson.class)
                 .values(lesson)
                 .run();
 
@@ -51,7 +51,7 @@ public class TimetableContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .insertInto(Constants.DATABASE_TABLE_NAME_LESSONS, Lesson.class)
+                .insert(Lesson.class)
                 .values(lessons)
                 .run();
 
@@ -62,7 +62,7 @@ public class TimetableContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .deleteFrom(Constants.DATABASE_TABLE_NAME_LESSONS, Lesson.class)
+                .delete(Lesson.class)
                 .run();
 
         Inquiry.deinit();

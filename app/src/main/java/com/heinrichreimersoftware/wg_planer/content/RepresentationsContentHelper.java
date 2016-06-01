@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.afollestad.inquiry.Inquiry;
+import com.heinrichreimer.inquiry.Inquiry;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.utils.CalendarUtils;
@@ -17,7 +17,7 @@ public class RepresentationsContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Representation[] representations = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS, Representation.class)
+                .select(Representation.class)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
 
@@ -30,7 +30,7 @@ public class RepresentationsContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Representation[] representations = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS, Representation.class)
+                .select(Representation.class)
                 .where(Constants.DATABASE_COLUMN_NAME_DATE + " = ?", date)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
@@ -65,7 +65,7 @@ public class RepresentationsContentHelper {
         }
 
         Representation[] representations = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS, Representation.class)
+                .select(Representation.class)
                 .where(where)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
@@ -92,7 +92,7 @@ public class RepresentationsContentHelper {
         where += Constants.DATABASE_COLUMN_NAME_DATE + " = ?";
 
         Representation[] representations = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS, Representation.class)
+                .select(Representation.class)
                 .where(where, date)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
@@ -154,7 +154,7 @@ public class RepresentationsContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .insertInto(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS, Representation.class)
+                .insert(Representation.class)
                 .values(representation)
                 .run();
 
@@ -165,7 +165,7 @@ public class RepresentationsContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .insertInto(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS, Representation.class)
+                .insert(Representation.class)
                 .values(representations)
                 .run();
 
@@ -176,7 +176,7 @@ public class RepresentationsContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .deleteFrom(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS, Representation.class)
+                .delete(Representation.class)
                 .run();
 
         Inquiry.deinit();

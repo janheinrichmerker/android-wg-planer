@@ -3,7 +3,7 @@ package com.heinrichreimersoftware.wg_planer.content;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.afollestad.inquiry.Inquiry;
+import com.heinrichreimer.inquiry.Inquiry;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.structure.User;
 
@@ -13,7 +13,7 @@ public class UserContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         User[] users = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_USERS, User.class)
+                .select(User.class)
                 .all();
 
         Inquiry.deinit();
@@ -25,7 +25,7 @@ public class UserContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         User user = Inquiry.get()
-                .selectFrom(Constants.DATABASE_TABLE_NAME_USERS, User.class)
+                .select(User.class)
                 .one();
 
         Inquiry.deinit();
@@ -37,7 +37,7 @@ public class UserContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .insertInto(Constants.DATABASE_TABLE_NAME_USERS, User.class)
+                .insert(User.class)
                 .values(user)
                 .run();
 
@@ -48,7 +48,7 @@ public class UserContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .deleteFrom(Constants.DATABASE_TABLE_NAME_USERS, User.class)
+                .delete(User.class)
                 .run();
 
         Inquiry.deinit();

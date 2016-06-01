@@ -3,7 +3,7 @@ package com.heinrichreimersoftware.wg_planer.content;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.afollestad.inquiry.Inquiry;
+import com.heinrichreimer.inquiry.Inquiry;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.structure.Teacher;
 
@@ -12,7 +12,7 @@ public class TeachersContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Teacher[] teachers = Inquiry.get()
-                .deleteFrom(Constants.DATABASE_TABLE_NAME_TEACHERS, Teacher.class)
+                .delete(Teacher.class)
                 .sort(Constants.DATABASE_COLUMN_NAME_SHORTHAND)
                 .all();
 
@@ -25,7 +25,7 @@ public class TeachersContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Teacher teacher = Inquiry.get()
-                .deleteFrom(Constants.DATABASE_TABLE_NAME_TEACHERS, Teacher.class)
+                .delete(Teacher.class)
                 .where(Constants.DATABASE_COLUMN_NAME_SHORTHAND + " = ?", shorthand)
                 .sort(Constants.DATABASE_COLUMN_NAME_SHORTHAND)
                 .one();
@@ -39,7 +39,7 @@ public class TeachersContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .insertInto(Constants.DATABASE_TABLE_NAME_TEACHERS, Teacher.class)
+                .insert(Teacher.class)
                 .values(teacher)
                 .run();
 
@@ -50,7 +50,7 @@ public class TeachersContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .insertInto(Constants.DATABASE_TABLE_NAME_TEACHERS, Teacher.class)
+                .insert(Teacher.class)
                 .values(teachers)
                 .run();
 
@@ -61,7 +61,7 @@ public class TeachersContentHelper {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
         Inquiry.get()
-                .deleteFrom(Constants.DATABASE_TABLE_NAME_TEACHERS, Teacher.class)
+                .delete(Teacher.class)
                 .run();
 
         Inquiry.deinit();

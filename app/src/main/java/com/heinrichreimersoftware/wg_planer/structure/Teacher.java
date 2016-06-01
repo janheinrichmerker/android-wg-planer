@@ -1,23 +1,22 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
-import com.afollestad.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Column;
+import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
 
+@Table(Constants.DATABASE_TABLE_NAME_TEACHERS)
 public class Teacher {
-    @Column(name = Constants.DATABASE_COLUMN_NAME_ID, primaryKey = true, notNull = true, autoIncrement = true)
-    private long id;
-
-    @Column(name = Constants.DATABASE_COLUMN_NAME_TITLE)
+    @Column(Constants.DATABASE_COLUMN_NAME_TITLE)
     private String title;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_FIRST_NAME)
+    @Column(Constants.DATABASE_COLUMN_NAME_FIRST_NAME)
     private String firstName;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_LAST_NAME)
+    @Column(Constants.DATABASE_COLUMN_NAME_LAST_NAME)
     private String lastName;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_SHORTHAND)
+    @Column(Constants.DATABASE_COLUMN_NAME_SHORTHAND)
     private String shorthand;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_URL)
+    @Column(Constants.DATABASE_COLUMN_NAME_URL)
     private String url;
-    @Column(name = Constants.DATABASE_COLUMN_NAME_IMG_URL)
+    @Column(Constants.DATABASE_COLUMN_NAME_IMG_URL)
     private String imgUrl;
 
     public Teacher() {

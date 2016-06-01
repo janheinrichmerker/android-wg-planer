@@ -39,16 +39,15 @@
             android:scrollbarStyle="insideOverlay"
             android:scrollbars="vertical" />
 
-        <com.github.clans.fab.FloatingActionButton
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add"
-            app:fab_colorNormal="@color/material_pink_a400"
-            app:fab_colorPressed="@color/material_pink_a700"
-            app:fab_colorRipple="@color/material_white_12" />
+            android:tint="@color/material_pink_a400"
+            app:rippleColor="@color/material_white_12" />
 
     </FrameLayout>
 

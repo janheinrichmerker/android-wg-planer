@@ -24,7 +24,7 @@ public class Constants {
     /**
      * URLs
      */
-    public static final String API_URL = "http://heinrichreimersoftware.com/api2/wgplaner/";
+    public static final String API_URL = "http://heinrichreimersoftware.com/api/wgplaner/";
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_TABLE_NAME_LESSONS = "lessons";
     public static final String DATABASE_TABLE_NAME_REPRESENTATIONS = "representations";
