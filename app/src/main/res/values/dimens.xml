@@ -4,7 +4,8 @@
     <dimen name="baseline_content">72dp</dimen>
     <dimen name="baseline_content_relative">56dp</dimen>
 
-    <dimen name="elevation_toolbar">8dp</dimen>
+    <dimen name="elevation_toolbar">4dp</dimen>
+    <dimen name="elevation_card">2dp</dimen>
 
     <dimen name="avatar_size">40dp</dimen>
     <dimen name="icon_size">24dp</dimen>
@@ -14,7 +15,7 @@
 
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">16dp</dimen>
-    <dimen name="card_corner_radius">4dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
 

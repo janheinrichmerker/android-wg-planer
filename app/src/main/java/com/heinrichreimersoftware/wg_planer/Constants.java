@@ -38,7 +38,7 @@ public class Constants {
      * Database
      */
     public static final String DATABASE_NAME = PREFIX + ".db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_TABLE_NAME_LESSONS = "wg_planer_lessons";
     public static final String DATABASE_TABLE_NAME_REPRESENTATIONS = "wg_planer_representations";
     public static final String DATABASE_TABLE_NAME_FROM_TOS = "wg_planer_from_tos";
@@ -70,6 +70,14 @@ public class Constants {
     public static final String DATABASE_COLUMN_NAME_EMAIL = "wg_planer_email";
     public static final String DATABASE_COLUMN_NAME_DATE = "wg_planer_date";
     public static final String DATABASE_COLUMN_NAME_ROOM = "wg_planer_room";
+
+
+    /**
+     * JSON
+     */
+    public static final String JSON_KEY_USERNAME = "username";
+    public static final String JSON_KEY_FULL_NAME = "fullName";
+    public static final String JSON_KEY_EMAIL = "email";
 
     /**
      * Shared preferences

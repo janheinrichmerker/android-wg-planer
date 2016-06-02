@@ -2,7 +2,6 @@ package com.heinrichreimersoftware.wg_planer.content;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.heinrichreimer.inquiry.Inquiry;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -31,13 +30,11 @@ public class RepresentationsContentHelper {
 
         Representation[] representations = Inquiry.get()
                 .select(Representation.class)
-                .where(Constants.DATABASE_COLUMN_NAME_DATE + " = ?", date)
-                .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
 
         Inquiry.deinit();
 
-        return ClassesUtils.filterRepresentations(context, representations);
+        return ClassesUtils.filterRepresentations(context, representations, date);
     }
 
     public static Representation[] getRepresentationsToday(@NonNull Context context) {
@@ -55,18 +52,9 @@ public class RepresentationsContentHelper {
     public static Representation[] getRepresentations(@NonNull Context context, @NonNull String[] schoolClasses) {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
-        String where = "";
-        for (int i = 0; i < schoolClasses.length; i++) {
-            if (i > 0) {
-                where += " OR ";
-            }
-            where += Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS + " LIKE '" +
-                    schoolClasses[i] + "%'";
-        }
-
         Representation[] representations = Inquiry.get()
                 .select(Representation.class)
-                .where(where)
+                .whereIn(Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS, schoolClasses)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
 
@@ -78,28 +66,15 @@ public class RepresentationsContentHelper {
     public static Representation[] getRepresentations(@NonNull Context context, Calendar date, @NonNull String[] schoolClasses) {
         Inquiry.init(context, Constants.DATABASE_NAME, Constants.DATABASE_VERSION);
 
-        String where = "";
-        for (int i = 0; i < schoolClasses.length; i++) {
-            if (i > 0) {
-                where += " OR ";
-            }
-            where += Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS + " LIKE '" +
-                    schoolClasses[i] + "%'";
-        }
-        if (!TextUtils.isEmpty(where)) {
-            where += " AND ";
-        }
-        where += Constants.DATABASE_COLUMN_NAME_DATE + " = ?";
-
         Representation[] representations = Inquiry.get()
                 .select(Representation.class)
-                .where(where, date)
+                .whereIn(Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS, schoolClasses)
                 .sort(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
                 .all();
 
         Inquiry.deinit();
 
-        return ClassesUtils.filterRepresentations(context, representations);
+        return ClassesUtils.filterRepresentations(context, representations, date);
     }
 
     public static Representation[] getRepresentationsToday(@NonNull Context context, @NonNull String[] schoolClasses) {

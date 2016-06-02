@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/baseline"
-            android:elevation="@dimen/elevation_toolbar"
+            android:elevation="@dimen/elevation_card"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:contentPadding="@dimen/card_padding">
 
@@ -62,16 +62,6 @@
                     android:hint="@string/hint_login_username"
                     android:inputType="textNoSuggestions"
                     android:singleLine="true" />
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_login_password"
-                    android:imeActionId="@integer/ime_action_login"
-                    android:imeActionLabel="@string/title_login"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword" />
 
                 <Button
                     android:id="@+id/submit"

@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,7 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.view.KeyEvent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,7 +51,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     @BindView(R.id.title) TextView title;
     @BindView(R.id.error) TextView error;
     @BindView(R.id.username) EditText username;
-    @BindView(R.id.password) EditText password;
     @BindView(R.id.submit) Button submit;
     @BindView(R.id.progress) ProgressBar progress;
 
@@ -122,9 +120,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                 }
 
                 String loginUsername = extras.getString(ARG_LOGIN_USERNAME);
-                if (loginUsername != null && !loginUsername.equals("")) {
+                if (!TextUtils.isEmpty(loginUsername)) {
                     username.setText(extras.getString(ARG_LOGIN_USERNAME));
-                    password.requestFocus();
                 } else {
                     username.requestFocus();
                 }
@@ -136,16 +133,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                 @Override
                 public void onClick(View v) {
                     submit();
-                }
-            });
-            password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == AuthenticatorActivity.this.getResources().getInteger(R.integer.ime_action_login)) {
-                        submit();
-                        return true;
-                    }
-                    return false;
                 }
             });
         }
@@ -171,44 +158,27 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         error.setVisibility(View.GONE);
         title.setVisibility(View.GONE);
         username.setVisibility(View.GONE);
-        password.setVisibility(View.GONE);
         submit.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
 
-        CharSequence userNameCharSequence = username.getText();
-        CharSequence userPassCharSequence = password.getText();
 
-        String userName = "";
-        if (userNameCharSequence != null) {
-            userName = userNameCharSequence.toString();
-        }
-        String userPass = "";
-        if (userPassCharSequence != null) {
-            userPass = userPassCharSequence.toString();
-        }
-
-        final String userNameFinal = userName;
-        final String userPassFinal = userPass;
+        final String userName = String.valueOf(username.getText());
 
         final String accountType = getIntent().getStringExtra(ARG_ACCOUNT_TYPE);
 
-        if (!userName.equals("") && !userPass.equals("")) {
-            final Context context = this;
-
+        if (!TextUtils.isEmpty(userName)) {
             new AsyncTask<String, Void, Intent>() {
-
                 @Override
                 protected Intent doInBackground(String... params) {
 
                     Bundle data = new Bundle();
                     try {
                         String authToken;
-                        authToken = AuthenticatorServerInterface.login(userNameFinal);
+                        authToken = AuthenticatorServerInterface.login(userName);
 
-                        data.putString(AccountManager.KEY_ACCOUNT_NAME, userNameFinal);
+                        data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
                         data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
                         data.putString(AccountManager.KEY_AUTHTOKEN, authToken);
-                        data.putString(PARAM_USER_PASS, userPassFinal);
 
                     } catch (IOException e) {
                         data.putInt(KEY_ERROR_MESSAGE, R.string.label_login_error_network);
@@ -243,7 +213,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                         intentReload.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intentReload.putExtra(ARG_LOGIN_ERROR, true);
                         intentReload.putExtra(ARG_LOGIN_ERROR_TEXT, errorText);
-                        intentReload.putExtra(ARG_LOGIN_USERNAME, userNameFinal);
+                        intentReload.putExtra(ARG_LOGIN_USERNAME, userName);
                         finish();
 
                         overridePendingTransition(0, 0);
