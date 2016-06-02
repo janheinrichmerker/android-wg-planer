@@ -1,5 +1,7 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -7,10 +9,14 @@ import com.heinrichreimersoftware.wg_planer.Constants;
 @Table(Constants.DATABASE_TABLE_NAME_SUBJECTS)
 public class Subject {
     @Column(Constants.DATABASE_COLUMN_NAME_SHORTHAND)
+    @SerializedName(Constants.JSON_KEY_SHORTHAND)
+    //TODO Change this from "subject" to "shorthand" in API
     protected String shorthand;
     @Column(Constants.DATABASE_COLUMN_NAME_FULL_NAME)
+    @Expose(serialize = false, deserialize = false) //TODO Add this to API
     protected String fullName;
     @Column(Constants.DATABASE_COLUMN_NAME_COLOR)
+    @Expose(serialize = false, deserialize = false) //TODO Add this to API
     protected int color;
 
     public Subject() {

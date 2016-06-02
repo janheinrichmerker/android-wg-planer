@@ -2,7 +2,9 @@ package com.heinrichreimersoftware.wg_planer.structure;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntRange;
 
+import com.google.gson.annotations.SerializedName;
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -19,12 +21,17 @@ import java.util.List;
 @Table(Constants.DATABASE_TABLE_NAME_LESSONS)
 public class Lesson {
     @Column(Constants.DATABASE_COLUMN_NAME_DAY)
+    @SerializedName(Constants.JSON_KEY_DAY)
+    @IntRange(from = Calendar.SUNDAY, to = Calendar.SATURDAY)
     private int day;
     @Column(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
+    @SerializedName(Constants.JSON_KEY_FIRST_LESSON_NUMBER)
     private int firstLessonNumber;
     @Column(Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
+    @SerializedName(Constants.JSON_KEY_LAST_LESSON_NUMBER)
     private int lastLessonNumber;
     @Column(Constants.DATABASE_COLUMN_NAME_SUBJECTS)
+    @SerializedName(Constants.JSON_KEY_SUBJECTS)
     private TeacherSubject[] subjects;
 
     public Lesson() {

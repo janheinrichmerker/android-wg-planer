@@ -1,5 +1,6 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
+import com.google.gson.annotations.SerializedName;
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -7,16 +8,22 @@ import com.heinrichreimersoftware.wg_planer.Constants;
 @Table(Constants.DATABASE_TABLE_NAME_TEACHERS)
 public class Teacher {
     @Column(Constants.DATABASE_COLUMN_NAME_TITLE)
+    @SerializedName(Constants.JSON_KEY_TITLE)
     private String title;
     @Column(Constants.DATABASE_COLUMN_NAME_FIRST_NAME)
+    @SerializedName(Constants.JSON_KEY_FIRST_NAME)
     private String firstName;
     @Column(Constants.DATABASE_COLUMN_NAME_LAST_NAME)
+    @SerializedName(Constants.JSON_KEY_LAST_NAME)
     private String lastName;
     @Column(Constants.DATABASE_COLUMN_NAME_SHORTHAND)
+    @SerializedName(Constants.JSON_KEY_SHORTHAND)
     private String shorthand;
     @Column(Constants.DATABASE_COLUMN_NAME_URL)
+    @SerializedName(Constants.JSON_KEY_URL)
     private String url;
     @Column(Constants.DATABASE_COLUMN_NAME_IMG_URL)
+    @SerializedName(Constants.JSON_KEY_IMG_URL)
     private String imgUrl;
 
     public Teacher() {

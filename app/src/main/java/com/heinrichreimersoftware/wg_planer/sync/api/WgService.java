@@ -12,20 +12,20 @@ import retrofit2.http.Path;
 public interface WgService {
 
     @GET("/users/{username}/")
-    Call<User> getUser(@Path("username") String username);
+    Call<User> getUser(@Path("username") String username); //TODO Change API to return the user directly (not binding it to "user" key)
 
     @GET("/teachers/")
-    Call<Teacher[]> getTeachers();
+    Call<Teacher[]> getTeachers(); //TODO Change API to return the array of teachers directly (not binding it to "teachers" key)
 
     @GET("/timetable/")
-    Call<Lesson[]> getTimetable();
+    Call<Lesson[]> getTimetable(); //TODO Change API to return the array of lessons directly (not binding it to "timetable" key)
 
     @GET("/timetable/{schoolClasses}/")
-    Call<Lesson[]> getTimetable(@Path("schoolClasses") String schoolClasses);
+    Call<Lesson[]> getTimetable(@Path("schoolClasses") String schoolClasses); //TODO Change API to return the array of lessons directly (not binding it to "timetable" key)
 
     @GET("/representations/")
-    Call<Representation[]> getRepresentations();
+    Call<Representation[]> getRepresentations(); //TODO Change API to return the array of representations directly (not binding it to "representations" key)
 
     @GET("/representations/{schoolClasses}/")
-    Call<Representation[]> getRepresentations(@Path("schoolClasses") String schoolClasses);
+    Call<Representation[]> getRepresentations(@Path("schoolClasses") String schoolClasses); //TODO Change API to return the array of representations directly (not binding it to "representations" key)
 }

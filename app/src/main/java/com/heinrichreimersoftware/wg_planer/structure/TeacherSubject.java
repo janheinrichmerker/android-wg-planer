@@ -1,5 +1,7 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -7,8 +9,10 @@ import com.heinrichreimersoftware.wg_planer.Constants;
 @Table(Constants.DATABASE_TABLE_NAME_TEACHER_SUBJECTS)
 public class TeacherSubject extends Subject {
     @Column(Constants.DATABASE_COLUMN_NAME_TEACHER)
+    @Expose(serialize = false, deserialize = false) //TODO Change API to return full teacher
     protected Teacher teacher;
     @Column(Constants.DATABASE_COLUMN_NAME_ROOM)
+    @SerializedName(Constants.JSON_KEY_ROOM)
     protected String room;
 
     public TeacherSubject() {

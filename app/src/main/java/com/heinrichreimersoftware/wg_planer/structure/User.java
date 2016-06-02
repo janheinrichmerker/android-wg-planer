@@ -2,6 +2,8 @@ package com.heinrichreimersoftware.wg_planer.structure;
 
 import android.text.TextUtils;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -9,16 +11,22 @@ import com.heinrichreimersoftware.wg_planer.Constants;
 @Table(Constants.DATABASE_TABLE_NAME_USERS)
 public class User {
     @Column(Constants.DATABASE_COLUMN_NAME_USERNAME)
+    @SerializedName(Constants.JSON_KEY_USERNAME)
     private String username;
     @Column(Constants.DATABASE_COLUMN_NAME_IMG_URL)
+    @Expose(serialize = false, deserialize = false) //TODO Add this to API
     private String imgUrl;
     @Column(Constants.DATABASE_COLUMN_NAME_FULL_NAME)
+    @SerializedName(Constants.JSON_KEY_FULL_NAME)
     private String fullName;
     @Column(Constants.DATABASE_COLUMN_NAME_NICKNAME)
+    @Expose(serialize = false, deserialize = false) //TODO Add this to API
     private String nickname;
     @Column(Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASSES)
+    @Expose(serialize = false, deserialize = false) //TODO Add this to API
     private String[] schoolClasses;
     @Column(Constants.DATABASE_COLUMN_NAME_EMAIL)
+    @SerializedName(Constants.JSON_KEY_EMAIL)
     private String email;
 
     private User() {

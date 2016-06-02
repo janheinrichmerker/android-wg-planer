@@ -73,11 +73,35 @@ public class Constants {
 
 
     /**
-     * JSON
+     * JSON keys
      */
+    //User
     public static final String JSON_KEY_USERNAME = "username";
     public static final String JSON_KEY_FULL_NAME = "fullName";
     public static final String JSON_KEY_EMAIL = "email";
+    //Teachers
+    public static final String JSON_KEY_TITLE = "title";
+    public static final String JSON_KEY_FIRST_NAME = "firstName";
+    public static final String JSON_KEY_LAST_NAME = "lastName";
+    public static final String JSON_KEY_SHORTHAND = "shorthand";
+    public static final String JSON_KEY_URL = "url";
+    public static final String JSON_KEY_IMG_URL = "imgUrl";
+    //Timetable
+    public static final String JSON_KEY_DAY = "day";
+    public static final String JSON_KEY_FIRST_LESSON_NUMBER = "firstLessonNumber";
+    public static final String JSON_KEY_LAST_LESSON_NUMBER = "lastLessonNumber";
+    public static final String JSON_KEY_SUBJECTS = "subjects";
+    //Subjects
+    public static final String JSON_KEY_SUBJECT = "subject";
+    public static final String JSON_KEY_TEACHER = "teacher";
+    public static final String JSON_KEY_ROOM = "room";
+    //Representations
+    public static final String JSON_KEY_SCHOOL_CLASS = "schoolClass";
+    public static final String JSON_KEY_FROM = "from";
+    public static final String JSON_KEY_TO = "to";
+    public static final String JSON_KEY_DESCRIPTION = "description";
+    //Froms/Tos
+    public static final String JSON_KEY_DATE = "room";
 
     /**
      * Shared preferences

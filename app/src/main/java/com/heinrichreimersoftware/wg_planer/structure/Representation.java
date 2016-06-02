@@ -3,6 +3,8 @@ package com.heinrichreimersoftware.wg_planer.structure;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -18,14 +20,19 @@ import java.util.GregorianCalendar;
 @Table(Constants.DATABASE_TABLE_NAME_REPRESENTATIONS)
 public class Representation {
     @Column(Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASS)
+    @SerializedName(Constants.JSON_KEY_SCHOOL_CLASS)
     private String schoolClass;
     @Column(Constants.DATABASE_COLUMN_NAME_SUBJECT)
+    @SerializedName(Constants.JSON_KEY_SUBJECT)
     private Subject subject;
     @Column(Constants.DATABASE_COLUMN_NAME_FROM)
+    @SerializedName(Constants.JSON_KEY_FROM)
     private FromTo from;
     @Column(Constants.DATABASE_COLUMN_NAME_TO)
+    @SerializedName(Constants.JSON_KEY_TO)
     private FromTo to;
     @Column(Constants.DATABASE_COLUMN_NAME_DESCRIPTION)
+    @SerializedName(Constants.JSON_KEY_DESCRIPTION)
     private String description;
 
     public Representation() {
@@ -115,14 +122,19 @@ public class Representation {
         public static final FromTo ELIMINATION = new FromTo();
 
         @Column(Constants.DATABASE_COLUMN_NAME_DATE)
+        @SerializedName(Constants.JSON_KEY_DATE) //TODO Add Calendar serialization to GSON
         private Calendar date;
         @Column(Constants.DATABASE_COLUMN_NAME_FIRST_LESSON_NUMBER)
+        @SerializedName(Constants.JSON_KEY_FIRST_LESSON_NUMBER)
         private int firstLessonNumber;
         @Column(Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
+        @SerializedName(Constants.JSON_KEY_LAST_LESSON_NUMBER)
         private int lastLessonNumber;
         @Column(Constants.DATABASE_COLUMN_NAME_ROOM)
+        @SerializedName(Constants.JSON_KEY_ROOM)
         private String room;
         @Column(Constants.DATABASE_COLUMN_NAME_TEACHER)
+        @Expose(serialize = false, deserialize = false) //TODO Change API to return full teacher
         private Teacher teacher;
 
         public FromTo() {
