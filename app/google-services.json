@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "303413711532",
+    "firebase_url": "https://wg-planer.firebaseio.com",
+    "project_id": "wg-planer",
+    "storage_bucket": "wg-planer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303413711532:android:0df906d8e8cdd8e7",
+        "android_client_info": {
+          "package_name": "com.heinrichreimersoftware.wg_planer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303413711532-kealjepkk3ihp7t7i4hv42p7gl9v3i7r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.heinrichreimersoftware.wg_planer",
+            "certificate_hash": "07EDE7FB4EA35746375D4E192B6F3E86E84474B8"
+          }
+        },
+        {
+          "client_id": "303413711532-9gjngq5kc8urhe49umipf43tub9kp6e1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9KsCdCpwmxE8h0xnLlrOMidA96GvgXGk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303413711532-9gjngq5kc8urhe49umipf43tub9kp6e1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
