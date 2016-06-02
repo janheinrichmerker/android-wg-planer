@@ -1,13 +1,13 @@
 package com.heinrichreimersoftware.wg_planer.sync;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.MainActivity;
 import com.heinrichreimersoftware.wg_planer.content.UserContentHelper;
@@ -16,10 +16,8 @@ import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.structure.Teacher;
 import com.heinrichreimersoftware.wg_planer.structure.User;
 import com.heinrichreimersoftware.wg_planer.sync.api.WgService;
-import com.squareup.okhttp.ResponseBody;
 
 import java.io.IOException;
-import java.util.List;
 
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -29,7 +27,6 @@ public class SyncServerInterface {
     private Context context;
     private WgService api;
     private Gson gson;
-
 
     public SyncServerInterface(Context context) {
         this.context = context;
@@ -62,9 +59,9 @@ public class SyncServerInterface {
         Log.d(MainActivity.TAG, "getUserInfo(" + username + ")");
 
         try {
-            Response<ResponseBody> response = api.getUser(username).execute();
+            Response<User> response = api.getUser(username).execute();
             if (response.isSuccess()) {
-                return gson.fromJson(response.body().charStream(), User.class);
+                return response.body();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,7 +69,8 @@ public class SyncServerInterface {
         return null;
     }
 
-    public List<Representation> getRepresentations(String... schoolClasses) {
+    @NonNull
+    public Representation[] getRepresentations(String... schoolClasses) {
         Log.d(MainActivity.TAG, "getRepresentations()");
 
         if (schoolClasses.length == 0) {
@@ -83,23 +81,23 @@ public class SyncServerInterface {
         }
 
         try {
-            Response<ResponseBody> response;
+            Response<Representation[]> response;
             if (schoolClasses.length > 0) {
                 response = api.getRepresentations(implode(",", schoolClasses).toString()).execute();
             } else {
                 response = api.getRepresentations().execute();
             }
             if (response.isSuccess()) {
-                //TODO parse JSON
-                return null;
+                return response.body();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return new Representation[0];
     }
 
-    public List<Lesson> getTimetable(String... schoolClasses) {
+    @NonNull
+    public Lesson[] getTimetable(String... schoolClasses) {
         Log.d(MainActivity.TAG, "getRepresentations()");
 
         if (schoolClasses.length == 0) {
@@ -110,35 +108,34 @@ public class SyncServerInterface {
         }
 
         try {
-            Response<ResponseBody> response;
+            Response<Lesson[]> response;
             if (schoolClasses.length > 0) {
                 response = api.getTimetable(implode(",", schoolClasses).toString()).execute();
             } else {
                 response = api.getTimetable().execute();
             }
             if (response.isSuccess()) {
-                //TODO parse JSON
-                return null;
+                return response.body();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return new Lesson[0];
     }
 
-    public List<Teacher> getTeachers() {
+    @NonNull
+    public Teacher[] getTeachers() {
         Log.d(MainActivity.TAG, "getTeachers()");
 
         try {
-            Response<ResponseBody> response = api.getTeachers().execute();
+            Response<Teacher[]> response = api.getTeachers().execute();
             if (response.isSuccess()) {
-                return gson.fromJson(response.body().charStream(), new TypeToken<List<Teacher>>() {
-                }.getType());
+                return response.body();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return new Teacher[0];
     }
 
 }

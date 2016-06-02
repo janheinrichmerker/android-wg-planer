@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class Utils {
 
@@ -45,5 +46,9 @@ public class Utils {
             numberString = "0" + numberString;
         }
         return (numberString);
+    }
+
+    public static <T> boolean containsAll(T[] outer, T[] inner) {
+        return Arrays.asList(outer).containsAll(Arrays.asList(inner));
     }
 }

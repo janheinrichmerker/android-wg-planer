@@ -1,6 +1,9 @@
 package com.heinrichreimersoftware.wg_planer.sync.api;
 
-import com.squareup.okhttp.ResponseBody;
+import com.heinrichreimersoftware.wg_planer.structure.Lesson;
+import com.heinrichreimersoftware.wg_planer.structure.Representation;
+import com.heinrichreimersoftware.wg_planer.structure.Teacher;
+import com.heinrichreimersoftware.wg_planer.structure.User;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -9,20 +12,20 @@ import retrofit2.http.Path;
 public interface WgService {
 
     @GET("/users/{username}/")
-    Call<ResponseBody> getUser(@Path("username") String username);
+    Call<User> getUser(@Path("username") String username);
 
     @GET("/teachers/")
-    Call<ResponseBody> getTeachers();
+    Call<Teacher[]> getTeachers();
 
     @GET("/timetable/")
-    Call<ResponseBody> getTimetable();
+    Call<Lesson[]> getTimetable();
 
     @GET("/timetable/{schoolClasses}/")
-    Call<ResponseBody> getTimetable(@Path("schoolClasses") String schoolClasses);
+    Call<Lesson[]> getTimetable(@Path("schoolClasses") String schoolClasses);
 
     @GET("/representations/")
-    Call<ResponseBody> getRepresentations();
+    Call<Representation[]> getRepresentations();
 
     @GET("/representations/{schoolClasses}/")
-    Call<ResponseBody> getRepresentations(@Path("schoolClasses") String schoolClasses);
+    Call<Representation[]> getRepresentations(@Path("schoolClasses") String schoolClasses);
 }

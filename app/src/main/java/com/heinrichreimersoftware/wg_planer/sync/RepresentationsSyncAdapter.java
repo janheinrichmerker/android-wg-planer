@@ -11,9 +11,7 @@ import com.heinrichreimersoftware.wg_planer.content.RepresentationsContentHelper
 import com.heinrichreimersoftware.wg_planer.notifications.RepresentationsNotification;
 import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.utils.ClassesUtils;
-
-import java.util.Arrays;
-import java.util.List;
+import com.heinrichreimersoftware.wg_planer.utils.Utils;
 
 public class RepresentationsSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -27,21 +25,19 @@ public class RepresentationsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        List<Representation> oldRepresentations = Arrays.asList(RepresentationsContentHelper.getRepresentations(getContext()));
-
-        SyncServerInterface serverInterface = new SyncServerInterface(getContext());
-        List<Representation> representations = serverInterface.getRepresentations();
+        Representation[] oldRepresentations = RepresentationsContentHelper.getRepresentations(getContext());
+        Representation[] representations = new SyncServerInterface(getContext()).getRepresentations();
 
         representations = ClassesUtils.filterRepresentations(getContext(), representations);
 
-        if (representations.size() != oldRepresentations.size() || !representations.containsAll(oldRepresentations)) {
+        if (representations.length != oldRepresentations.length || !Utils.containsAll(representations, oldRepresentations)) {
             RepresentationsNotification.notify(getContext());
         }
 
         RepresentationsContentHelper.clearRepresentations(getContext());
 
-        if (representations.size() > 0) {
-            RepresentationsContentHelper.addRepresentations(getContext(), representations.toArray(new Representation[representations.size()]));
+        if (representations.length > 0) {
+            RepresentationsContentHelper.addRepresentations(getContext(), representations);
         }
     }
 }
