@@ -71,7 +71,7 @@ dependencies {
 
     //Parsing
     compile 'com.google.code.gson:gson:2.4'
-    compile 'com.heinrichreimersoftware:inquiry:3.0.1-beta'
+    compile 'com.heinrichreimersoftware:inquiry:ccdb178'
 
     //Networking
     compile 'com.squareup.okhttp:okhttp:2.5.0'

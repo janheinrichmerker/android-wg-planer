@@ -1,6 +1,7 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
 
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
@@ -24,7 +25,7 @@ public class Lesson {
     @Column(Constants.DATABASE_COLUMN_NAME_LAST_LESSON_NUMBER)
     private int lastLessonNumber;
     @Column(Constants.DATABASE_COLUMN_NAME_SUBJECTS)
-    private List<TeacherSubject> subjects; //FIXME
+    private TeacherSubject[] subjects;
 
     public Lesson() {
     }
@@ -60,11 +61,11 @@ public class Lesson {
         this.lastLessonNumber = lastLessonNumber;
     }
 
-    public List<TeacherSubject> getSubjects() {
+    public TeacherSubject[] getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(List<TeacherSubject> subjects) {
+    public void setSubjects(TeacherSubject[] subjects) {
         this.subjects = subjects;
     }
 
@@ -95,7 +96,7 @@ public class Lesson {
         if (day != representation.day) return false;
         if (firstLessonNumber != representation.firstLessonNumber) return false;
         if (lastLessonNumber != representation.lastLessonNumber) return false;
-        if (!subjects.equals(representation.subjects)) return false;
+        if (!Arrays.equals(subjects, representation.subjects)) return false;
         return true;
     }
 
@@ -107,7 +108,7 @@ public class Lesson {
         private int day;
         private int firstLessonNumber;
         private int lastLessonNumber;
-        private List<TeacherSubject> subjects;
+        private TeacherSubject[] subjects;
 
         public int day() {
             return day;
@@ -136,16 +137,17 @@ public class Lesson {
             return this;
         }
 
-        public List<TeacherSubject> subjects() {
+        public TeacherSubject[] subjects() {
             return subjects;
         }
 
         public Builder subjects(TeacherSubject... subjects) {
-            return subjects(new ArrayList<>(Arrays.asList(subjects)));
+            this.subjects = subjects;
+            return this;
         }
 
         public Builder subjects(List<TeacherSubject> subjects) {
-            this.subjects = subjects;
+            this.subjects = subjects.toArray(new TeacherSubject[subjects.size()]);
             return this;
         }
 
@@ -176,18 +178,19 @@ public class Lesson {
             }
         }
 
+        @ColorInt
         public int color() {
-            List<TeacherSubject> subjects = lesson.getSubjects();
+            TeacherSubject[] subjects = lesson.getSubjects();
             int color;
 
-            if (subjects.size() > 1) {
+            if (subjects.length > 1) {
                 List<Integer> colors = new ArrayList<>();
                 for (TeacherSubject subject : subjects) {
                     colors.add(subject.getColor());
                 }
                 color = ColorUtils.averageColor(colors);
             } else {
-                color = subjects.get(0).getColor();
+                color = subjects[0].getColor();
             }
 
             if (lesson.isOver()) {
@@ -199,16 +202,16 @@ public class Lesson {
 
         public String teachers() {
             String teachersText = "";
-            if (subjects.size() > 1) {
+            if (subjects.length > 1) {
 
-                for (int i = 0; i < subjects.size(); i++) {
+                for (int i = 0; i < subjects.length; i++) {
                     if (i != 0) {
                         teachersText += ", ";
                     }
-                    teachersText += subjects.get(i).getTeacher();
+                    teachersText += subjects[i].getTeacher();
                 }
             } else {
-                Teacher teacher = subjects.get(0).getTeacher();
+                Teacher teacher = subjects[0].getTeacher();
                 if (teacher != null && !teacher.getLastName().equals("")) {
                     teachersText = teacher.getLastName();
                 } else {
@@ -219,19 +222,19 @@ public class Lesson {
         }
 
         public String subjects() {
-            if (subjects.size() > 1) {
+            if (subjects.length > 1) {
                 String subjectsText = "";
 
-                for (int i = 0; i < subjects.size(); i++) {
+                for (int i = 0; i < subjects.length; i++) {
                     if (i != 0) {
                         subjectsText += ", ";
                     }
-                    subjectsText += subjects.get(i).getShorthand();
+                    subjectsText += subjects[i].getShorthand();
                 }
 
                 return subjectsText;
             } else {
-                return subjects.get(0).getFullName();
+                return subjects[0].getFullName();
             }
         }
 
@@ -240,14 +243,14 @@ public class Lesson {
         }
 
         public String rooms(boolean withBuilding) {
-            if (subjects.size() > 1) {
+            if (subjects.length > 1) {
                 String roomsText = "";
 
-                for (int i = 0; i < subjects.size(); i++) {
+                for (int i = 0; i < subjects.length; i++) {
                     if (i != 0) {
                         roomsText += ", ";
                     }
-                    String room = subjects.get(i).getRoom();
+                    String room = subjects[i].getRoom();
                     if (withBuilding && room.length() > 0) {
                         String building = null;
                         if (room.charAt(0) == 'A')
@@ -262,7 +265,7 @@ public class Lesson {
 
                 return roomsText;
             } else {
-                String room = subjects.get(0).getRoom();
+                String room = subjects[0].getRoom();
                 if (withBuilding && room.length() > 0) {
                     String building = null;
                     if (room.charAt(0) == 'A')

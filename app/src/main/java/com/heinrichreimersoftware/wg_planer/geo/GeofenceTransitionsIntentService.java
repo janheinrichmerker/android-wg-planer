@@ -21,8 +21,6 @@ import com.heinrichreimersoftware.wg_planer.notifications.LessonNotification;
 import com.heinrichreimersoftware.wg_planer.structure.Lesson;
 import com.heinrichreimersoftware.wg_planer.utils.factories.LessonTimeFactory;
 
-import java.util.List;
-
 public class GeofenceTransitionsIntentService extends IntentService {
 
     private static final String EXTRA_TRIGGERED_SELF = "EXTRA_TRIGGERED_SELF";
@@ -68,7 +66,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     private Lesson getNearestLesson(boolean allowCurrentLesson) {
         Log.d(MainActivity.TAG, "getNearestLesson(" + allowCurrentLesson + ")");
-        List<Lesson> lessons = TimetableContentHelper.getTimetable(getBaseContext());
+        Lesson[] lessons = TimetableContentHelper.getTimetable(getBaseContext());
         Lesson nearestLesson = null;
         long nearestLessonStartTime = Long.MAX_VALUE;
         for (Lesson lesson : lessons) {

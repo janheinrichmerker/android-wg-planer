@@ -27,19 +27,18 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 
 public class TimetableFragment extends Fragment {
 
     public static final String ARG_SECTION_NUMBER = "section_number_timetable";
-    @Bind(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.list)
-    RecyclerView list;
-    @Bind(R.id.emptyView)
-    TextView emptyView;
+
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.list) RecyclerView list;
+    @BindView(R.id.emptyView) TextView emptyView;
+
     private SyncStatusManager syncStatusManager;
     private ListLoader<Lesson, TimetableAdapter> loader;
 

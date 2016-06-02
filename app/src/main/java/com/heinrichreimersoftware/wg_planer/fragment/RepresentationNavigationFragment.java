@@ -20,19 +20,16 @@ import com.heinrichreimersoftware.wg_planer.utils.Utils;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RepresentationNavigationFragment extends Fragment {
 
     private static final String STATE_PAGER_POSITION = "pager_position_representations";
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.pager)
-    ViewPager viewPager;
-    @Bind(R.id.pager_tab_strip)
-    PagerSlidingTabStrip tabs;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.pager) ViewPager viewPager;
+    @BindView(R.id.pager_tab_strip) PagerSlidingTabStrip tabs;
 
     private int dayOfWeek = -1;
 

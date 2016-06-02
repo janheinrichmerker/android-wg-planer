@@ -1,5 +1,7 @@
 package com.heinrichreimersoftware.wg_planer.structure;
 
+import android.text.TextUtils;
+
 import com.heinrichreimer.inquiry.annotations.Column;
 import com.heinrichreimer.inquiry.annotations.Table;
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -15,7 +17,7 @@ public class User {
     @Column(Constants.DATABASE_COLUMN_NAME_NICKNAME)
     private String nickname;
     @Column(Constants.DATABASE_COLUMN_NAME_SCHOOL_CLASSES)
-    private String[] schoolClasses; //FIXME
+    private String[] schoolClasses;
     @Column(Constants.DATABASE_COLUMN_NAME_EMAIL)
     private String email;
 
@@ -77,6 +79,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        if (!TextUtils.isEmpty(nickname))
+            return nickname;
+        if (!TextUtils.isEmpty(fullName))
+            return fullName;
+        return username;
     }
 
     public static class Builder {

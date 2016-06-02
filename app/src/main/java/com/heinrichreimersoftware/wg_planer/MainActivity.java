@@ -2,7 +2,6 @@ package com.heinrichreimersoftware.wg_planer;
 
 import android.app.ActivityManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -35,7 +34,7 @@ import com.heinrichreimersoftware.wg_planer.utils.SyncUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends DrawerActivity {
@@ -50,8 +49,8 @@ public class MainActivity extends DrawerActivity {
     public static final String EXTRA_SELECTED_ITEM = "EXTRA_SELECTED_ITEM";
     private static final String STATE_SELECTED_ITEM = "STATE_SELECTED_ITEM";
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     private long selectedItemId = -1;
     private SyncStatusManager syncStatusManager;
     private RepresentationNavigationFragment fragmentRepresentations = new RepresentationNavigationFragment();
@@ -71,7 +70,7 @@ public class MainActivity extends DrawerActivity {
             setTaskDescription(new ActivityManager.TaskDescription(
                             getString(R.string.title_app),
                             BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher),
-                            getResources().getColor(R.color.material_green_600))
+                    ContextCompat.getColor(this, R.color.material_green_600))
             );
         }
 
@@ -86,7 +85,7 @@ public class MainActivity extends DrawerActivity {
         }
         select(id);
 
-        syncStatusManager = new SyncStatusManager(this, RepresentationsContract.AUTHORITY);
+        syncStatusManager = new SyncStatusManager(this, Constants.CONTENT_AUTHORITY_REPRESENTATIONS);
         syncStatusManager.addOnSyncStatusChangedListener(new SyncStatusManager.OnSyncStatusChangedListener() {
             @Override
             public void onStatusChanged(int state, String affectedAuthority) {
@@ -117,49 +116,44 @@ public class MainActivity extends DrawerActivity {
         int representationCount;
 
         if (user != null) {
-            String schoolClass = user.getSchoolClass();
-            if (schoolClass != null && !schoolClass.equals("")) {
-                representationCount = RepresentationsContentHelper.getRepresentationsFuture(this, schoolClass).size();
+            String[] schoolClasses = user.getSchoolClasses();
+            if (schoolClasses != null && schoolClasses.length > 0) {
+                representationCount = RepresentationsContentHelper.getRepresentationsFuture(this, schoolClasses).length;
             } else {
-                representationCount = RepresentationsContentHelper.getRepresentationsFuture(this).size();
+                representationCount = RepresentationsContentHelper.getRepresentationsFuture(this).length;
             }
         } else {
-            representationCount = RepresentationsContentHelper.getRepresentationsFuture(this).size();
+            representationCount = RepresentationsContentHelper.getRepresentationsFuture(this).length;
         }
 
         clearProfiles();
         if (user != null) {
-            DrawerProfile profile = new DrawerProfile()
-                    .setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.bg_wg, getTheme()))
-                    .setName(user.getName());
-            Bitmap avatar = user.getBitmap();
-            if (avatar != null) {
-                profile.setRoundedAvatar(this, avatar);
-            }
-            addProfile(profile);
+            addProfile(new DrawerProfile()
+                    .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_wg))
+                    .setName(user.getName()));
         }
 
         clearItems();
         addItem(new DrawerItem()
                         .setId(DRAWER_ID_REPRESENTATIONS)
-                        .setImage(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_representations, getTheme()))
+                .setImage(ContextCompat.getDrawable(this, R.drawable.ic_representations))
                         .setTextPrimary(getString(R.string.title_fragment_representation))
                         .setTextSecondary(getResources().getQuantityString(R.plurals.label_representations_count, representationCount, representationCount))
         );
         addItem(new DrawerItem()
                         .setId(DRAWER_ID_TIMETABLE)
-                        .setImage(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_timetable, getTheme()))
+                .setImage(ContextCompat.getDrawable(this, R.drawable.ic_timetable))
                         .setTextPrimary(getString(R.string.title_fragment_timetable))
         );
         addItem(new DrawerItem()
                         .setId(DRAWER_ID_TEACHERS)
-                        .setImage(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_teachers, getTheme()))
+                .setImage(ContextCompat.getDrawable(this, R.drawable.ic_teachers))
                         .setTextPrimary(getString(R.string.title_fragment_teacher))
         );
         addDivider();
         addItem(new DrawerItem()
                         .setId(DRAWER_ID_SETTINGS)
-                        .setImage(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_settings, getTheme()))
+                .setImage(ContextCompat.getDrawable(this, R.drawable.ic_settings))
                         .setTextPrimary(getString(R.string.title_activity_settings))
         );
         setOnItemClickListener(new DrawerItem.OnItemClickListener() {

@@ -26,18 +26,16 @@ import com.heinrichreimersoftware.wg_planer.sync.SyncStatusManager;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 
 public class TeacherFragment extends Fragment {
 
-    @Bind(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.list)
-    RecyclerView list;
-    @Bind(R.id.emptyView)
-    TextView emptyView;
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.list) RecyclerView list;
+    @BindView(R.id.emptyView) TextView emptyView;
+
     private SyncStatusManager syncStatusManager;
     private ListLoader<Teacher, TeacherAdapter> loader;
 

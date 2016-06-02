@@ -30,7 +30,7 @@ import com.heinrichreimersoftware.wg_planer.R;
 
 import java.io.IOException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AuthenticatorActivity extends AccountAuthenticatorActivity {
@@ -48,18 +48,14 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
 
     public final static String PARAM_USER_PASS = "USER_PASS";
-    @Bind(R.id.title)
-    TextView title;
-    @Bind(R.id.error)
-    TextView error;
-    @Bind(R.id.username)
-    EditText username;
-    @Bind(R.id.password)
-    EditText password;
-    @Bind(R.id.submit)
-    Button submit;
-    @Bind(R.id.progress)
-    ProgressBar progress;
+
+    @BindView(R.id.title) TextView title;
+    @BindView(R.id.error) TextView error;
+    @BindView(R.id.username) EditText username;
+    @BindView(R.id.password) EditText password;
+    @BindView(R.id.submit) Button submit;
+    @BindView(R.id.progress) ProgressBar progress;
+
     private AccountManager mAccountManager;
     private String mAuthTokenType;
 

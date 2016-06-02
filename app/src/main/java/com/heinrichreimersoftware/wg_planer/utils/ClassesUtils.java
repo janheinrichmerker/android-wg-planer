@@ -9,6 +9,7 @@ import com.heinrichreimersoftware.wg_planer.structure.Lesson;
 import com.heinrichreimersoftware.wg_planer.structure.Representation;
 import com.heinrichreimersoftware.wg_planer.structure.TeacherSubject;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class ClassesUtils {
 
 
         for (Lesson lesson : lessons) {
-            List<TeacherSubject> subjects = lesson.getSubjects();
+            List<TeacherSubject> subjects = Arrays.asList(lesson.getSubjects());
 
             for (TeacherSubject subject : subjects) {
                 if (!classes.contains(subject.getShorthand())) {
@@ -45,7 +46,7 @@ public class ClassesUtils {
             }
 
             if (!subjects.isEmpty()) {
-                lesson.setSubjects(subjects);
+                lesson.setSubjects(subjects.toArray(new TeacherSubject[subjects.size()]));
                 vector.add(lesson);
             }
         }
@@ -71,7 +72,7 @@ public class ClassesUtils {
             return lessons;
 
         for (Lesson lesson : lessons) {
-            List<TeacherSubject> subjects = lesson.getSubjects();
+            List<TeacherSubject> subjects = Arrays.asList(lesson.getSubjects());
 
             for (TeacherSubject subject : subjects) {
                 if (!classes.contains(subject.getShorthand())) {
@@ -82,7 +83,7 @@ public class ClassesUtils {
             if (subjects.isEmpty()) {
                 lessons.remove(lesson);
             } else {
-                lesson.setSubjects(subjects);
+                lesson.setSubjects(subjects.toArray(new TeacherSubject[subjects.size()]));
             }
         }
         return lessons;

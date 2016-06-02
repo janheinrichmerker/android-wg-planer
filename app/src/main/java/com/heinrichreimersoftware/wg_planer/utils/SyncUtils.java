@@ -9,18 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import com.heinrichreimersoftware.wg_planer.Constants;
 import com.heinrichreimersoftware.wg_planer.R;
 import com.heinrichreimersoftware.wg_planer.authentication.AccountGeneral;
 
 public class SyncUtils {
-
-    public static final long SECONDS_PER_MINUTE = 60L;
-    public static final long MINUTES_PER_HOUR = 60L;
-
-    public static final long SYNC_INTERVAL_USER = 24 * MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
-    public static final long SYNC_INTERVAL_REPRESENTATIONS = 15 * SECONDS_PER_MINUTE;
-    public static final long SYNC_INTERVAL_TIMETABLE = 24 * MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
-    public static final long SYNC_INTERVAL_TEACHERS = 24 * MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
 
     public static void initialize(@NonNull Activity activity) {
         AccountManager accountManager = AccountManager.get(activity);
@@ -39,10 +32,10 @@ public class SyncUtils {
         boolean shouldSyncAutomatically = sharedPreferences.getBoolean(activity.getString(R.string.key_preference_automatic_sync), true);
 
         String[] authorities = {
-                UserContract.AUTHORITY,
-                RepresentationsContract.AUTHORITY,
-                TimetableContract.AUTHORITY,
-                TeachersContract.AUTHORITY
+                Constants.CONTENT_AUTHORITY_USERS,
+                Constants.CONTENT_AUTHORITY_REPRESENTATIONS,
+                Constants.CONTENT_AUTHORITY_TIMETABLE,
+                Constants.CONTENT_AUTHORITY_TEACHERS
         };
 
         for (String authority : authorities) {
@@ -55,17 +48,17 @@ public class SyncUtils {
 
                 long interval = -1;
                 switch (authority) {
-                    case UserContract.AUTHORITY:
-                        interval = SYNC_INTERVAL_USER;
+                    case Constants.CONTENT_AUTHORITY_USERS:
+                        interval = Constants.ONE_DAY;
                         break;
-                    case RepresentationsContract.AUTHORITY:
-                        interval = SYNC_INTERVAL_REPRESENTATIONS;
+                    case Constants.CONTENT_AUTHORITY_REPRESENTATIONS:
+                        interval = Constants.FIFTEEN_MINUTES;
                         break;
-                    case TimetableContract.AUTHORITY:
-                        interval = SYNC_INTERVAL_TIMETABLE;
+                    case Constants.CONTENT_AUTHORITY_TIMETABLE:
+                        interval = Constants.ONE_DAY;
                         break;
-                    case TeachersContract.AUTHORITY:
-                        interval = SYNC_INTERVAL_TEACHERS;
+                    case Constants.CONTENT_AUTHORITY_TEACHERS:
+                        interval = Constants.ONE_DAY;
                         break;
                 }
 

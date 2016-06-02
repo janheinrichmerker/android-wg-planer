@@ -19,13 +19,6 @@ import java.util.List;
 public class DashClockExtensionRepresentations extends DashClockExtension {
 
     @Override
-    protected void onInitialize(boolean isReconnect) {
-        Log.d(MainActivity.TAG, "Initializing Dashclock extension for new representations");
-        super.onInitialize(isReconnect);
-        addWatchContentUris(new String[]{RepresentationsContract.CONTENT_URI.toString()});
-    }
-
-    @Override
     protected void onUpdateData(int reason) {
         Log.d(MainActivity.TAG, "Updating Dashclock extension for new representations");
 
@@ -34,7 +27,7 @@ public class DashClockExtensionRepresentations extends DashClockExtension {
         if (context != null) {
             User user = UserContentHelper.getUser(context);
 
-            List<Representation> allRepresentations;
+            Representation[] allRepresentations;
             if (user != null && user.getSchoolClasses() != null && user.getSchoolClasses().length == 0) {
                 allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context, user.getSchoolClasses());
             } else {

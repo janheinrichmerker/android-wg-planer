@@ -18,44 +18,44 @@ import com.heinrichreimersoftware.wg_planer.structure.Representation;
 public class BindingAdapters {
 
     /* Representation binding adapters */
-    @BindingAdapter("app:representationColor")
+    @BindingAdapter("representationColor")
     public static void indicatorColor(ImageView indicator, Representation representation) {
         indicator.setColorFilter(Representation.Formatter.color(representation), PorterDuff.Mode.SRC_IN);
     }
 
-    @BindingAdapter("app:time")
+    @BindingAdapter("time")
     public static void time(TextView textView, Representation.FromTo fromTo) {
         textView.setText(Representation.Formatter.time(textView.getContext(), fromTo));
     }
 
 
     /* Lesson binding adapters */
-    @BindingAdapter("app:lessonColor")
+    @BindingAdapter("lessonColor")
     public static void indicatorColor(ImageView indicator, Lesson lesson) {
         indicator.setColorFilter(lesson.getFormatter(indicator.getContext()).color(), PorterDuff.Mode.SRC_IN);
     }
 
-    @BindingAdapter("app:lessonTime")
+    @BindingAdapter("lessonTime")
     public static void time(TextView textView, Lesson lesson) {
         textView.setText(lesson.getFormatter(textView.getContext()).time());
     }
 
-    @BindingAdapter("app:lessonSubjects")
+    @BindingAdapter("lessonSubjects")
     public static void subjects(TextView textView, Lesson lesson) {
         textView.setText(lesson.getFormatter(textView.getContext()).subjects());
     }
 
-    @BindingAdapter("app:lessonRooms")
+    @BindingAdapter("lessonRooms")
     public static void rooms(TextView textView, Lesson lesson) {
         textView.setText(lesson.getFormatter(textView.getContext()).rooms());
     }
 
-    @BindingAdapter("app:lessonTeachers")
+    @BindingAdapter("lessonTeachers")
     public static void teachers(TextView textView, Lesson lesson) {
         textView.setText(lesson.getFormatter(textView.getContext()).teachers());
     }
 
-    @BindingAdapter("app:lessonDialog")
+    @BindingAdapter("lessonDialog")
     public static void dialog(View view, Lesson lesson) {
         final MaterialDialog dialog = new LessonDialogBuilder(view.getContext(), lesson).build();
         view.setOnClickListener(new View.OnClickListener() {
@@ -68,18 +68,18 @@ public class BindingAdapters {
 
 
     /* General binding adapters */
-    @BindingAdapter("app:colorFilter")
+    @BindingAdapter("colorFilter")
     public static void colorFilter(ImageView view, int color) {
         view.setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
     /* General binding adapters */
-    @BindingAdapter("app:strikeThrough")
+    @BindingAdapter("strikeThrough")
     public static void strikeThrough(TextView view, boolean strikeThrough) {
         view.setPaintFlags(view.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
-    @BindingAdapter("app:webLink")
+    @BindingAdapter("webLink")
     public static void indicatorColor(final View view, final String url) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +21,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.clans.fab.FloatingActionButton;
 import com.heinrichreimersoftware.wg_planer.adapter.ClassesAdapter;
 import com.heinrichreimersoftware.wg_planer.recyclerview.DividerItemDecoration;
 import com.heinrichreimersoftware.wg_planer.recyclerview.SwipeDismissRecyclerViewTouchListener;
@@ -30,7 +33,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 
@@ -38,14 +41,10 @@ public class ClassesActivity extends AppCompatActivity {
 
     private final static int SCROLL_OFFSET = 4;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
-    @Bind(R.id.list)
-    RecyclerView list;
-    @Bind(R.id.emptyView)
-    TextView emptyView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.list) RecyclerView list;
+    @BindView(R.id.emptyView) TextView emptyView;
 
     private ClassesAdapter adapter;
 
@@ -61,9 +60,9 @@ public class ClassesActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTaskDescription(new ActivityManager.TaskDescription(
-                            getString(R.string.title_activity_courses),
-                            BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher),
-                            getResources().getColor(R.color.material_green_600))
+                    getString(R.string.title_activity_courses),
+                    BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher),
+                    ContextCompat.getColor(this, R.color.material_green_600))
             );
         }
 
@@ -121,9 +120,9 @@ public class ClassesActivity extends AppCompatActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > SCROLL_OFFSET) {
-                    fab.hide(true);
+                    fab.hide();
                 } else if (dy < -SCROLL_OFFSET) {
-                    fab.show(true);
+                    fab.show();
                 }
             }
         });
@@ -184,7 +183,7 @@ public class ClassesActivity extends AppCompatActivity {
                 .negativeText(android.R.string.cancel)
                 .input(R.string.hint_dialog_add_class, 0, new MaterialDialog.InputCallback() {
                     @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence shorthand) {
+                    public void onInput(@NonNull MaterialDialog materialDialog, CharSequence shorthand) {
                         if (!TextUtils.isEmpty(shorthand) && !shorthand.toString().contains(System.getProperty("line.separator"))) {
                             for (int i = adapter.size() - 1; i >= 0; i--) {
                                 if (shorthand.equals(adapter.get(i))) {
@@ -227,9 +226,9 @@ public class ClassesActivity extends AppCompatActivity {
                         .content(R.string.label_dialog_clear_classes)
                         .positiveText(R.string.action_clear)
                         .negativeText(R.string.action_cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 adapter.clear();
                             }
                         })
@@ -241,9 +240,9 @@ public class ClassesActivity extends AppCompatActivity {
                         .content(R.string.label_dialog_cancel_classes_edit)
                         .positiveText(R.string.action_cancel)
                         .negativeText(R.string.action_continue)
-                        .callback(new MaterialDialog.ButtonCallback() {
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 endWithoutSave = true;
                                 finish();
                             }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.heinrichreimersoftware.wg_planer.Constants;
@@ -26,10 +27,10 @@ public class RepresentationsNotification {
 
         User user = UserContentHelper.getUser(context);
 
-        List<Representation> allRepresentations;
+        Representation[] allRepresentations;
 
-        if (user != null && !user.getSchoolClass().equals("")) {
-            allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context, user.getSchoolClass());
+        if (user != null && user.getSchoolClasses() != null && user.getSchoolClasses().length > 0) {
+            allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context, user.getSchoolClasses());
         } else {
             allRepresentations = RepresentationsContentHelper.getRepresentationsFuture(context);
         }
@@ -56,14 +57,14 @@ public class RepresentationsNotification {
                     if (!first) {
                         contentText += ", ";
                     }
-                    contentText += representation.getFormatter(context).subject();
+                    contentText += Representation.Formatter.subject(context, representation);
                     first = false;
                 }
 
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
                 style.setBigContentTitle(contentTitle);
                 for (Representation representation : representations) {
-                    style.addLine(representation.getFormatter(context).summary());
+                    style.addLine(Representation.Formatter.summary(context, representation));
                 }
 
                 notification.setContentTitle(contentTitle)
@@ -74,14 +75,13 @@ public class RepresentationsNotification {
                         .setStyle(style);
             } else {
                 Representation representation = representations.get(0);
-                Representation.Formatter formatter = representation.getFormatter(context);
 
-                String contentText = formatter.description();
+                String contentText = Representation.Formatter.description(context, representation);
 
                 NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle()
                         .bigText(contentText);
 
-                notification.setContentTitle(formatter.summary())
+                notification.setContentTitle(Representation.Formatter.summary(context, representation))
                         .setContentText(contentText)
                         .setSmallIcon(R.drawable.ic_notification_representation)
                         .setColor(representation.getSubject().getColor())
@@ -101,7 +101,7 @@ public class RepresentationsNotification {
             );
 
             notification.setContentIntent(resultPendingIntent)
-                    .setColor(context.getResources().getColor(R.color.material_green_500))
+                    .setColor(ContextCompat.getColor(context, R.color.material_green_500))
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_EVENT)
                     .setLights(Constants.NOTIFICATION_LIGHTS_COLOR, Constants.NOTIFICATION_LIGHTS_ON_MS, Constants.NOTIFICATION_LIGHTS_OFF_MS);

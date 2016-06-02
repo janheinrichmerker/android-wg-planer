@@ -2,6 +2,7 @@ package com.heinrichreimersoftware.wg_planer.dialog;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,17 +13,14 @@ import com.heinrichreimersoftware.wg_planer.structure.User;
 
 import java.util.Calendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class InfoDialogBuilder extends MaterialDialog.Builder {
 
-    @Bind(R.id.version)
-    TextView version;
-    @Bind(R.id.copyright)
-    TextView copyright;
-    @Bind(R.id.userInfo)
-    TextView userInfo;
+    @BindView(R.id.version) TextView version;
+    @BindView(R.id.copyright) TextView copyright;
+    @BindView(R.id.userInfo) TextView userInfo;
 
     public InfoDialogBuilder(final Context context) {
         super(context);
@@ -55,8 +53,8 @@ public class InfoDialogBuilder extends MaterialDialog.Builder {
         if (user != null && user.getUsername() != null && !user.getUsername().equals("")) {
             username = user.getUsername();
         }
-        if (user != null && user.getSchoolClass() != null && !user.getSchoolClass().equals("")) {
-            schoolClass = user.getSchoolClass();
+        if (user != null && user.getSchoolClasses() != null && user.getSchoolClasses().length > 0 && !TextUtils.isEmpty(user.getSchoolClasses()[0])) {
+            schoolClass = user.getSchoolClasses()[0];
         }
 
         userInfo.setText(context.getResources().getString(R.string.label_dialog_info_user, username, schoolClass));

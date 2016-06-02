@@ -31,19 +31,18 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 
 public class RepresentationFragment extends Fragment {
 
     public static final String ARG_DATE = "section_number_representation";
-    @Bind(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.list)
-    RecyclerView list;
-    @Bind(R.id.emptyView)
-    TextView emptyView;
+
+    @BindView(R.id.swipeRefresh) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.list) RecyclerView list;
+    @BindView(R.id.emptyView) TextView emptyView;
+
     private SyncStatusManager syncStatusManager;
     private ListLoader<Representation, RepresentationAdapter> loader;
 

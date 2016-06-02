@@ -20,19 +20,16 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimetableNavigationFragment extends Fragment {
 
     private static final String STATE_PAGER_POSITION = "pager_position_timetable";
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.pager)
-    ViewPager viewPager;
-    @Bind(R.id.pager_tab_strip)
-    PagerSlidingTabStrip tabs;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.pager) ViewPager viewPager;
+    @BindView(R.id.pager_tab_strip) PagerSlidingTabStrip tabs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
