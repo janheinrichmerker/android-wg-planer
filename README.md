@@ -2,6 +2,8 @@
 
 # Wilhelm-Gymnasium
 
+[![Build Status](https://travis-ci.com/HeinrichReimer/android-wg-planer.svg?token=gENHP9snyyiumANuhhuX&branch=master)](https://travis-ci.com/HeinrichReimer/android-wg-planer)
+
 *Vertretungsplan und Stundenplan des Wilhelm-Gymnasiums*
 
 Mit der Vertretungsplan-App vom **Wilhelm-Gymnasium** kannst Du jederzeit auf Deinen *Stundenplan* und auf Deinen *Vertretungsplan* zugreifen.
