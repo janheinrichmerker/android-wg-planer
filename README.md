@@ -3,7 +3,7 @@
 # Wilhelm-Gymnasium
 
 [![Build Status](https://travis-ci.com/HeinrichReimer/android-wg-planer.svg?token=gENHP9snyyiumANuhhuX&branch=master)](https://travis-ci.com/HeinrichReimer/android-wg-planer)
-[![License](https://img.shields.io/github/license/HeinrichReimer/android-wg-planer.svg)](https://github.com/HeinrichReimer/android-wg-planer/blob/master/License.txt)
+[![License](https://img.shields.io/github/license/HeinrichReimer/android-wg-planer.svg)](https://github.com/HeinrichReimer/android-wg-planer/blob/master/LICENSE.txt)
 
 *Vertretungsplan und Stundenplan des Wilhelm-Gymnasiums*
 
