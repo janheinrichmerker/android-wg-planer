@@ -1,5 +1,6 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: "com.android.application"
+apply plugin: "com.neenbedankt.android-apt"
+apply plugin: "jacoco-android"
 
 def versionMajor = 4
 def versionMinor = 1
